@@ -35,7 +35,7 @@ your repo access and to practice PR'ing with your team *before* you start
 coding!
 
 - Kosisochukwu Azubogu: [GitHub](https://github.com/azubogukosiso) / [LinkedIn](https://linkedin.com/in/azubogu-kosisochukwu)
+  
 - Rusgyn Magsanay: [GitHub](https://github.com/Rusgyn) / [LinkedIn](https://www.linkedin.com/in/rusgyn-magsanay/)
 
-   ...
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Onyekachi Nwakaihe: [GitHub](https://github.com/donkachii) / [LinkedIn](https://www.linkedin.com/in/onyekachi-nwakaihe)
