@@ -39,3 +39,4 @@ coding!
 - Rusgyn Magsanay: [GitHub](https://github.com/Rusgyn) / [LinkedIn](https://www.linkedin.com/in/rusgyn-magsanay/)
 
 - Onyekachi Nwakaihe: [GitHub](https://github.com/donkachii) / [LinkedIn](https://www.linkedin.com/in/onyekachi-nwakaihe)
+- Afuwape Babatunde: [GitHub](https://github.com/AfuBasic) / [LinkedIn](https://www.linkedin.com/in/afuwape-babatunde-258735382/)
