@@ -52,6 +52,7 @@ model VerificationDocument {
   user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   idType    Id_Types           @default(DRIVERS_LICENSE)
   idFile    String?
+  idNumber  String
   status    VerificationStatus @default(UNVERIFIED)
   createdAt DateTime           @default(now())
   updatedAt DateTime           @updatedAt
