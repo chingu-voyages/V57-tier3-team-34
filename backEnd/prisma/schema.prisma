@@ -15,15 +15,100 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  password  String
-  name      String
-  userType  Role    @default(VOTER)
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  ///This could be the political party name, candidate name or voter's name
+  name     String
+  userType Roles  @default(VOTER)
+
+  //Self reference relations
+  partyId   Int?
+  party     User?  @relation("UserHierarchy", fields: [partyId], references: [id])
+  candidate User[] @relation("UserHierarchy")
+
+  //Other Relations
+  VerificationDocument VerificationDocument[]
+  EligibleVoter        EligibleVoter[]
+
+  CandidatePost CandidatePost[]
+
+  votesCast Vote[] @relation("VotesByUser") // votes this user cast
+  votesFor  Vote[] @relation("VotesForCandidate") // votes received as a candidate
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-enum Role {
+enum Roles {
   VOTER
   CANDIDATE
   PARTY
+}
+
+model VerificationDocument {
+  id        Int                @id @default(autoincrement())
+  userId    Int
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  idType    Id_Types           @default(DRIVERS_LICENSE)
+  idFile    String?
+  status    VerificationStatus @default(UNVERIFIED)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+enum Id_Types {
+  DRIVERS_LICENSE
+  PASSPORT
+  NIN
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  UNVERIFIED
+}
+
+model EligibleVoter {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PoliticalPost {
+  id              Int    @id @default(autoincrement())
+  postName        String
+  postDescription String @db.Text
+
+  CandidatePost CandidatePost[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CandidatePost {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId        Int
+  politicalPost PoliticalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vote {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation("VotesByUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  candidateId Int
+  candidate   User @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
