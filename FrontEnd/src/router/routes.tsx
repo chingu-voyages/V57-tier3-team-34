@@ -2,6 +2,7 @@ import Home from "../pages/Home";
 import Layout from "../components/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import Party from "../pages/party/registration/Party";
+import Dashboard from "../pages/party/dashboard/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: "/party/register",
         element: <Party />,
+      },
+      {
+        path: "/party/dashboard",
+        element: <Dashboard />,
       },
     ],
   },
