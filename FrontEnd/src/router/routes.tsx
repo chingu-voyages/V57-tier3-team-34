@@ -3,6 +3,8 @@ import Layout from "../components/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import Party from "../pages/party/registration/Party";
 import Dashboard from "../pages/party/dashboard/Dashboard";
+import Overview from "../pages/party/pages/Overview";
+import Candidates from "../pages/party/pages/Candidates";
 
 const router = createBrowserRouter([
   {
@@ -18,8 +20,12 @@ const router = createBrowserRouter([
         element: <Party />,
       },
       {
-        path: "/party/dashboard",
+        path: "/party",
         element: <Dashboard />,
+        children: [
+          { index: true, path: "dashboard", element: <Overview /> },
+          { path: "candidates", element: <Candidates /> },
+        ],
       },
     ],
   },
