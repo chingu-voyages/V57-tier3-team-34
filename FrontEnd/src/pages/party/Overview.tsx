@@ -1,5 +1,5 @@
 import { IoInformationCircleOutline, IoPeople } from "react-icons/io5";
-import Chart from "../../../components/party/dashboard/Chart";
+import Chart from "../../components/party/dashboard/Chart";
 
 const Overview: React.FC = () => {
   return (

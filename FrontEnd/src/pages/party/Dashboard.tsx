@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import SideBar from "../../../components/party/dashboard/SideBar";
+import SideBar from "../../components/party/dashboard/SideBar";
 import { IoMenu } from "react-icons/io5";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
       >
         <SideBar />
       </div>
-      <div className="w-full">
+      <div className="w-full h-screen overflow-y-auto">
         <div className="p-4 cursor-pointer">
           <IoMenu
             size={25}

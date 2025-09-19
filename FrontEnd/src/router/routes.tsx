@@ -2,9 +2,9 @@ import Home from "../pages/Home";
 import Layout from "../components/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import Party from "../pages/party/registration/Party";
-import Dashboard from "../pages/party/dashboard/Dashboard";
-import Overview from "../pages/party/pages/Overview";
-import Candidates from "../pages/party/pages/Candidates";
+import Dashboard from "../pages/party/Dashboard";
+import Overview from "../pages/party/Overview";
+import Candidates from "../pages/party/Candidates";
 
 const router = createBrowserRouter([
   {
