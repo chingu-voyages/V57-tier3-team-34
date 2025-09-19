@@ -13,6 +13,7 @@ const Party: React.FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<PoliticalPartyFormInput>({
     defaultValues: {
@@ -29,6 +30,7 @@ const Party: React.FC = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       alert("registration api simulation complete!");
+      reset();
     }, 2000);
   };
 
