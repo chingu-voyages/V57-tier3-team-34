@@ -14,7 +14,6 @@ yarn-error.log*
 # Build outputs
 dist/
 build/
-package-lock.json
 
 # OS-specific files
 .DS_Store
