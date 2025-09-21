@@ -7,28 +7,28 @@ import Overview from "../pages/party/Overview";
 import Candidates from "../pages/party/Candidates";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "/party/register",
-        element: <Party />,
-      },
-      {
-        path: "/party",
-        element: <Dashboard />,
-        children: [
-          { index: true, path: "dashboard", element: <Overview /> },
-          { path: "candidates", element: <Candidates /> },
-        ],
-      },
-    ],
-  },
+	{
+		path: "/",
+		element: <Layout />,
+		children: [
+			{
+				index: true,
+				element: <Home />,
+			},
+			{
+				path: "/party/register",
+				element: <Party />,
+			},
+			{
+				path: "/party",
+				element: <Dashboard />,
+				children: [
+					{ index: true, path: "dashboard", element: <Overview /> },
+					{ path: "candidates", element: <Candidates /> },
+				],
+			},
+		],
+	},
 ]);
 
 export default router;
