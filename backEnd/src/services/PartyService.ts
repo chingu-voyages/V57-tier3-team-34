@@ -2,7 +2,6 @@ import { addParty, getUserByEmail, partyData } from "@/model/UserModel";
 import { hashPassword } from "@/utils/password";
 import { userSchema } from "@/validations/user.schema";
 import { User } from "@prisma/client";
-import { hash } from "crypto";
 
 export const createPartyService = async (
   data: partyData
