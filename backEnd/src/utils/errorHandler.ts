@@ -1,11 +1,60 @@
+import { ZodError } from "zod";
 import logger from "./logger";
+import { Prisma } from "@prisma/client";
 
-const errorHandler = (error: any): void => {
+export interface ErrorResponse {
+  status: number;
+  body: {
+    success: false;
+    message?: string;
+    errors?: string[];
+  };
+}
+
+const errorHandler = (error: unknown): ErrorResponse => {
+  // Zod validation error
+  if (error instanceof ZodError) {
+    return {
+      status: 400,
+      body: {
+        success: false,
+        errors: error.issues.map((issue) => issue.message),
+      },
+    };
+  }
+
+  // Prisma errors
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    return {
+      status: 400,
+      body: {
+        success: false,
+        message: error.message,
+      },
+    };
+  }
+
+  // Generic error
   if (error instanceof Error) {
     logger.error(`Error: ${error.message}`);
-    throw new Error(error.message);
+    return {
+      status: 500,
+      body: {
+        success: false,
+        message: error.message,
+      },
+    };
   }
-  throw new Error("An unknown error occured");
+
+  // ✅ Unknown error
+  logger.error("Unknown error", error);
+  return {
+    status: 500,
+    body: {
+      success: false,
+      message: "An unknown error occurred",
+    },
+  };
 };
 
 export default errorHandler;

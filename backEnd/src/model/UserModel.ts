@@ -23,6 +23,19 @@ export const addParty: addPartyFn = async (partyData) => {
     });
     return party;
   } catch (error) {
-    errorHandler(error);
+    throw error;
+  }
+};
+
+export const getUserByEmail = async (email: string): Promise<User | null> => {
+  try {
+    console.log("Calling the model");
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    return user;
+  } catch (error) {
+    throw error;
   }
 };
