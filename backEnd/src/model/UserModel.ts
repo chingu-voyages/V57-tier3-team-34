@@ -67,3 +67,22 @@ export const updateUser = async (
     throw error;
   }
 };
+
+export const getCandidates = async (
+  partyId: number,
+  page: number | string = 1
+): Promise<User[]> => {
+  try {
+    page = parseInt(`${page}`);
+    const user = await prisma.user.findMany({
+      where: {
+        userType: Roles.CANDIDATE,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};

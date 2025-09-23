@@ -1,8 +1,9 @@
+import { Roles } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 const APP_SECRET: string = process.env.APP_SECRET!;
-export const verifyToken = (
+export const isUserAParty = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -21,7 +22,10 @@ export const verifyToken = (
 
   try {
     const decoded = jwt.verify(token, APP_SECRET);
-    (req as any).user = decoded;
+    if (decoded.userType !== Roles.PARTY) {
+      throw new Error("You do not have permission to view this page");
+    }
+
     next();
   } catch (error) {
     res.status(401).json({
