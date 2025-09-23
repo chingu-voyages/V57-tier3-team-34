@@ -10,11 +10,11 @@ export const userSchema = z.object({
   userType: z.enum(Roles),
 });
 
-export type UserInput = z.infer<typeof userSchema>;
-
 export const loginSchema = z.object({
   email: z.email("Please enter a valid email address"),
   password: z.string("Password is required"),
 });
 
-export type LoginInput = z.infer<typeof loginSchema>;
+export const userUpdateSchema = z.object({
+  name: z.string("Name is required"),
+});

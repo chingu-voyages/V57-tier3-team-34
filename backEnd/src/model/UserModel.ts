@@ -47,3 +47,23 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
     throw error;
   }
 };
+
+export const updateUser = async (
+  data: { name: string },
+  email: string
+): Promise<User> => {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        email: email,
+      },
+      data: {
+        name: data.name,
+      },
+    });
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};

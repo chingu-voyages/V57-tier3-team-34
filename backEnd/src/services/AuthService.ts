@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-import { authData, getUserByEmail } from "@/model/UserModel";
+import { authData, getUserByEmail, updateUser } from "@/model/UserModel";
 import { verifyPassword } from "@/utils/password";
-import { loginSchema } from "@/validations/user.schema";
+import { loginSchema, userUpdateSchema } from "@/validations/user.schema";
 
 import { User } from "@prisma/client";
 
@@ -72,5 +72,31 @@ export const getUserInfo = async (email: string): Promise<authData> => {
     userType: user.userType,
     partyId: user.partyId,
     createdAt: user.createdAt,
+  };
+};
+
+export const updateUserProfile = async (
+  data: {
+    name: string;
+  },
+  email: string
+): Promise<authData> => {
+  const validData = userUpdateSchema.safeParse(data);
+
+  if (!validData.success) {
+    throw validData.error;
+  }
+
+  const validatedData = validData.data;
+
+  const updatedUser = await updateUser(validatedData, email);
+
+  return {
+    name: updatedUser.name,
+    email: updatedUser.email,
+    userId: updatedUser.id,
+    userType: updatedUser.userType,
+    partyId: updatedUser.partyId,
+    createdAt: updatedUser.createdAt,
   };
 };

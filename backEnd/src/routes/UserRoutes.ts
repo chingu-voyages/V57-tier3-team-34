@@ -2,7 +2,11 @@ import { registerParty } from "@/controllers/PartyController";
 import { createVoter } from "../controllers/voterController";
 
 import { Router } from "express";
-import { authenticateUser, userProfile } from "@/controllers/AuthController";
+import {
+  authenticateUser,
+  updateProfile,
+  userProfile,
+} from "@/controllers/AuthController";
 import { verifyToken } from "@/middleware/auth";
 
 const router = Router();
@@ -13,5 +17,6 @@ router.post("/register-party", registerParty); //Post to this endpoint to create
 router.post("/login", authenticateUser);
 
 router.get("/profile", verifyToken, userProfile);
+router.put("/profile", verifyToken, updateProfile);
 
 export default router;
