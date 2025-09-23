@@ -5,7 +5,7 @@ import Party from "../pages/party/registration/Party";
 import Dashboard from "../pages/party/Dashboard";
 import Overview from "../pages/party/Overview";
 import Candidates from "../pages/party/Candidates";
-
+import Candidate from "../pages/party/registration/Candidate";
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -18,6 +18,10 @@ const router = createBrowserRouter([
 			{
 				path: "/party/register",
 				element: <Party />,
+			},
+			{
+				path: "/candidate/register",
+				element: <Candidate />,
 			},
 			{
 				path: "/party",

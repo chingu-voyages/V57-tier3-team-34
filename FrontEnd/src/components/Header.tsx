@@ -36,6 +36,9 @@ const Header = () => {
 							<Link to="/party/register">Party Registration</Link>
 						</li>
 						<li>
+							<Link to="/candidate/register">Candidate Registration</Link>
+						</li>
+						<li>
 							<a>About the App</a>
 						</li>
 					</ul>
