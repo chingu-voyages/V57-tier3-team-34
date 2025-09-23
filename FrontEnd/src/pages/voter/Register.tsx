@@ -75,7 +75,7 @@ const Register = () => {
 
         <form
           className="flex flex-col lg:ml-7 w-full lg:w-[60%]"
-          onSubmit={(e) => registerVoter(e, formData)}
+          onSubmit={(e) => registerVoter(e, formData, setFormData)}
         >
           <div className="flex flex-col md:flex-row justify-between">
             <div className="md:w-[45%]">
@@ -85,6 +85,7 @@ const Register = () => {
                   type="text"
                   id="fullName"
                   name="fullName"
+                  required
                   className="mt-1 p-2 w-full bg-gray-200 rounded-t-sm focus:outline-none border-b border-b-black"
                   value={formData.fullName}
                   onChange={handleInputChange}
@@ -97,6 +98,7 @@ const Register = () => {
                   type="email"
                   id="email"
                   name="email"
+                  required
                   className="mt-1 p-2 w-full bg-gray-200 rounded-t-sm focus:outline-none border-b border-b-black"
                   value={formData.email}
                   onChange={handleInputChange}
@@ -171,7 +173,7 @@ const Register = () => {
             type="submit"
             className="bg-base-100 items-end p-2 rounded text-white cursor-pointer mt-3 active:scale-95 transition-all"
           >
-            Register
+            Register as a voter
           </button>
         </form>
       </div>

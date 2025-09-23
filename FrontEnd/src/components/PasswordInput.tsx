@@ -22,18 +22,19 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   return (
     <div className="mb-5">
       {label && <label htmlFor={name}>{label}:</label>}
-      <div className="flex items-center justify-evenly w-full p-2 bg-gray-200 border-b border-b-black rounded-t-sm">
+      <div className="flex items-center justify-evenly w-full bg-gray-200 border-b border-b-black rounded-t-sm mt-1">
         <input
           type={showPassword ? "text" : "password"}
           id={name}
           name={name}
           value={value}
+          required
           onChange={(e) => onChange(e)}
-          className="focus:!outline-none w-[90%]"
+          className="focus:!outline-none w-[93%] p-2"
         />
         <button
           type="button"
-          className="cursor-pointer md:w-[10%] flex items-center justify-center"
+          className="cursor-pointer md:w-[7%] flex items-center justify-center"
           onClick={togglePasswordVisibility}
         >
           {showPassword ? (

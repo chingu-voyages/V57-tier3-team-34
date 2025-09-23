@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import userRouter from "./routes/userRoute";
+import voterRouter from "./routes/voterRoute";
 
-// Load environment variables from .env file
+// LOAD ENVIRONMENT VARIABLES FROM .ENV FILE
 dotenv.config();
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(cors({ credentials: true, origin: ["http://localhost:5173"] }));
 app.use(express.json());
 
 // ROUTES
-app.use("/user", userRouter);
+app.use("/voter", voterRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
