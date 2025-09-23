@@ -1,4 +1,5 @@
 import Home from "../pages/Home";
+import Register from "../pages/voter/Register";
 import Layout from "../components/Layout";
 import { createBrowserRouter } from "react-router-dom";
 import Party from "../pages/party/registration/Party";
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
 			{
 				path: "/candidate/register",
 				element: <Candidate />,
+			},
+			{
+				path: "/voter/register",
+				element: <Register />,
 			},
 			{
 				path: "/party",
