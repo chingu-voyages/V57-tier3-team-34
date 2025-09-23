@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../DB/db.config";
 
-export const createUser = async (req: Request, res: Response) => {
+export const createVoter = async (req: Request, res: Response) => {
   const { fullName, email, password } = req.body;
 
   const emailExists = await prisma.user.findUnique({
