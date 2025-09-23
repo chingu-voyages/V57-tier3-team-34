@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { getUserByEmail } from "@/model/UserModel";
+import { authData, getUserByEmail } from "@/model/UserModel";
 import { verifyPassword } from "@/utils/password";
 import { loginSchema } from "@/validations/user.schema";
 
@@ -56,4 +56,21 @@ export const login = async (data: {
 
   const token = jwt.sign(jwtPayload, APP_SECRET, { expiresIn: "1h" });
   return { userType: user.userType, token };
+};
+
+export const getUserInfo = async (email: string): Promise<authData> => {
+  const user = await getUserByEmail(email);
+
+  if (!user) {
+    throw new Error("Unable to load user information!");
+  }
+
+  return {
+    name: user.name,
+    email: user.email,
+    userId: user.id,
+    userType: user.userType,
+    partyId: user.partyId,
+    createdAt: user.createdAt,
+  };
 };

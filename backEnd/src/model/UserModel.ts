@@ -9,6 +9,15 @@ export interface partyData {
   userType: Roles;
 }
 
+export interface authData {
+  name: string;
+  email: string;
+  userId: number;
+  userType: string;
+  partyId: number | null;
+  createdAt: Date;
+}
+
 type addPartyFn = (data: partyData) => Promise<User | undefined>;
 
 export const addParty: addPartyFn = async (partyData) => {
@@ -29,7 +38,6 @@ export const addParty: addPartyFn = async (partyData) => {
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
-    console.log("Calling the model");
     const user = await prisma.user.findUnique({
       where: { email: email },
     });

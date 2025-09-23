@@ -93,3 +93,4 @@ Invalid `prisma.user.findUnique()` invocation in
 Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.
 [2025-09-23 13:45:53] error: Error: Email is already registered
 [2025-09-23 13:47:40] error: Error: Invalid Login Credentials
+[2025-09-23 14:05:28] error: Error: Invalid Login Credentials
