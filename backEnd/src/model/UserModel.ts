@@ -7,6 +7,7 @@ export interface partyData {
   email: string;
   password: string;
   userType: Roles;
+  partyId?: number | null;
 }
 
 export interface authData {
@@ -18,7 +19,17 @@ export interface authData {
   createdAt: Date;
 }
 
+export interface candidateData {
+  name: string;
+  email: string;
+  password?: any;
+  userType: Roles;
+  partyId?: number | null;
+}
+
 type addPartyFn = (data: partyData) => Promise<User | undefined>;
+
+type addCandidateFn = (data: candidateData) => Promise<User | undefined>;
 
 export const addParty: addPartyFn = async (partyData) => {
   try {
@@ -68,20 +79,20 @@ export const updateUser = async (
   }
 };
 
-export const getCandidates = async (
-  partyId: number,
-  page: number | string = 1
-): Promise<User[]> => {
+export const addCandidate: addCandidateFn = async (
+  data: candidateData
+): Promise<User | undefined> => {
   try {
-    page = parseInt(`${page}`);
-    const user = await prisma.user.findMany({
-      where: {
+    const candidate = await prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
         userType: Roles.CANDIDATE,
-      },
-      orderBy: {
-        createdAt: "desc",
+        partyId: data.partyId,
       },
     });
+    return candidate;
   } catch (error) {
     throw error;
   }
