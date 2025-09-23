@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import prisma from "../DB/db.config";
+import prisma from "@/config/db.config";
 
 export const createVoter = async (req: Request, res: Response) => {
   const { fullName, email, password } = req.body;
