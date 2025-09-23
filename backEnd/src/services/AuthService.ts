@@ -1,0 +1,102 @@
+import jwt from "jsonwebtoken";
+
+import { authData, getUserByEmail, updateUser } from "@/model/UserModel";
+import { verifyPassword } from "@/utils/password";
+import { loginSchema, userUpdateSchema } from "@/validations/user.schema";
+
+import { User } from "@prisma/client";
+
+const APP_SECRET: string = process.env.APP_SECRET!;
+
+interface jwtData {
+  name: string;
+  email: string;
+  userId: number;
+  userType: string;
+  partyId: number | null;
+}
+
+export const login = async (data: {
+  username: string;
+  password: string;
+}): Promise<{ userType: string; token: string }> => {
+  /**
+   * Validate data input
+   */
+
+  const loginData = loginSchema.safeParse(data);
+
+  if (!loginData.success) {
+    throw loginData.error;
+  }
+
+  /**
+   * check for user
+   */
+  const user = await getUserByEmail(loginData.data.email);
+  if (!user) {
+    throw new Error("Invalid Login Credentials");
+  }
+
+  const validPassword = await verifyPassword(
+    loginData.data.password,
+    user.password
+  );
+  if (!validPassword) {
+    throw new Error("Invalid Login Credentials");
+  }
+
+  const jwtPayload: jwtData = {
+    name: user.name,
+    email: user.email,
+    userId: user.id,
+    userType: user.userType,
+    partyId: user.partyId,
+  };
+
+  const token = jwt.sign(jwtPayload, APP_SECRET, { expiresIn: "1h" });
+  return { userType: user.userType, token };
+};
+
+export const getUserInfo = async (email: string): Promise<authData> => {
+  const user = await getUserByEmail(email);
+
+  if (!user) {
+    throw new Error("Unable to load user information!");
+  }
+
+  return {
+    name: user.name,
+    email: user.email,
+    userId: user.id,
+    userType: user.userType,
+    partyId: user.partyId,
+    createdAt: user.createdAt,
+  };
+};
+
+export const updateUserProfile = async (
+  data: {
+    name: string;
+  },
+  email: string
+): Promise<authData> => {
+  const validData = userUpdateSchema.safeParse(data);
+
+  if (!validData.success) {
+    throw validData.error;
+  }
+
+  const validatedData = validData.data;
+
+  const updatedUser = await updateUser(validatedData, email);
+
+  return {
+    name: updatedUser.name,
+    email: updatedUser.email,
+    userId: updatedUser.id,
+    userType: updatedUser.userType,
+    partyId: updatedUser.partyId,
+    createdAt: updatedUser.createdAt,
+  };
+};

@@ -1,0 +1,97 @@
+[2025-09-23 12:35:16] error: Error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Library/WebServer/Documents/chingu/e-voting/backEnd/src/model/UserModel.ts:33:36
+
+  30 export const getUserByEmail = async (email: string): Promise<User | null> => {
+  31   try {
+  32     console.log("Calling the model");
+→ 33     const user = await prisma.user.findUnique({
+           where: {
+             email: undefined,
+         ?   id?: Int,
+         ?   AND?: UserWhereInput | UserWhereInput[],
+         ?   OR?: UserWhereInput[],
+         ?   NOT?: UserWhereInput | UserWhereInput[],
+         ?   password?: StringFilter | String,
+         ?   name?: StringFilter | String,
+         ?   userType?: EnumRolesFilter | Roles,
+         ?   partyId?: IntNullableFilter | Int | Null,
+         ?   createdAt?: DateTimeFilter | DateTime,
+         ?   updatedAt?: DateTimeFilter | DateTime,
+         ?   party?: UserNullableScalarRelationFilter | UserWhereInput | Null,
+         ?   candidate?: UserListRelationFilter,
+         ?   VerificationDocument?: VerificationDocumentListRelationFilter,
+         ?   EligibleVoter?: EligibleVoterListRelationFilter,
+         ?   CandidatePost?: CandidatePostListRelationFilter,
+         ?   votesCast?: VoteListRelationFilter,
+         ?   votesFor?: VoteListRelationFilter
+           }
+         })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.
+[2025-09-23 12:38:46] error: Error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Library/WebServer/Documents/chingu/e-voting/backEnd/src/model/UserModel.ts:33:36
+
+  30 export const getUserByEmail = async (email: string): Promise<User | null> => {
+  31   try {
+  32     console.log("Calling the model");
+→ 33     const user = await prisma.user.findUnique({
+           where: {
+             email: undefined,
+         ?   id?: Int,
+         ?   AND?: UserWhereInput | UserWhereInput[],
+         ?   OR?: UserWhereInput[],
+         ?   NOT?: UserWhereInput | UserWhereInput[],
+         ?   password?: StringFilter | String,
+         ?   name?: StringFilter | String,
+         ?   userType?: EnumRolesFilter | Roles,
+         ?   partyId?: IntNullableFilter | Int | Null,
+         ?   createdAt?: DateTimeFilter | DateTime,
+         ?   updatedAt?: DateTimeFilter | DateTime,
+         ?   party?: UserNullableScalarRelationFilter | UserWhereInput | Null,
+         ?   candidate?: UserListRelationFilter,
+         ?   VerificationDocument?: VerificationDocumentListRelationFilter,
+         ?   EligibleVoter?: EligibleVoterListRelationFilter,
+         ?   CandidatePost?: CandidatePostListRelationFilter,
+         ?   votesCast?: VoteListRelationFilter,
+         ?   votesFor?: VoteListRelationFilter
+           }
+         })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.
+[2025-09-23 12:39:18] error: Error: 
+Invalid `prisma.user.findUnique()` invocation in
+/Library/WebServer/Documents/chingu/e-voting/backEnd/src/model/UserModel.ts:33:36
+
+  30 export const getUserByEmail = async (email: string): Promise<User | null> => {
+  31   try {
+  32     console.log("Calling the model");
+→ 33     const user = await prisma.user.findUnique({
+           where: {
+             email: undefined,
+         ?   id?: Int,
+         ?   AND?: UserWhereInput | UserWhereInput[],
+         ?   OR?: UserWhereInput[],
+         ?   NOT?: UserWhereInput | UserWhereInput[],
+         ?   password?: StringFilter | String,
+         ?   name?: StringFilter | String,
+         ?   userType?: EnumRolesFilter | Roles,
+         ?   partyId?: IntNullableFilter | Int | Null,
+         ?   createdAt?: DateTimeFilter | DateTime,
+         ?   updatedAt?: DateTimeFilter | DateTime,
+         ?   party?: UserNullableScalarRelationFilter | UserWhereInput | Null,
+         ?   candidate?: UserListRelationFilter,
+         ?   VerificationDocument?: VerificationDocumentListRelationFilter,
+         ?   EligibleVoter?: EligibleVoterListRelationFilter,
+         ?   CandidatePost?: CandidatePostListRelationFilter,
+         ?   votesCast?: VoteListRelationFilter,
+         ?   votesFor?: VoteListRelationFilter
+           }
+         })
+
+Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.
+[2025-09-23 13:45:53] error: Error: Email is already registered
+[2025-09-23 13:47:40] error: Error: Invalid Login Credentials
+[2025-09-23 14:05:28] error: Error: Invalid Login Credentials
+[2025-09-23 14:46:09] error: Error: Email is already registered
