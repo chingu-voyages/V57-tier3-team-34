@@ -47,7 +47,7 @@ export const createCandidate = async (req: Request, res: Response) => {
   try {
     const user = (req as any).user;
 
-    const candidate = await createCandidateService(req.body, user.userId);
+    const candidate = await createCandidateService(req.body, user);
 
     return res.status(201).json({
       success: true,

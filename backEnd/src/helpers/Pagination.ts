@@ -28,7 +28,7 @@ export default async function Paginate<T extends PrismaModel>(options: {
       pagination: {
         page: options.page,
         limit: options.limit,
-        total: totalCount,
+        totalRecords: totalCount,
         pages: Math.ceil(totalCount / options.limit),
       },
     };

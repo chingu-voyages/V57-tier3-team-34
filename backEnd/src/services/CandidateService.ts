@@ -4,6 +4,7 @@ import { addCandidate, getUserByEmail, partyData } from "@/model/UserModel";
 import { generatePassword, hashPassword } from "@/utils/password";
 import { candidateSchema, userSchema } from "@/validations/user.schema";
 import { Roles, User } from "@prisma/client";
+import { sendCandidateEmail } from "./EmailService";
 
 export const getCandidateService = async (
   page: number,
@@ -22,7 +23,7 @@ export const getCandidateService = async (
 
 export const createCandidateService = async (
   data: partyData,
-  partyId: number
+  party: User
 ): Promise<User | undefined> => {
   /**
    * Validate Data
@@ -46,14 +47,18 @@ export const createCandidateService = async (
   /**
    * send some email or build the email to send with the password
    */
-  console.log(password);
+  await sendCandidateEmail({
+    email: validatedData.data.email,
+    password: password,
+    party: party.name,
+  });
 
   const hashedPassword = await hashPassword(password);
   validatedData.data.password = hashedPassword;
-  validatedData.data = { partyId: partyId, ...validatedData.data };
+  validatedData.data = { partyId: party.id, ...validatedData.data };
   /**
    * Proceed to create the user
    */
-  const newCandidate = await addCandidate(validatedData.data);
-  return newCandidate;
+  //   const newCandidate = await addCandidate(validatedData.data);
+  //   return newCandidate;
 };
