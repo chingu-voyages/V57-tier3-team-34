@@ -27,7 +27,7 @@ export const isUserAParty = (
     }
 
     next();
-  } catch (error) {
+  } catch (error: any) {
     res.status(401).json({
       success: false,
       message: error.message,
