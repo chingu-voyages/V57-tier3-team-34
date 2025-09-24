@@ -7,6 +7,7 @@ export interface partyData {
   email: string;
   password: string;
   userType: Roles;
+  partyId?: number | null;
 }
 
 export interface authData {
@@ -18,7 +19,17 @@ export interface authData {
   createdAt: Date;
 }
 
+export interface candidateData {
+  name: string;
+  email: string;
+  password?: any;
+  userType: Roles;
+  partyId?: number | null;
+}
+
 type addPartyFn = (data: partyData) => Promise<User | undefined>;
+
+type addCandidateFn = (data: candidateData) => Promise<User | undefined>;
 
 export const addParty: addPartyFn = async (partyData) => {
   try {
@@ -63,6 +74,25 @@ export const updateUser = async (
     });
 
     return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addCandidate: addCandidateFn = async (
+  data: candidateData
+): Promise<User | undefined> => {
+  try {
+    const candidate = await prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        userType: Roles.CANDIDATE,
+        partyId: data.partyId,
+      },
+    });
+    return candidate;
   } catch (error) {
     throw error;
   }

@@ -18,3 +18,11 @@ export const loginSchema = z.object({
 export const userUpdateSchema = z.object({
   name: z.string("Name is required"),
 });
+
+export const candidateSchema = z.object({
+  name: z.string("Name is required").min(2, "Name is required"),
+  email: z.email("Please provide a valid email"),
+  userType: z.enum(Roles),
+  password: z.string().optional(),
+  partyId: z.number().optional(),
+});

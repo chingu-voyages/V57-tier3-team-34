@@ -90,7 +90,6 @@ export const updateUserProfile = async (
   const validatedData = validData.data;
 
   const updatedUser = await updateUser(validatedData, email);
-
   return {
     name: updatedUser.name,
     email: updatedUser.email,
