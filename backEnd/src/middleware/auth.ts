@@ -23,7 +23,7 @@ export const verifyToken = (
     const decoded = jwt.verify(token, APP_SECRET);
     (req as any).user = decoded;
     next();
-  } catch (error) {
+  } catch (error: any) {
     res.status(401).json({
       success: false,
       message: error.message,
