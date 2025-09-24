@@ -1,4 +1,3 @@
-import { getCandidates } from "@/model/UserModel";
 import { createPartyService } from "@/services/PartyService";
 import type { Request, Response } from "express";
 

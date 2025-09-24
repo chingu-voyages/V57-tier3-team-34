@@ -59,6 +59,6 @@ export const createCandidateService = async (
   /**
    * Proceed to create the user
    */
-  //   const newCandidate = await addCandidate(validatedData.data);
-  //   return newCandidate;
+  const newCandidate = await addCandidate(validatedData.data);
+  return newCandidate;
 };
