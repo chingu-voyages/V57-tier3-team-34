@@ -1,6 +1,5 @@
 import prisma from "@/config/db.config";
-import errorHandler from "@/utils/errorHandler";
-import { Prisma, Roles, User } from "@prisma/client";
+import { Roles, User } from "@prisma/client";
 
 export interface partyData {
   name: string;
