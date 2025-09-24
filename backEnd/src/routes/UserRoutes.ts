@@ -8,6 +8,7 @@ import {
   userProfile,
 } from "@/controllers/AuthController";
 import { verifyToken } from "@/middleware/auth";
+import upload from "@/helpers/Upload";
 
 const router = Router();
 
@@ -17,6 +18,6 @@ router.post("/register-party", registerParty); //Post to this endpoint to create
 router.post("/login", authenticateUser);
 
 router.get("/profile", verifyToken, userProfile);
-router.put("/profile", verifyToken, updateProfile);
+router.put("/profile", verifyToken, upload.single("banner"), updateProfile);
 
 export default router;

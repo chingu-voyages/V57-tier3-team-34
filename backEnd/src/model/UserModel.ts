@@ -15,6 +15,8 @@ export interface authData {
   userId: number;
   userType: string;
   partyId: number | null;
+  userManifesto: string | null;
+  userImage: string | null;
   createdAt: Date;
 }
 
@@ -62,7 +64,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 };
 
 export const updateUser = async (
-  data: { name: string },
+  data: { name: string; manifesto?: string; userImage?: string },
   email: string
 ): Promise<User> => {
   try {
@@ -72,6 +74,8 @@ export const updateUser = async (
       },
       data: {
         name: data.name,
+        userManifesto: data.manifesto,
+        userImage: data.userImage,
       },
     });
 

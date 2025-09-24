@@ -17,6 +17,8 @@ export const loginSchema = z.object({
 
 export const userUpdateSchema = z.object({
   name: z.string("Name is required"),
+  manifesto: z.string().nullable().optional(),
+  userImage: z.string().nullable().optional(),
 });
 
 export const candidateSchema = z.object({
