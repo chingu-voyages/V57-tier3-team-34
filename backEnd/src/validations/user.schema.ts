@@ -25,4 +25,7 @@ export const candidateSchema = z.object({
   userType: z.enum(Roles),
   password: z.string().optional(),
   partyId: z.number().optional(),
+  bio: z.string("Bio is required."),
+  userImage: z.string().optional(),
+  position: z.string("Please enter the position candidate is "),
 });
