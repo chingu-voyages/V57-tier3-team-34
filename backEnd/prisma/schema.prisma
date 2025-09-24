@@ -22,9 +22,13 @@ model User {
   userType Roles  @default(VOTER)
 
   //Self reference relations
-  partyId   Int?
-  party     User?  @relation("UserHierarchy", fields: [partyId], references: [id])
-  candidate User[] @relation("UserHierarchy")
+  partyId       Int?
+  party         User?   @relation("UserHierarchy", fields: [partyId], references: [id])
+  candidate     User[]  @relation("UserHierarchy")
+  userImage     String?
+  userPosition  String?
+  userManifesto String? @db.Text
+  userFirstTime Boolean @default(true)
 
   //Other Relations
   VerificationDocument VerificationDocument[]
