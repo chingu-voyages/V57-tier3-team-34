@@ -5,6 +5,7 @@ import { verifyPassword } from "@/utils/password";
 import { loginSchema, userUpdateSchema } from "@/validations/user.schema";
 
 import { User } from "@prisma/client";
+import { cloudinaryUpload } from "@/helpers/Cloudinary";
 
 const APP_SECRET: string = process.env.APP_SECRET!;
 
@@ -71,17 +72,19 @@ export const getUserInfo = async (email: string): Promise<authData> => {
     userId: user.id,
     userType: user.userType,
     partyId: user.partyId,
+    userImage: user.userImage,
+    userManifesto: user.userManifesto,
     createdAt: user.createdAt,
   };
 };
 
 export const updateUserProfile = async (
-  data: {
-    name: string;
-  },
+  req: any,
   email: string
 ): Promise<authData> => {
-  const validData = userUpdateSchema.safeParse(data);
+  let file = null;
+
+  const validData = userUpdateSchema.safeParse(req.body);
 
   if (!validData.success) {
     throw validData.error;
@@ -89,13 +92,26 @@ export const updateUserProfile = async (
 
   const validatedData = validData.data;
 
-  const updatedUser = await updateUser(validatedData, email);
+  if (req.file) {
+    file = await cloudinaryUpload(req.file.buffer);
+  }
+
+  const data = {
+    ...validatedData,
+    manifesto: validatedData.manifesto ?? undefined,
+    userImage: file ? (file as any).secure_url : undefined,
+  };
+
+  const updatedUser = await updateUser(data, email);
+
   return {
     name: updatedUser.name,
     email: updatedUser.email,
     userId: updatedUser.id,
     userType: updatedUser.userType,
     partyId: updatedUser.partyId,
+    userImage: updatedUser.userImage,
+    userManifesto: updatedUser.userManifesto,
     createdAt: updatedUser.createdAt,
   };
 };
