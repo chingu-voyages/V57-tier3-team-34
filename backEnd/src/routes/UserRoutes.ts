@@ -1,5 +1,10 @@
 import { registerParty } from "@/controllers/PartyController";
-import { createVoter } from "../controllers/voterController";
+import { 
+  createVoter, 
+  getVerificationStatus, 
+  approveVerification, 
+  rejectVerification 
+} from "../controllers/voterController";
 
 import { Router } from "express";
 import {
@@ -12,9 +17,18 @@ import upload from "@/helpers/Upload";
 
 const router = Router();
 
-router.post("/register-voter", createVoter); //Post to this endpoint to create a voter
-router.post("/register-party", registerParty); //Post to this endpoint to create a voter
+// Voter routes
+router.post("/register-voter", createVoter); // Alternative endpoint for backward compatibility
+router.get("/verification-status/:userId", verifyToken, getVerificationStatus);
 
+// Admin verification routes (require authentication)
+router.put("/verify/approve/:userId", verifyToken, approveVerification);
+router.put("/verify/reject/:userId", verifyToken, rejectVerification);
+
+// Party routes
+router.post("/register-party", registerParty);
+
+// Auth routes
 router.post("/login", authenticateUser);
 
 router.get("/profile", verifyToken, userProfile);

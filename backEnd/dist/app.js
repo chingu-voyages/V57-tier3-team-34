@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const UserRoutes_1 = __importDefault(require("@/routes/UserRoutes"));
+const Candidate_1 = __importDefault(require("@/routes/party/Candidate"));
 const app = (0, express_1.default)();
 // SET UP JSON PARSING FUNCTION
 app.use(express_1.default.json());
@@ -14,4 +15,5 @@ app.get("/", (req, res) => res.status(201).json({
     data: { app_version: "1.0.0", app_name: "v57-team-34-e-voting Tier 3" },
 }));
 app.use("/user", UserRoutes_1.default);
+app.use("/party", Candidate_1.default);
 exports.default = app;

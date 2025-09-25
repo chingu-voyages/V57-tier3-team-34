@@ -44,7 +44,7 @@ exports.userProfile = userProfile;
 const updateProfile = async (req, res) => {
     try {
         const currentUser = req.user;
-        const updateData = await (0, AuthService_1.updateUserProfile)(req.body, currentUser.email);
+        const updateData = await (0, AuthService_1.updateUserProfile)(req, currentUser.email);
         if (!updateData) {
             throw new Error("Failed to update user account");
         }

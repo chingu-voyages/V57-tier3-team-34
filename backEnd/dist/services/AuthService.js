@@ -8,6 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UserModel_1 = require("@/model/UserModel");
 const password_1 = require("@/utils/password");
 const user_schema_1 = require("@/validations/user.schema");
+const Cloudinary_1 = require("@/helpers/Cloudinary");
 const APP_SECRET = process.env.APP_SECRET;
 const login = async (data) => {
     /**
@@ -50,23 +51,36 @@ const getUserInfo = async (email) => {
         userId: user.id,
         userType: user.userType,
         partyId: user.partyId,
+        userImage: user.userImage,
+        userManifesto: user.userManifesto,
         createdAt: user.createdAt,
     };
 };
 exports.getUserInfo = getUserInfo;
-const updateUserProfile = async (data, email) => {
-    const validData = user_schema_1.userUpdateSchema.safeParse(data);
+const updateUserProfile = async (req, email) => {
+    let file = null;
+    const validData = user_schema_1.userUpdateSchema.safeParse(req.body);
     if (!validData.success) {
         throw validData.error;
     }
     const validatedData = validData.data;
-    const updatedUser = await (0, UserModel_1.updateUser)(validatedData, email);
+    if (req.file) {
+        file = await (0, Cloudinary_1.cloudinaryUpload)(req.file.buffer);
+    }
+    const data = {
+        ...validatedData,
+        manifesto: validatedData.manifesto ?? undefined,
+        userImage: file ? file.secure_url : undefined,
+    };
+    const updatedUser = await (0, UserModel_1.updateUser)(data, email);
     return {
         name: updatedUser.name,
         email: updatedUser.email,
         userId: updatedUser.id,
         userType: updatedUser.userType,
         partyId: updatedUser.partyId,
+        userImage: updatedUser.userImage,
+        userManifesto: updatedUser.userManifesto,
         createdAt: updatedUser.createdAt,
     };
 };

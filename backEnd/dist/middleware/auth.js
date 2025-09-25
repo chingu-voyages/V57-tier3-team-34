@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => {
     catch (error) {
         res.status(401).json({
             success: false,
-            message: "Unauthenticated",
+            message: error.message,
         });
     }
 };

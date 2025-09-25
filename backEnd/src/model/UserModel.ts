@@ -31,9 +31,18 @@ export interface candidateData {
   userImage?: string | undefined;
 }
 
+export interface voterData {
+  name: string;
+  email: string;
+  password: string;
+  userType: Roles;
+}
+
 type addPartyFn = (data: partyData) => Promise<User | undefined>;
 
 type addCandidateFn = (data: candidateData) => Promise<User | undefined>;
+
+type addVoterFn = (data: voterData) => Promise<User | undefined>;
 
 export const addParty: addPartyFn = async (partyData) => {
   try {
@@ -102,6 +111,44 @@ export const addCandidate: addCandidateFn = async (
       },
     });
     return candidate;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addVoter: addVoterFn = async (
+  data: voterData
+): Promise<User | undefined> => {
+  try {
+    const voter = await prisma.user.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        userType: Roles.VOTER,
+      },
+    });
+    return voter;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const createVerificationDocument = async (
+  userId: number,
+  verifyDoc: string,
+  idNumber: string = "TEMP_ID"
+) => {
+  try {
+    const verificationDoc = await prisma.verificationDocument.create({
+      data: {
+        userId,
+        idFile: verifyDoc,
+        idNumber,
+        status: "PENDING",
+      },
+    });
+    return verificationDoc;
   } catch (error) {
     throw error;
   }
