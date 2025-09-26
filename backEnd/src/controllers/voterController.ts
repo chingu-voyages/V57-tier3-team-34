@@ -6,45 +6,14 @@ import {
   rejectVoterVerification
 } from "@/services/VoterService";
 import errorHandler from "@/utils/errorHandler";
-import { Roles } from "@prisma/client";
 
 export const createVoter = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const result = await createVoterService(req.body);
 
-    // Validate required fields
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required: name, email, password",
-      });
-    }
-
-    const voterData = {
-      name,
-      email,
-      password,
-      userType: Roles.VOTER
-    };
-
-    const result = await createVoterService(voterData);
-
-    if (!result) {
-      return res.status(500).json({
-        success: false,
-        message: "Failed to create voter",
-      });
-    }
-
-    // Return success response without password
-    const { password: _, ...userWithoutPassword } = result.user;
-    
     return res.status(201).json({
       success: true,
-      message: "Voter registered successfully.",
-      data: {
-        user: userWithoutPassword
-      },
+      data: result,
     });
   } catch (error) {
     const errors = errorHandler(error);

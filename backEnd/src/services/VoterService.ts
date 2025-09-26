@@ -38,17 +38,8 @@ export const createVoterService = async (
     throw new Error("Failed to create voter");
   }
 
-  /**
-   * Create verification document
-   */
-  // const verificationDoc = await createVerificationDocument(
-  //   newVoter.id,
-  //   validatedData.data.verifyDoc
-  // );
 
-  return {
-    user: newVoter
-  };
+  return newVoter;
 };
 
 export const getVoterVerificationStatus = async (userId: number) => {
