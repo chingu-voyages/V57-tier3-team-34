@@ -58,7 +58,3 @@ jobs:
       - name: TypeScript type-check
         working-directory: backEnd
         run: npm run build
-
-      - name: Start Application
-        working-directory: backEnd
-        run: npm start
