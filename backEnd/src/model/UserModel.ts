@@ -38,6 +38,7 @@ export interface voterData {
   userType: Roles;
 }
 
+
 type addPartyFn = (data: partyData) => Promise<User | undefined>;
 
 type addCandidateFn = (data: candidateData) => Promise<User | undefined>;
@@ -116,9 +117,7 @@ export const addCandidate: addCandidateFn = async (
   }
 };
 
-export const addVoter: addVoterFn = async (
-  data: voterData
-): Promise<User | undefined> => {
+export const addVoter: addVoterFn = async (data: voterData) => {
   try {
     const voter = await prisma.user.create({
       data: {

@@ -4,8 +4,10 @@ import { authData, getUserByEmail, updateUser } from "@/model/UserModel";
 import { verifyPassword } from "@/utils/password";
 import { loginSchema, userUpdateSchema } from "@/validations/user.schema";
 
-import { User } from "@prisma/client";
+import { OtpPurposes, Roles } from "@prisma/client";
 import { cloudinaryUpload } from "@/helpers/Cloudinary";
+import { sendVoterEmail } from "./EmailService";
+import { getOtpService } from "./VoterService";
 
 const APP_SECRET: string = process.env.APP_SECRET!;
 
@@ -46,6 +48,12 @@ export const login = async (data: {
   if (!validPassword) {
     throw new Error("Invalid Login Credentials");
   }
+
+  if (user.userType === Roles.VOTER) {
+    await getOtpService({ email: user.email, purpose: OtpPurposes.VERIFY_EMAIL });
+  }
+
+  console.log(user, "user");
 
   const jwtPayload: jwtData = {
     name: user.name,
