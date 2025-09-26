@@ -5,7 +5,7 @@ export interface otpData {
   userId?: number;
   purpose?: OtpPurposes;
   codeHash: string;
-  expiresAt?: Date;
+  expiresAt: Date;
 }
 
   export interface requestOtpData {

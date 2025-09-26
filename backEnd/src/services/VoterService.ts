@@ -185,8 +185,6 @@ export const verifyOtpService = async (data: otpData) => {
     orderBy: { createdAt: "desc" },
   });
 
-  console.log(otp, "otp");
-
   if (!otp) {
     throw new Error("Invalid OTP");
   }
