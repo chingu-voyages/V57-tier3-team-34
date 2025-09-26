@@ -53,7 +53,7 @@ export const createVoterService = async (
     throw new Error("Failed to create voter");
   }
 
-  return newVoter;
+  return { user: newVoter };
 };
 
 export const getVoterVerificationStatus = async (userId: number) => {
