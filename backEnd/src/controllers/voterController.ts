@@ -3,7 +3,9 @@ import {
   createVoterService, 
   getVoterVerificationStatus,
   approveVoterVerification,
-  rejectVoterVerification
+  rejectVoterVerification,
+  getOtpService,
+  verifyOtpService
 } from "@/services/VoterService";
 import errorHandler from "@/utils/errorHandler";
 
@@ -84,6 +86,32 @@ export const rejectVerification = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "Voter verification rejected",
+      data: result,
+    });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
+export const getOtp = async (req: Request, res: Response) => {
+  try {
+    const result = await getOtpService(req.body);
+    return res.status(200).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
+export const verifyOtp = async (req: Request, res: Response) => {
+  try {
+    const result = await verifyOtpService(req.body);
+    return res.status(200).json({
+      success: true,
       data: result,
     });
   } catch (error) {

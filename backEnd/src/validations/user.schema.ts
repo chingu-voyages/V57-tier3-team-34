@@ -1,4 +1,4 @@
-import { Roles } from "@prisma/client";
+import { Roles, OtpPurposes } from "@prisma/client";
 import { z } from "zod";
 
 export const userSchema = z.object({
@@ -37,4 +37,15 @@ export const voterSchema = z.object({
   email: z.email("Please provide a valid email"),
   password: z.string("Password is required").min(6, "Password must be at least 6 characters"),
   userType: z.enum(Roles).optional().default("VOTER"),
+});
+
+export const requestOtpSchema = z.object({
+  email: z.email(),
+  purpose: z.enum(OtpPurposes),
+});
+
+export const verifyOtpSchema = z.object({
+  email: z.email(),
+  codeHash: z.string().min(6, "OTP must be 6 digits"),
+  purpose: z.enum(OtpPurposes),
 });

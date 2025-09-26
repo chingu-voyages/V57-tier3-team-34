@@ -15,12 +15,12 @@ datasource db {
 
 // TODO: Add isVerified
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
   password String
   ///This could be the political party name, candidate name or voter's name
   name     String
-  userType Roles  @default(VOTER)
+  userType Roles   @default(VOTER)
 
   //Self reference relations
   partyId       Int?
@@ -39,6 +39,8 @@ model User {
 
   votesCast Vote[] @relation("VotesByUser") // votes this user cast
   votesFor  Vote[] @relation("VotesForCandidate") // votes received as a candidate
+
+  otps OtpRequest[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -116,4 +118,22 @@ model Vote {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model OtpRequest {
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String
+  purpose    OtpPurposes @default(VERIFY_EMAIL)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+enum OtpPurposes {
+  RESET_PASSWORD
+  VERIFY_EMAIL
 }

@@ -1,9 +1,11 @@
 import { registerParty } from "@/controllers/PartyController";
-import { 
-  createVoter, 
-  getVerificationStatus, 
-  approveVerification, 
-  rejectVerification 
+import {
+  createVoter,
+  getVerificationStatus,
+  approveVerification,
+  rejectVerification,
+  getOtp,
+  verifyOtp,
 } from "../controllers/voterController";
 
 import { Router } from "express";
@@ -19,6 +21,8 @@ const router = Router();
 
 // Voter routes
 router.post("/register-voter", createVoter); // Alternative endpoint for backward compatibility
+router.post("/request-otp", getOtp);
+router.post("/verify-otp", verifyOtp);
 router.get("/verification-status/:userId", verifyToken, getVerificationStatus);
 
 // Admin verification routes (require authentication)
