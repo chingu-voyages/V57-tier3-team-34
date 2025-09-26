@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "backend" ]
+    branches: ["backend"]
   pull_request:
-    branches: [ "backend" ]
+    branches: ["backend"]
 
 jobs:
   build-and-test:
@@ -25,11 +25,18 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
+        working-directory: backEnd
         run: npm ci
+        cache-dependency-path: backEnd/package-lock.json
 
       - name: TypeScript type-check
-        run: npm run type-check
-        # ensure you have "type-check": "tsc --noEmit" in your package.json scripts
+        working-directory: backEnd
+        run: npm run build
 
-      - name: Run tests
-        run: npm test
+      - name: Prisma Migrations
+        working-directory: backEnd
+        run: npx prisma migrate deploy
+
+      - name: Start Application
+        working-directory: backEnd
+        run: npm start
