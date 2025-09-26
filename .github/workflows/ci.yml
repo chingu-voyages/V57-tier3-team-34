@@ -28,14 +28,13 @@ jobs:
       - name: Install dependencies
         working-directory: backEnd
         run: npm ci
+      - name: Prisma Migrations
+        working-directory: backEnd
+        run: npx prisma migrate deploy
 
       - name: TypeScript type-check
         working-directory: backEnd
         run: npm run build
-
-      - name: Prisma Migrations
-        working-directory: backEnd
-        run: npx prisma migrate deploy
 
       - name: Start Application
         working-directory: backEnd
