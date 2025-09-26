@@ -134,6 +134,10 @@ export const getOtpService = async (data: requestOtpData) => {
 
   const user = await prisma.user.findUnique({ where: { email: data.email } });
 
+  if (!user) {
+    throw new Error("User not found");
+  }
+
   await prisma.otpRequest.updateMany({
     where: {
       userId: user.id,
