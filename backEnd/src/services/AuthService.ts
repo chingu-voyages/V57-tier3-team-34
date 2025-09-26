@@ -53,8 +53,6 @@ export const login = async (data: {
     await getOtpService({ email: user.email, purpose: OtpPurposes.VERIFY_EMAIL });
   }
 
-  console.log(user, "user");
-
   const jwtPayload: jwtData = {
     name: user.name,
     email: user.email,

@@ -110,14 +110,12 @@ export const getOtp = async (req: Request, res: Response) => {
 export const verifyOtp = async (req: Request, res: Response) => {
   try {
     const result = await verifyOtpService(req.body);
-    console.log(result, "result");
     return res.status(200).json({
       success: true,
       data: result,
     });
   } catch (error) {
     const errors = errorHandler(error);
-    console.log(errors, "errors");
     return res.status(errors.status).json(errors.body);
   }
 };
