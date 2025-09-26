@@ -10,6 +10,9 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
     strategy:
       matrix:
         node-version: [18.x, 20.x] # test against multiple Node versions
