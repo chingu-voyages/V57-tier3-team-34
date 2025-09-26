@@ -23,11 +23,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          cache-dependency-path: backEnd/package-lock.json
 
       - name: Install dependencies
         working-directory: backEnd
         run: npm ci
-        cache-dependency-path: backEnd/package-lock.json
 
       - name: TypeScript type-check
         working-directory: backEnd
