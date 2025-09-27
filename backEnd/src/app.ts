@@ -1,9 +1,14 @@
 import express from "express";
 import type { Request, Response } from "express";
 import userRouter from "@/routes/UserRoutes";
+import cors from "cors";
+
 import candidatesRouter from "@/routes/party/Candidate";
 
 const app = express();
+
+//Config Cors
+app.use(cors());
 
 // SET UP JSON PARSING FUNCTION
 app.use(express.json());
