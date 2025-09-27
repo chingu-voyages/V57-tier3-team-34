@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // SETTING UP CORS
-app.use(cors({ credentials: true, origin: ["http://localhost:5173"] }));
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
