@@ -1,12 +1,8 @@
 import app from "@/app";
-import cors from "cors";
 import dotenv from "dotenv";
 
 // Load environment variables from .env file
 dotenv.config();
-
-// SETTING UP CORS
-app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
