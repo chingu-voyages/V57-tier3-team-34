@@ -7,7 +7,6 @@ export const userSchema = z.object({
   password: z
     .string("Please enter a valid password")
     .min(1, "Please provide a password"),
-  userType: z.enum(Roles),
 });
 
 export const loginSchema = z.object({
@@ -24,12 +23,11 @@ export const userUpdateSchema = z.object({
 export const candidateSchema = z.object({
   name: z.string("Name is required").min(2, "Name is required"),
   email: z.email("Please provide a valid email"),
-  userType: z.enum(Roles),
   password: z.string().optional(),
   partyId: z.number().optional(),
   bio: z.string("Bio is required."),
   userImage: z.string().optional(),
-  position: z.number("Provide a valid candidate position"),
+  position: z.coerce.number("Provide a valid candidate position"),
 });
 
 export const voterSchema = z.object({

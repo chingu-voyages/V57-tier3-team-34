@@ -1,7 +1,12 @@
 import prisma from "@/config/db.config";
 import Paginate from "@/helpers/Pagination";
 
-import { addCandidate, getUserByEmail, partyData } from "@/model/UserModel";
+import {
+  addCandidate,
+  checkCandidatePost,
+  getUserByEmail,
+  partyData,
+} from "@/model/UserModel";
 import { generatePassword, hashPassword } from "@/utils/password";
 import { candidateSchema, userSchema } from "@/validations/user.schema";
 import { Roles, User } from "@prisma/client";
@@ -40,14 +45,32 @@ export const createCandidateService = async (
    * Check if user exists in db
    */
 
-  const candidate = await getUserByEmail(req.body.email);
+  let { data } = validatedData;
+
+  const candidate = await getUserByEmail(data.email);
   if (candidate) {
     throw new Error("Email is already registered");
   }
 
-  const post = await getPost(req.body.position);
+  const post = await getPost(data.position);
   if (!post) {
     throw new Error("Please choose a valid political post");
+  }
+
+  /**
+   * Check if a user has already been assigned to that post by the same party
+   */
+
+  const checkPostCandidate = await checkCandidatePost(
+    data.position,
+    party.userId
+  );
+
+  //If we found a candidate
+  if (checkPostCandidate) {
+    throw new Error(
+      "Two candidates cannot contest for the same post within same party"
+    );
   }
 
   if (!req.file) {
@@ -61,23 +84,23 @@ export const createCandidateService = async (
    * send some email or build the email to send with the password
    */
   await sendCandidateEmail({
-    email: validatedData.data.email,
+    email: data.email,
     password: password,
     party: party.name,
   });
 
   const hashedPassword = await hashPassword(password);
 
-  validatedData.data = {
+  data = {
     partyId: party.userId,
     password: hashedPassword,
     userImage: (uploadResult as any).secure_url,
-    ...validatedData.data,
+    ...data,
   };
   /**
    * Proceed to create the user
    */
 
-  const newCandidate = await addCandidate(validatedData.data);
+  const newCandidate = await addCandidate(data);
   return newCandidate;
 };

@@ -50,7 +50,10 @@ export const login = async (data: {
   }
 
   if (user.userType === Roles.VOTER) {
-    await getOtpService({ email: user.email, purpose: OtpPurposes.VERIFY_EMAIL });
+    await getOtpService({
+      email: user.email,
+      purpose: OtpPurposes.VERIFY_EMAIL,
+    });
   }
 
   const jwtPayload: jwtData = {

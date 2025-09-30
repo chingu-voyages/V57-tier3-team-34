@@ -5,6 +5,7 @@ import cors from "cors";
 import userRouter from "@/routes/UserRoutes";
 import candidatesRouter from "@/routes/party/Candidate";
 import extrasRouter from "@/routes/ExtraRoutes";
+import voterRouter from "@/routes/voter/VoteRoute";
 const app = express();
 
 //Config Cors
@@ -24,5 +25,6 @@ app.get("/", (req: Request, res: Response) =>
 app.use("/user", userRouter);
 app.use("/party", candidatesRouter);
 app.use("/extras", extrasRouter);
+app.use("/vote", voterRouter);
 
 export default app;

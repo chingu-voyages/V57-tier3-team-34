@@ -12,7 +12,6 @@ export const sendCandidateEmail = async (data: {
     to: data.email,
     from: "E-VOTE APP <noreply@mail.afuwapetunde.com>",
     subject: "Candidate Account Created",
-    // html: "<p>useSend is the best open source product to send emails</p>",
     html: `Welcome to your candidate Account. <p>You have been added as a candidate for ${data.party}. <br/><br />Your password is <b>${data.password}</b></p>. Please keep it safe`,
   });
 

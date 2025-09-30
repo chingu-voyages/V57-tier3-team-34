@@ -5,7 +5,6 @@ export interface partyData {
   name: string;
   email: string;
   password: string;
-  userType: Roles;
   partyId?: number | null;
 }
 
@@ -24,7 +23,6 @@ export interface candidateData {
   name: string;
   email: string;
   password?: any;
-  userType: Roles;
   partyId?: number | null;
   bio: string;
   position: number | null;
@@ -43,10 +41,11 @@ type addPartyFn = (data: partyData) => Promise<User | undefined>;
 type addCandidateFn = (data: candidateData) => Promise<User | undefined>;
 
 type addVoterFn = (data: voterData) => Promise<User | undefined>;
+const model = prisma.user;
 
 export const addParty: addPartyFn = async (partyData) => {
   try {
-    const party = await prisma.user.create({
+    const party = await model.create({
       data: {
         name: partyData.name,
         email: partyData.email,
@@ -62,11 +61,29 @@ export const addParty: addPartyFn = async (partyData) => {
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
-    const user = await prisma.user.findUnique({
+    const user = await model.findUnique({
       where: { email: email },
     });
 
     return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const checkCandidatePost = async (
+  post: number,
+  party: number
+): Promise<User | null> => {
+  try {
+    const candidate = await model.findFirst({
+      where: {
+        politicalPostId: post,
+        partyId: party,
+      },
+    });
+
+    return candidate;
   } catch (error) {
     throw error;
   }
@@ -77,7 +94,7 @@ export const updateUser = async (
   email: string
 ): Promise<User> => {
   try {
-    const user = await prisma.user.update({
+    const user = await model.update({
       where: {
         email: email,
       },
@@ -98,7 +115,7 @@ export const addCandidate: addCandidateFn = async (
   data: candidateData
 ): Promise<User | undefined> => {
   try {
-    const candidate = await prisma.user.create({
+    const candidate = await model.create({
       data: {
         name: data.name,
         email: data.email,
@@ -118,7 +135,7 @@ export const addCandidate: addCandidateFn = async (
 
 export const addVoter: addVoterFn = async (data: voterData) => {
   try {
-    const voter = await prisma.user.create({
+    const voter = await model.create({
       data: {
         name: data.name,
         email: data.email,
@@ -147,6 +164,49 @@ export const createVerificationDocument = async (
       },
     });
     return verificationDoc;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCandidates = async (): Promise<any[] | null> => {
+  try {
+    const data = await model.findMany({
+      where: {
+        userType: Roles.CANDIDATE,
+      },
+      select: {
+        id: true,
+        name: true,
+        userImage: true,
+        party: {
+          select: {
+            id: true,
+            name: true,
+            userImage: true,
+          },
+        },
+        userPosition: {
+          select: {
+            id: true,
+            postName: true,
+          },
+        },
+      },
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const findUserById = async (id: number): Promise<User | null> => {
+  try {
+    const user = await model.findUnique({
+      where: { id },
+    });
+
+    return user;
   } catch (error) {
     throw error;
   }
