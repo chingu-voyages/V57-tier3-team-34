@@ -1,4 +1,3 @@
-import { getUserByEmail } from "@/model/UserModel";
 import { getUserInfo, login, updateUserProfile } from "@/services/AuthService";
 import errorHandler from "@/utils/errorHandler";
 import type { Request, Response } from "express";
