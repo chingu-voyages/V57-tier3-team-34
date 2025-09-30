@@ -29,13 +29,15 @@ export const candidateSchema = z.object({
   partyId: z.number().optional(),
   bio: z.string("Bio is required."),
   userImage: z.string().optional(),
-  position: z.string("Please enter the position candidate is "),
+  position: z.number("Provide a valid candidate position"),
 });
 
 export const voterSchema = z.object({
   name: z.string("Full name is required").min(2, "Full name is required"),
   email: z.email("Please provide a valid email"),
-  password: z.string("Password is required").min(6, "Password must be at least 6 characters"),
+  password: z
+    .string("Password is required")
+    .min(6, "Password must be at least 6 characters"),
   userType: z.enum(Roles).optional().default("VOTER"),
 });
 

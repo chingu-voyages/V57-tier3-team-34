@@ -27,7 +27,7 @@ export interface candidateData {
   userType: Roles;
   partyId?: number | null;
   bio: string;
-  position: string;
+  position: number | null;
   userImage?: string | undefined;
 }
 
@@ -37,7 +37,6 @@ export interface voterData {
   password: string;
   userType: Roles;
 }
-
 
 type addPartyFn = (data: partyData) => Promise<User | undefined>;
 
@@ -108,7 +107,7 @@ export const addCandidate: addCandidateFn = async (
         partyId: data.partyId,
         userManifesto: data.bio,
         userImage: data.userImage,
-        userPosition: data.position,
+        politicalPostId: data.position,
       },
     });
     return candidate;
