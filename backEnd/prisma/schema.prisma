@@ -15,27 +15,26 @@ datasource db {
 
 // TODO: Add isVerified
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
+  id       Int    @id @default(autoincrement())
+  email    String @unique
   password String
   ///This could be the political party name, candidate name or voter's name
   name     String
-  userType Roles   @default(VOTER)
+  userType Roles  @default(VOTER)
 
   //Self reference relations
-  partyId       Int?
-  party         User?   @relation("UserHierarchy", fields: [partyId], references: [id])
-  candidate     User[]  @relation("UserHierarchy")
-  userImage     String?
-  userPosition  String?
-  userManifesto String? @db.Text
-  userFirstTime Boolean @default(true)
+  partyId         Int?
+  party           User?          @relation("UserHierarchy", fields: [partyId], references: [id])
+  candidate       User[]         @relation("UserHierarchy")
+  userImage       String?
+  politicalPostId Int?
+  userPosition    PoliticalPost? @relation(fields: [politicalPostId], references: [id])
+  userManifesto   String?        @db.Text
+  userFirstTime   Boolean        @default(true)
 
   //Other Relations
   VerificationDocument VerificationDocument[]
   EligibleVoter        EligibleVoter[]
-
-  CandidatePost CandidatePost[]
 
   votesCast Vote[] @relation("VotesByUser") // votes this user cast
   votesFor  Vote[] @relation("VotesForCandidate") // votes received as a candidate
@@ -90,22 +89,10 @@ model PoliticalPost {
   postName        String
   postDescription String @db.Text
 
-  CandidatePost CandidatePost[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model CandidatePost {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  postId        Int
-  politicalPost PoliticalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  User      User[]
+  Vote      Vote[]
 }
 
 model Vote {
@@ -115,6 +102,9 @@ model Vote {
 
   candidateId Int
   candidate   User @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
+
+  postId        Int
+  politicalPost PoliticalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
