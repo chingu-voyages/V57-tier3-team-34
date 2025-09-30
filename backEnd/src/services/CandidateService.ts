@@ -7,6 +7,7 @@ import { candidateSchema, userSchema } from "@/validations/user.schema";
 import { Roles, User } from "@prisma/client";
 import { sendCandidateEmail } from "./EmailService";
 import { cloudinaryUpload } from "@/helpers/Cloudinary";
+import { getPost } from "@/model/PoliticalPostsModel";
 
 export const getCandidateService = async (
   page: number,
@@ -42,6 +43,11 @@ export const createCandidateService = async (
   const candidate = await getUserByEmail(req.body.email);
   if (candidate) {
     throw new Error("Email is already registered");
+  }
+
+  const post = await getPost(req.body.position);
+  if (!post) {
+    throw new Error("Please choose a valid political post");
   }
 
   if (!req.file) {
