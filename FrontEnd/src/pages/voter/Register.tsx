@@ -1,6 +1,5 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { registerVoter } from "../../functions/registerVoter";
-import { convertToBase64 } from "../../functions/convertToBase64";
 
 import PasswordInput from "../../components/PasswordInput";
 
@@ -10,12 +9,8 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    verifyDoc: "",
   });
-  const [previewImg, setPreviewImg] = useState("");
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   // ########## HANDLE INPUT TEXT CHANGE ##########
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,23 +40,6 @@ const Register = () => {
     }
   };
 
-  // ########## HANDLE IMAGE CHANGE ##########
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setPreviewImg(URL.createObjectURL(e.target.files[0]));
-      setFormData({
-        ...formData,
-        verifyDoc: await convertToBase64(e.target.files[0]),
-      });
-    } else {
-      setPreviewImg("");
-      setFormData({
-        ...formData,
-        verifyDoc: "",
-      });
-    }
-  };
-
   return (
     <div className="flex justify-center min-h-screen">
       <div className="flex flex-col lg:flex-row items-center justify-center text-black w-4/5 lg:w-full my-20">
@@ -77,90 +55,46 @@ const Register = () => {
           className="flex flex-col lg:ml-7 w-full lg:w-[60%]"
           onSubmit={(e) => registerVoter(e, formData)}
         >
-          <div className="flex flex-col md:flex-row justify-between">
-            <div className="md:w-[45%]">
-              <div className="mb-5">
-                <label htmlFor="fullName">Full Name: </label> <br />
-                <input
-                  type="text"
-                  id="fullName"
-                  name="fullName"
-                  className="mt-1 p-2 w-full bg-gray-200 rounded-t-sm focus:outline-none border-b border-b-black"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                />
-              </div>
+          <div className="mb-5">
+            <label htmlFor="fullName">Full Name: </label> <br />
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              className="mt-1 p-2 w-full bg-gray-200 rounded-t-sm focus:outline-none border-b border-b-black"
+              value={formData.fullName}
+              onChange={handleInputChange}
+            />
+          </div>
 
-              <div className="mb-5">
-                <label htmlFor="email">Email: </label> <br />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="mt-1 p-2 w-full bg-gray-200 rounded-t-sm focus:outline-none border-b border-b-black"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              </div>
+          <div className="mb-5">
+            <label htmlFor="email">Email: </label> <br />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="mt-1 p-2 w-full bg-gray-200 rounded-t-sm focus:outline-none border-b border-b-black"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+          </div>
 
-              <div className="mb-5">
-                <PasswordInput
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  label="Password"
-                  name="password"
-                />
-              </div>
+          <div className="mb-5">
+            <PasswordInput
+              value={formData.password}
+              onChange={handleInputChange}
+              label="Password"
+              name="password"
+            />
+          </div>
 
-              <div>
-                <PasswordInput
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  label="Confirm Password"
-                  name="confirmPassword"
-                />
-              </div>
-            </div>
-
-            <div className="md:w-[53%] md:p-3">
-              <label htmlFor="verifyDoc">Verification Document:</label>
-              <input
-                name="verifyDoc"
-                type="file"
-                id="verifyDoc"
-                className="hidden"
-                ref={inputRef}
-                multiple
-                accept=".jpg, .jpeg, .png .webp"
-                onChange={handleImageChange}
-              />
-              <div
-                className="bg-gray-200 w-full h-[300px] relative overflow-hidden rounded-2xl cursor-pointer hover:bg-gray-300 transition-all mt-1"
-                onClick={() => inputRef.current?.click()}
-              >
-                {previewImg ? (
-                  <img
-                    alt="verification document"
-                    src={previewImg}
-                    className="absolute h-full object-cover"
-                  />
-                ) : (
-                  <span className="flex flex-col items-center justify-center rounded-lg h-full p-10 text-center text-gray-400">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="50"
-                      height="50"
-                      className="mb-2"
-                    >
-                      <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" />
-                    </svg>
-                    Click to select a document for verification
-                  </span>
-                )}
-              </div>
-            </div>
+          <div>
+            <PasswordInput
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              label="Confirm Password"
+              name="confirmPassword"
+            />
           </div>
 
           {!isPasswordMatch && (
@@ -171,7 +105,7 @@ const Register = () => {
             type="submit"
             className="bg-base-100 items-end p-2 rounded text-white cursor-pointer mt-3 active:scale-95 transition-all"
           >
-            Register
+            Register your account
           </button>
         </form>
       </div>
