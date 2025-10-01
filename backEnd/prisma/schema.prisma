@@ -41,8 +41,9 @@ model User {
 
   otps OtpRequest[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  UsersVoted UsersVoted[]
 }
 
 enum Roles {
@@ -100,8 +101,8 @@ model Vote {
   userId Int
   user   User @relation("VotesByUser", fields: [userId], references: [id], onDelete: Cascade)
 
-  candidateId Int
-  candidate   User @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId Int?
+  candidate   User? @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
 
   postId        Int
   politicalPost PoliticalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
@@ -126,4 +127,11 @@ model OtpRequest {
 enum OtpPurposes {
   RESET_PASSWORD
   VERIFY_EMAIL
+}
+
+model UsersVoted {
+  id       Int     @id @default(autoincrement())
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hasVoted Boolean
 }

@@ -1,5 +1,3 @@
-[
-  {
-    "vote_is_live": false
-  }
-]
+{
+  "vote_is_live": true
+}

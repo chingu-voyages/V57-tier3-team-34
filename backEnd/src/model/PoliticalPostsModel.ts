@@ -16,7 +16,9 @@ export const getPosts: getPosts = async () => {
   }
 };
 
-export const getPost: getPost = async (postId) => {
+export const getPost: getPost = async (
+  postId
+): Promise<PoliticalPost | null> => {
   try {
     const post = await model.findUnique({
       where: {

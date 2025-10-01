@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { 
-  createVoterService, 
+import {
+  createVoterService,
   getVoterVerificationStatus,
   approveVoterVerification,
   rejectVoterVerification,
   getOtpService,
-  verifyOtpService
+  verifyOtpService,
 } from "@/services/VoterService";
 import errorHandler from "@/utils/errorHandler";
 
@@ -26,7 +26,7 @@ export const createVoter = async (req: Request, res: Response) => {
 export const getVerificationStatus = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.userId);
-    
+
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -35,7 +35,7 @@ export const getVerificationStatus = async (req: Request, res: Response) => {
     }
 
     const status = await getVoterVerificationStatus(userId);
-    
+
     return res.status(200).json({
       success: true,
       data: status,
@@ -49,7 +49,7 @@ export const getVerificationStatus = async (req: Request, res: Response) => {
 export const approveVerification = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.userId);
-    
+
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -58,7 +58,7 @@ export const approveVerification = async (req: Request, res: Response) => {
     }
 
     const result = await approveVoterVerification(userId);
-    
+
     return res.status(200).json({
       success: true,
       message: "Voter verification approved successfully",
@@ -73,7 +73,7 @@ export const approveVerification = async (req: Request, res: Response) => {
 export const rejectVerification = async (req: Request, res: Response) => {
   try {
     const userId = parseInt(req.params.userId);
-    
+
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -82,7 +82,7 @@ export const rejectVerification = async (req: Request, res: Response) => {
     }
 
     const result = await rejectVoterVerification(userId);
-    
+
     return res.status(200).json({
       success: true,
       message: "Voter verification rejected",
