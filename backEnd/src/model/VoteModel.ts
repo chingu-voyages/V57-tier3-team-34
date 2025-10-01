@@ -139,3 +139,23 @@ export const getVotes = async (): Promise<
     throw error;
   }
 };
+
+export const getPartyVotes = async (
+  partyId: number
+): Promise<{ postId: number; candidateId: number | null }[] | null> => {
+  try {
+    return await model.findMany({
+      where: {
+        candidate: {
+          partyId,
+        },
+      },
+      select: {
+        postId: true,
+        candidateId: true,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};

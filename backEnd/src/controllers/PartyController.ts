@@ -1,4 +1,7 @@
-import { createPartyService } from "@/services/PartyService";
+import {
+  createPartyService,
+  getPartyElectionResult,
+} from "@/services/PartyService";
 import type { Request, Response } from "express";
 
 import errorHandler from "@/utils/errorHandler";
@@ -6,6 +9,7 @@ import {
   createCandidateService,
   getCandidateService,
 } from "@/services/CandidateService";
+import { success } from "zod";
 
 export const registerParty = async (req: Request, res: Response) => {
   try {
@@ -53,6 +57,22 @@ export const createCandidate = async (req: Request, res: Response) => {
       data: {
         candidate,
       },
+    });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
+export const electionResult = async (req: Request, res: Response) => {
+  try {
+    const { userId } = (req as any).user;
+    console.log(userId);
+    const result = await getPartyElectionResult(userId);
+
+    return res.status(201).json({
+      success: true,
+      data: result,
     });
   } catch (error) {
     const errors = errorHandler(error);
