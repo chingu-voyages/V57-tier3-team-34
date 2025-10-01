@@ -4,37 +4,19 @@ import {
   castVote,
   confirmedNotVote,
   getInitializedVotes,
+  getUserVotes,
   initiateVotes,
 } from "@/model/VoteModel";
-import { object } from "zod";
+import { object, string } from "zod";
 import {
   confirmAllCandidatesValid,
   confirmVotesMatch,
+  getPostsAndCandidates,
 } from "@/utils/functions";
 
 export const getVoteables = async (userId: number): Promise<any> => {
   const posts = await getPoliticalPosts();
-  const candidates = await getCandidates();
-  if (!candidates) {
-    throw new Error("No voteable candidates found!");
-  }
-
-  //Transform the object to the data we need
-  let voteables = candidates.reduce((acc, user) => {
-    let key = user.userPosition.postName;
-    acc[key] = acc[key] || [];
-    acc[key].push({
-      candidateName: user.name,
-      candidateId: user.id,
-      candidateImage: user.userImage,
-      partyName: user.party.name,
-      partyId: user.party.id,
-      partyBanner: user.party.userImage,
-      electablePost: user.userPosition.postName,
-      electablePostId: user.userPosition.id,
-    });
-    return acc;
-  }, {});
+  const voteables = await getPostsAndCandidates();
 
   //Get ready to initiate the vote but confirm if user hasn't casted votes yet.
   const userNotVoted = await confirmedNotVote(userId);
@@ -108,4 +90,29 @@ export const castVoteables = async (
 
   await castVote(voteData);
   return true;
+};
+
+export const getMyvotes = async (userId: number) => {
+  const voteables = await getPostsAndCandidates();
+  const myVotes = await getUserVotes(userId);
+
+  const refinedVotes = myVotes.map((vote) => {
+    return { post_id: vote.postId, candidate_id: vote.candidateId };
+  });
+
+  const stringedVotes = new Set(
+    refinedVotes.map((vote) => `${vote.post_id}-${vote.candidate_id}`)
+  );
+
+  for (const role in voteables) {
+    voteables[role] = voteables[role].map((candidate: any) => {
+      const key = `${candidate.electablePostId}-${candidate.candidateId}`;
+      return {
+        ...candidate,
+        myChoice: stringedVotes.has(key),
+      };
+    });
+  }
+
+  return voteables;
 };

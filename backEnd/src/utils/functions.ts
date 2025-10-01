@@ -1,5 +1,6 @@
-import { findUserById } from "@/model/UserModel";
+import { findUserById, getCandidates } from "@/model/UserModel";
 import { getInitializedVotes } from "@/model/VoteModel";
+import { getPoliticalPosts } from "@/services/ExtraServices";
 import { Roles } from "@prisma/client";
 
 export const confirmVotesMatch = async (
@@ -44,6 +45,7 @@ export const confirmAllCandidatesValid = async (
     }
 
     if (candidate?.politicalPostId !== post_id) {
+      console.log(post_id);
       throw new Error(
         `Candidate ${candidate?.name} did not contest for the post submitted`
       );
@@ -53,4 +55,30 @@ export const confirmAllCandidatesValid = async (
   }
 
   return true;
+};
+
+export const getPostsAndCandidates = async (): Promise<any> => {
+  const candidates = await getCandidates();
+  if (!candidates) {
+    throw new Error("No voteable candidates found!");
+  }
+
+  //Transform the object to the data we need
+  let voteables = candidates.reduce((acc, user) => {
+    let key = user.userPosition.postName;
+    acc[key] = acc[key] || [];
+    acc[key].push({
+      candidateName: user.name,
+      candidateId: user.id,
+      candidateImage: user.userImage,
+      partyName: user.party.name,
+      partyId: user.party.id,
+      partyBanner: user.party.userImage,
+      electablePost: user.userPosition.postName,
+      electablePostId: user.userPosition.id,
+    });
+    return acc;
+  }, {});
+
+  return voteables;
 };

@@ -38,7 +38,7 @@ const errorHandler = (error: unknown): ErrorResponse => {
   if (error instanceof Error) {
     logger.error(`Error: ${error.message}`);
     return {
-      status: 500,
+      status: 400,
       body: {
         success: false,
         message: error.message,

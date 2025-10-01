@@ -1,4 +1,8 @@
-import { castVoteables, getVoteables } from "@/services/VoteService";
+import {
+  castVoteables,
+  getMyvotes,
+  getVoteables,
+} from "@/services/VoteService";
 import errorHandler from "@/utils/errorHandler";
 import { Request, Response } from "express";
 
@@ -26,6 +30,19 @@ export const castVote = async (req: Request, res: Response) => {
       success: true,
       data: [],
     });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
+export const getVotes = async (req: Request, res: Response) => {
+  try {
+    const { userId } = (req as any).user;
+
+    const myVotes = await getMyvotes(userId);
+
+    return res.status(201).json(myVotes);
   } catch (error) {
     const errors = errorHandler(error);
     return res.status(errors.status).json(errors.body);
