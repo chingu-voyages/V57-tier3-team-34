@@ -1,5 +1,6 @@
 import {
   createCandidate,
+  electionResult,
   getPartyCandidates,
 } from "@/controllers/PartyController";
 import upload from "@/helpers/Upload";
@@ -16,5 +17,6 @@ router.use(isUserAParty);
 
 router.get("/candidates", getPartyCandidates);
 router.post("/candidate", upload.single("image"), createCandidate);
+router.get("/result", electionResult);
 
 export default router;

@@ -1,4 +1,6 @@
 import { addParty, getUserByEmail, partyData } from "@/model/UserModel";
+import { getPartyVotes } from "@/model/VoteModel";
+import { getPostsAndCandidates } from "@/utils/functions";
 import { hashPassword } from "@/utils/password";
 import { userSchema } from "@/validations/user.schema";
 import { User } from "@prisma/client";
@@ -30,4 +32,42 @@ export const createPartyService = async (
    */
   const newParty = await addParty(validatedData.data);
   return newParty;
+};
+
+export const getPartyElectionResult = async (partyId: number): Promise<any> => {
+  const voteables = await getPostsAndCandidates(partyId);
+  const voteDataset = await getPartyVotes(partyId);
+
+  //Get the vote count for each political posts
+  const counts: any = {};
+
+  voteDataset?.forEach(({ postId, candidateId }) => {
+    const cid = candidateId!;
+    if (!counts[postId]) counts[postId] = {};
+    counts[postId][cid] = (counts[postId][cid] || 0) + 1;
+  });
+
+  for (const role in voteables) {
+    const group = voteables[role];
+
+    //Get the Post ID for each group
+    const postId = group[0].electablePostId;
+
+    //Get the highest vote
+    const maxVotes = Math.max(
+      ...group.map(
+        (candidate: any) => counts[postId]?.[candidate.candidateId] || 0
+      )
+    );
+
+    voteables[role] = group.map((candidate: any) => {
+      const votes = counts[postId]?.[candidate.candidateId] || 0;
+      return {
+        ...candidate,
+        votes,
+      };
+    });
+  }
+
+  return voteables;
 };

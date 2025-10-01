@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import cors from "cors";
 
 import userRouter from "@/routes/UserRoutes";
-import candidatesRouter from "@/routes/party/Candidate";
+import partyRouter from "@/routes/PartyRoute";
 import extrasRouter from "@/routes/ExtraRoutes";
 import voterRouter from "@/routes/voter/VoteRoute";
 const app = express();
@@ -23,7 +23,7 @@ app.get("/", (req: Request, res: Response) =>
 );
 
 app.use("/user", userRouter);
-app.use("/party", candidatesRouter);
+app.use("/party", partyRouter);
 app.use("/extras", extrasRouter);
 app.use("/vote", voterRouter);
 

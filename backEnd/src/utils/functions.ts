@@ -1,6 +1,5 @@
 import { findUserById, getCandidates } from "@/model/UserModel";
 import { getInitializedVotes } from "@/model/VoteModel";
-import { getPoliticalPosts } from "@/services/ExtraServices";
 import { Roles } from "@prisma/client";
 
 export const confirmVotesMatch = async (
@@ -57,8 +56,14 @@ export const confirmAllCandidatesValid = async (
   return true;
 };
 
-export const getPostsAndCandidates = async (): Promise<any> => {
-  const candidates = await getCandidates();
+export const getPostsAndCandidates = async (partyId?: number): Promise<any> => {
+  let candidates = null;
+  if (partyId) {
+    candidates = await getCandidates(partyId);
+  } else {
+    candidates = await getCandidates();
+  }
+
   if (!candidates) {
     throw new Error("No voteable candidates found!");
   }

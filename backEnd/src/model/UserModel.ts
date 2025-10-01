@@ -169,11 +169,14 @@ export const createVerificationDocument = async (
   }
 };
 
-export const getCandidates = async (): Promise<any[] | null> => {
+export const getCandidates = async (
+  partyId?: number
+): Promise<any[] | null> => {
   try {
     const data = await model.findMany({
       where: {
         userType: Roles.CANDIDATE,
+        ...(partyId && { partyId }),
       },
       select: {
         id: true,
@@ -207,6 +210,22 @@ export const findUserById = async (id: number): Promise<User | null> => {
     });
 
     return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getPartyCandidates = async (
+  id: number
+): Promise<User[] | null> => {
+  try {
+    const candidates = await model.findMany({
+      where: {
+        partyId: id,
+      },
+    });
+
+    return candidates;
   } catch (error) {
     throw error;
   }
