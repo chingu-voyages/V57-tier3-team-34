@@ -110,3 +110,32 @@ export const castVote = async (
     throw error;
   }
 };
+
+export const getUserVotes = async (userId: number): Promise<Vote[]> => {
+  try {
+    const votes = await model.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return votes;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getVotes = async (): Promise<
+  { postId: number; candidateId: number | null }[] | null
+> => {
+  try {
+    return await model.findMany({
+      select: {
+        postId: true,
+        candidateId: true,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
