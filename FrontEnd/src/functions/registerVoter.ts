@@ -1,24 +1,30 @@
-import type { FormData } from "../types/FormDataType";
+import type { RegisterVoterDataType } from "../types/RegisterVoterDataType";
 
 export const registerVoter = async (
-	e: React.FormEvent<HTMLFormElement>,
-	formData: FormData,
+  e: React.FormEvent<HTMLFormElement>,
+  formData: RegisterVoterDataType
 ) => {
-	e.preventDefault();
-	console.log("Voter's creds: ", formData);
+  e.preventDefault();
+  console.log("Voter's creds: ", formData);
 
-	const { fullName, email, password } = formData;
+  const { fullName, email, password } = formData;
 
-	const res = await fetch(`${import.meta.env.VITE_API_URL}/user/create`, {
-		method: "POST",
-		credentials: "include",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ fullName, email, password }),
-	});
+  const name = fullName;
 
-	const json = await res.json();
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/user/register-voter`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, password }),
+    }
+  );
 
-	console.log("This is the response: ", json);
+  const json = await res.json();
+
+  if (!res.ok) console.log(json.message);
+  else console.log("Request successful: ", json);
+  // INCLUDE SUCCESSFUL "ELSE" CONDITION USING TOAST NOTIFICATION
 };
