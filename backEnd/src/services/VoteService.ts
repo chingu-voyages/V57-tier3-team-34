@@ -45,6 +45,10 @@ export const getVoteables = async (userId: number): Promise<any> => {
     });
   });
 
+  if (dataToInsert.length <= 0) {
+    throw new Error("No candidates found in the system");
+  }
+
   await initiateVotes(dataToInsert);
 
   return { canVote: userNotVoted, posts, voteables };
