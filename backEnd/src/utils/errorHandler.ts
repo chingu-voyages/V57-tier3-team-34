@@ -12,6 +12,7 @@ export interface ErrorResponse {
 }
 
 const errorHandler = (error: unknown): ErrorResponse => {
+  console.log(error);
   // Zod validation error
   if (error instanceof ZodError) {
     return {
