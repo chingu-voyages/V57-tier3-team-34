@@ -7,6 +7,7 @@ import Dashboard from "../pages/party/Dashboard";
 import Overview from "../pages/party/Overview";
 import Candidates from "../pages/party/Candidates";
 import Candidate from "../pages/party/registration/Candidate";
+import Election from "../pages/voter/Election";
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
 				children: [
 					{ index: true, path: "dashboard", element: <Overview /> },
 					{ path: "candidates", element: <Candidates /> },
+				],
+			},
+			{
+				path: "/voter",
+				element: <Dashboard />,
+				children: [
+					{ index: true, path: "dashboard", element: <Overview /> },
+					{ path: "election", element: <Election /> },
 				],
 			},
 		],
