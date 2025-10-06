@@ -12,7 +12,7 @@ const Dashboard: React.FC = () => {
 		return false;
 	});
 	return (
-		<div className="flex w-full">
+		<div className="flex w-full border-5 border-blue-600">
 			<div
 				className={`z-10 transform overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 md:bg-gray-200/15 h-screen border-r border-r-gray-200 ${
 					isMenuOpen ? "w-70" : "w-0"
@@ -20,8 +20,8 @@ const Dashboard: React.FC = () => {
 			>
 				<SideBar />
 			</div>
-			<div className="w-full h-screen overflow-y-auto">
-				<div className="p-4 cursor-pointer">
+			<div className="w-full h-screen overflow-y-auto border-2 border-yellow-300">
+				<div className="p-4 cursor-pointer border-2 border-orange-500">
 					<IoMenu
 						size={25}
 						onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
