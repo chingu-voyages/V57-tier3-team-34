@@ -3,15 +3,14 @@
  */
 
 // API Client
-export { api, setAuthToken, clearAuthToken } from './config/apiClient';
+export { api, setAuthToken, clearAuthToken } from "./config/apiClient";
 
 // Services
-export { userService } from './services/userService';
-export { electionService } from './services/electionService';
-export { dashboardService } from './services/dashboardService';
+export { userService } from "./services/userService";
+export { electionService } from "./services/electionService";
 
 // Hooks
-export { useAuth } from './hooks/useAuth';
+export { useAuth } from "./hooks/useAuth";
 
 // Utils
-export { apiUtils } from './utils/apiUtils';
+export { apiUtils } from "./utils/apiUtils";
