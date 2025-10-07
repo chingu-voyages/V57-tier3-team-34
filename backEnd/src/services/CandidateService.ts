@@ -24,6 +24,7 @@ export const getCandidateService = async (
     limit: limit,
     model: prisma.user,
     conditions: { userType: Roles.CANDIDATE, partyId: partyId },
+    include: { userPosition: true },
   });
 
   return candidate;
