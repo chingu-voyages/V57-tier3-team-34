@@ -77,9 +77,7 @@ const Candidates: React.FC = () => {
     const candidate = data.find((item) => item.id === candidateId);
     setValue("name", candidate?.name ?? "");
     setValue("email", candidate?.email ?? "");
-    setValue("phone", candidate?.phone ?? "");
-    setValue("region", candidate?.region ?? "");
-    setValue("post", candidate?.politicalPost ?? "");
+
     setCreateEditModal(true);
   };
 
@@ -128,7 +126,9 @@ const Candidates: React.FC = () => {
   return (
     <div className="flex flex-col">
       <div className="mb-5">
-        <h2 className="text-2xl font-bold">My Candidates</h2>
+        <h2 className="text-2xl font-bold dark:text-stone-900">
+          My Candidates
+        </h2>
       </div>
       <div className="action-section flex items-center justify-between">
         <div>
@@ -154,8 +154,8 @@ const Candidates: React.FC = () => {
       </div>
       <div className="divider"></div>
       <div className="overflow-x-auto h-[660px]">
-        <table className="table">
-          <thead>
+        <table className="table dark:text-stone-900">
+          <thead className="dark:text-stone-900">
             <tr>
               <td>Name</td>
               <td>Phone</td>
@@ -326,44 +326,54 @@ const Candidates: React.FC = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Phone Number</legend>
-              <input
-                {...register("phone", {
-                  required: true,
-                })}
-                className={`input w-full ${errors.phone && "input-error"}`}
-                placeholder="Candidate Phone"
-              />
-              {errors.phone && (
-                <p className="label text-error">{errors.phone.message}</p>
-              )}
-            </fieldset>
-
-            <fieldset className="fieldset">
               <legend className="fieldset-legend">Candidate Post</legend>
-              <input
+              <select
                 {...register("post", {
                   required: true,
                 })}
-                className={`input w-full ${errors.post && "input-error"}`}
-                placeholder="Candidate Name"
-              />
+                defaultValue="Choose Post"
+                className={`select w-full ${errors.post && "select-error"}`}
+              >
+                <option disabled={true}>Select Political Post</option>
+              </select>
+
               {errors.post && (
                 <p className="label text-error">{errors.post.message}</p>
               )}
             </fieldset>
-            <input type="hidden" name="partyId" value={2} />
+
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Candidate Region</legend>
+              <legend className="fieldset-legend">Email</legend>
               <input
-                {...register("region", {
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email address",
+                  },
+                })}
+                className={`input w-full ${errors.email && "input-error"}`}
+                placeholder="Email"
+              />
+              {errors.email && (
+                <p className="label text-error">{errors.email.message}</p>
+              )}
+            </fieldset>
+
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend">Candidate Bio</legend>
+              <input
+                {...register("bio", {
                   required: true,
                 })}
-                className={`input w-full ${errors.region && "input-error"}`}
-                placeholder="Candidate Name"
+                defaultValue="Choose Post"
+                className={`textarea w-full ${
+                  errors.email && "textarea-error"
+                }`}
               />
-              {errors.region && (
-                <p className="label text-error">{errors.region.message}</p>
+
+              {errors.bio && (
+                <p className="label text-error">{errors.bio.message}</p>
               )}
             </fieldset>
           </div>

@@ -3,15 +3,15 @@ import Chart from "../../components/party/dashboard/Chart";
 
 const Overview: React.FC = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col dark: text-stone-900">
       <div className="flex flex-col md:grid grid-cols-3 stats shadow">
         <div className="stat">
           <div className="stat-figure text-secondary">
             <IoInformationCircleOutline size={40} />
           </div>
-          <div className="stat-title">Your Candidates</div>
+          <div className="stat-title text-gray-700">Your Candidates</div>
           <div className="stat-value">200</div>
-          <div className="stat-desc">
+          <div className="stat-desc text-gray-700">
             All Candidates in your political party
           </div>
         </div>
@@ -20,9 +20,11 @@ const Overview: React.FC = () => {
           <div className="stat-figure text-secondary">
             <IoPeople size={40} />
           </div>
-          <div className="stat-title">Contestants</div>
+          <div className="stat-title text-gray-700">Contestants</div>
           <div className="stat-value">4,200</div>
-          <div className="stat-desc">All Contestants on the system</div>
+          <div className="stat-desc text-gray-700">
+            All Contestants on the system
+          </div>
         </div>
 
         <div className="stat">
@@ -41,9 +43,9 @@ const Overview: React.FC = () => {
               ></path>
             </svg>
           </div>
-          <div className="stat-title">Voters</div>
+          <div className="stat-title text-gray-700">Voters</div>
           <div className="stat-value">38000</div>
-          <div className="stat-desc">Total Registered Voters</div>
+          <div className="stat-desc text-gray-700">Total Registered Voters</div>
         </div>
       </div>
       <div className="mt-10 p-5 background-white border border-gray-200 rounded-md shadow">
