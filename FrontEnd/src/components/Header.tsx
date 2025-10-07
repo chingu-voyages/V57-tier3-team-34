@@ -39,6 +39,9 @@ const Header = () => {
 							<Link to="/candidate/register">Candidate Registration</Link>
 						</li>
 						<li>
+							<Link to="/voter/results">Election Results</Link>
+						</li>
+						<li>
 							<a>About the App</a>
 						</li>
 					</ul>
