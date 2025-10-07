@@ -34,7 +34,7 @@ const Election = () => {
 	const [showSuccessModal, setShowSuccessModal] = useState(false);
 	const [isVoting, setIsVoting] = useState(false);
 	const [selectedPosition, setSelectedPosition] = useState<string>("Governor");
-    const [data, setData] = useState<ElectionResponse | null>(null);
+	const [data, setData] = useState<ElectionResponse | null>(null);
 
 	// Group candidates by position
 	const candidatesByPosition = candidatesData.reduce(
@@ -75,24 +75,23 @@ const Election = () => {
 		setShowSuccessModal(false);
 	};
 
-    const todayDate = new Date().getFullYear();
+	const todayDate = new Date().getFullYear();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await electionService.getElections();
-            console.log("Elections data: ", data);
-            setData(data);
-        };
-        fetchData();
-    }, []);
+	useEffect(() => {
+		const fetchData = async () => {
+			const data = await electionService.getElections();
+			console.log("Elections data: ", data);
+			setData(data);
+		};
+		fetchData();
+	}, []);
 
+	// console.log("Elections data: ", Object.keys(data?.data ? data?.data?.voteables : {}));
 
-    // console.log("Elections data: ", Object.keys(data?.data ? data?.data?.voteables : {}));
-
-    const totalCandidates = data?.data ? data?.data?.totalCandidates : 0;
-    const totalPosts = data?.data ? data?.data?.totalPosts : 0;
-    // const positions = data?.data ? data?.data?.posts : 0;
-    // const positions = data?.data ? data?.data?.voteables[`${selectedPosition}`] : {};
+	const totalCandidates = data?.data ? data?.data?.totalCandidates : 0;
+	const totalPosts = data?.data ? data?.data?.totalPosts : 0;
+	// const positions = data?.data ? data?.data?.posts : 0;
+	// const positions = data?.data ? data?.data?.voteables[`${selectedPosition}`] : {};
 	return (
 		<div className="min-h-screen bg-base-200 p-4">
 			<div className="max-w-7xl mx-auto">
@@ -167,15 +166,17 @@ const Election = () => {
 							Select Position to Vote
 						</h2>
 						<div className="flex flex-wrap gap-2">
-							{data?.data ? data?.data?.posts.map((position) => (
-								<button
-									key={position.id}
-									className={`btn ${selectedPosition === position.postName ? "btn-primary" : "btn-outline"}`}
-									onClick={() => setSelectedPosition(position.postName)}
-								>
-									{position.postName}
-								</button>
-							)) : null}
+							{data?.data
+								? data?.data?.posts.map((position) => (
+										<button
+											key={position.id}
+											className={`btn ${selectedPosition === position.postName ? "btn-primary" : "btn-outline"}`}
+											onClick={() => setSelectedPosition(position.postName)}
+										>
+											{position.postName}
+										</button>
+									))
+								: null}
 						</div>
 					</div>
 				</div>

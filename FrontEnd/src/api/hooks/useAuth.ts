@@ -53,7 +53,6 @@ export const useAuth = () => {
             isAuthenticated: false,
             error: null,
           });
-          return error;
         }
       } else {
         setState((prev) => ({
@@ -64,8 +63,7 @@ export const useAuth = () => {
     };
 
     initAuth();
-  }, []);
-
+  });
   // Login function
   const login = async (credentials: LoginCredentials) => {
     const response = await userService.login(credentials);
