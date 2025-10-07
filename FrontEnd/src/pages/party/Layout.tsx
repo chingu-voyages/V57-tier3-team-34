@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="flex w-full">
       <div
-        className={`z-10 transform overflow-hidden transition-all duration-300 ease-in-out bg-gray-50 md:bg-gray-200/15 h-screen border-r border-r-gray-200 ${
+        className={`z-10 transform overflow-hidden transition-all duration-300 ease-in-out bg-base-200   h-screen border-r border-r-gray-200 ${
           isMenuOpen ? "w-70" : "w-0"
         } fixed md:relative`}
       >
@@ -60,6 +60,7 @@ const Dashboard: React.FC = () => {
           <IoMenu
             size={25}
             onClick={() => setIsMenuOpen((isMenuOpen) => !isMenuOpen)}
+            className="text-stone-900"
           />
           {isMenuOpen && (
             <div

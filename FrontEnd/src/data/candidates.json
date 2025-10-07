@@ -1,162 +1,162 @@
 [
-	{
-		"id": 1,
-		"name": "John Doe",
-		"phone": "+2348012345678",
-		"email": "john.doe@example.com",
-		"politicalPost": "Governor",
-		"region": "Lagos"
-	},
-	{
-		"id": 2,
-		"name": "Mary Johnson",
-		"phone": "+2348023456789",
-		"email": "mary.johnson@example.com",
-		"politicalPost": "Senator",
-		"region": "Abuja"
-	},
-	{
-		"id": 3,
-		"name": "Michael Smith",
-		"phone": "+2348034567890",
-		"email": "michael.smith@example.com",
-		"politicalPost": "Councillor",
-		"region": "Kano"
-	},
-	{
-		"id": 4,
-		"name": "Sarah Williams",
-		"phone": "+2348045678901",
-		"email": "sarah.williams@example.com",
-		"politicalPost": "Chairperson",
-		"region": "Enugu"
-	},
-	{
-		"id": 5,
-		"name": "James Brown",
-		"phone": "+2348056789012",
-		"email": "james.brown@example.com",
-		"politicalPost": "Representative",
-		"region": "Kaduna"
-	},
-	{
-		"id": 6,
-		"name": "Patricia Davis",
-		"phone": "+2348067890123",
-		"email": "patricia.davis@example.com",
-		"politicalPost": "Governor",
-		"region": "Ogun"
-	},
-	{
-		"id": 7,
-		"name": "Robert Miller",
-		"phone": "+2348078901234",
-		"email": "robert.miller@example.com",
-		"politicalPost": "Mayor",
-		"region": "Port Harcourt"
-	},
-	{
-		"id": 8,
-		"name": "Linda Wilson",
-		"phone": "+2348089012345",
-		"email": "linda.wilson@example.com",
-		"politicalPost": "Senator",
-		"region": "Ibadan"
-	},
-	{
-		"id": 9,
-		"name": "David Moore",
-		"phone": "+2348090123456",
-		"email": "david.moore@example.com",
-		"politicalPost": "Councillor",
-		"region": "Jos"
-	},
-	{
-		"id": 10,
-		"name": "Elizabeth Taylor",
-		"phone": "+2348101234567",
-		"email": "elizabeth.taylor@example.com",
-		"politicalPost": "Chairperson",
-		"region": "Benin"
-	},
-	{
-		"id": 11,
-		"name": "Charles Anderson",
-		"phone": "+2348112345678",
-		"email": "charles.anderson@example.com",
-		"politicalPost": "Representative",
-		"region": "Maiduguri"
-	},
-	{
-		"id": 12,
-		"name": "Susan Thomas",
-		"phone": "+2348123456789",
-		"email": "susan.thomas@example.com",
-		"politicalPost": "Governor",
-		"region": "Osun"
-	},
-	{
-		"id": 13,
-		"name": "Christopher Jackson",
-		"phone": "+2348134567890",
-		"email": "christopher.jackson@example.com",
-		"politicalPost": "Senator",
-		"region": "Ilorin"
-	},
-	{
-		"id": 14,
-		"name": "Barbara White",
-		"phone": "+2348145678901",
-		"email": "barbara.white@example.com",
-		"politicalPost": "Councillor",
-		"region": "Abeokuta"
-	},
-	{
-		"id": 15,
-		"name": "Matthew Harris",
-		"phone": "+2348156789012",
-		"email": "matthew.harris@example.com",
-		"politicalPost": "Chairperson",
-		"region": "Owerri"
-	},
-	{
-		"id": 16,
-		"name": "Jennifer Martin",
-		"phone": "+2348167890123",
-		"email": "jennifer.martin@example.com",
-		"politicalPost": "Mayor",
-		"region": "Calabar"
-	},
-	{
-		"id": 17,
-		"name": "Anthony Thompson",
-		"phone": "+2348178901234",
-		"email": "anthony.thompson@example.com",
-		"politicalPost": "Senator",
-		"region": "Lokoja"
-	},
-	{
-		"id": 18,
-		"name": "Margaret Garcia",
-		"phone": "+2348189012345",
-		"email": "margaret.garcia@example.com",
-		"politicalPost": "Representative",
-		"region": "Ado-Ekiti"
-	},
-	{
-		"id": 19,
-		"name": "Steven Martinez",
-		"phone": "+2348190123456",
-		"email": "steven.martinez@example.com",
-		"politicalPost": "Governor",
-		"region": "Akure"
-	},
-	{
-		"id": 20,
-		"name": "Dorothy Robinson",
-		"phone": "+2348201234567",
-		"email": "dorothy.robinson@example.com",
-		"politicalPost": "Councillor",
-		"region": "Warri"
-	}
+  {
+    "id": 1,
+    "name": "John Doe",
+    "phone": "+2348012345678",
+    "email": "john.doe@example.com",
+    "politicalPost": "Governor",
+    "region": "Lagos"
+  },
+  {
+    "id": 2,
+    "name": "Mary Johnson",
+    "phone": "+2348023456789",
+    "email": "mary.johnson@example.com",
+    "politicalPost": "Senator",
+    "region": "Abuja"
+  },
+  {
+    "id": 3,
+    "name": "Michael Smith",
+    "phone": "+2348034567890",
+    "email": "michael.smith@example.com",
+    "politicalPost": "Councillor",
+    "region": "Kano"
+  },
+  {
+    "id": 4,
+    "name": "Sarah Williams",
+    "phone": "+2348045678901",
+    "email": "sarah.williams@example.com",
+    "politicalPost": "Chairperson",
+    "region": "Enugu"
+  },
+  {
+    "id": 5,
+    "name": "James Brown",
+    "phone": "+2348056789012",
+    "email": "james.brown@example.com",
+    "politicalPost": "Representative",
+    "region": "Kaduna"
+  },
+  {
+    "id": 6,
+    "name": "Patricia Davis",
+    "phone": "+2348067890123",
+    "email": "patricia.davis@example.com",
+    "politicalPost": "Governor",
+    "region": "Ogun"
+  },
+  {
+    "id": 7,
+    "name": "Robert Miller",
+    "phone": "+2348078901234",
+    "email": "robert.miller@example.com",
+    "politicalPost": "Mayor",
+    "region": "Port Harcourt"
+  },
+  {
+    "id": 8,
+    "name": "Linda Wilson",
+    "phone": "+2348089012345",
+    "email": "linda.wilson@example.com",
+    "politicalPost": "Senator",
+    "region": "Ibadan"
+  },
+  {
+    "id": 9,
+    "name": "David Moore",
+    "phone": "+2348090123456",
+    "email": "david.moore@example.com",
+    "politicalPost": "Councillor",
+    "region": "Jos"
+  },
+  {
+    "id": 10,
+    "name": "Elizabeth Taylor",
+    "phone": "+2348101234567",
+    "email": "elizabeth.taylor@example.com",
+    "politicalPost": "Chairperson",
+    "region": "Benin"
+  },
+  {
+    "id": 11,
+    "name": "Charles Anderson",
+    "phone": "+2348112345678",
+    "email": "charles.anderson@example.com",
+    "politicalPost": "Representative",
+    "region": "Maiduguri"
+  },
+  {
+    "id": 12,
+    "name": "Susan Thomas",
+    "phone": "+2348123456789",
+    "email": "susan.thomas@example.com",
+    "politicalPost": "Governor",
+    "region": "Osun"
+  },
+  {
+    "id": 13,
+    "name": "Christopher Jackson",
+    "phone": "+2348134567890",
+    "email": "christopher.jackson@example.com",
+    "politicalPost": "Senator",
+    "region": "Ilorin"
+  },
+  {
+    "id": 14,
+    "name": "Barbara White",
+    "phone": "+2348145678901",
+    "email": "barbara.white@example.com",
+    "politicalPost": "Councillor",
+    "region": "Abeokuta"
+  },
+  {
+    "id": 15,
+    "name": "Matthew Harris",
+    "phone": "+2348156789012",
+    "email": "matthew.harris@example.com",
+    "politicalPost": "Chairperson",
+    "region": "Owerri"
+  },
+  {
+    "id": 16,
+    "name": "Jennifer Martin",
+    "phone": "+2348167890123",
+    "email": "jennifer.martin@example.com",
+    "politicalPost": "Mayor",
+    "region": "Calabar"
+  },
+  {
+    "id": 17,
+    "name": "Anthony Thompson",
+    "phone": "+2348178901234",
+    "email": "anthony.thompson@example.com",
+    "politicalPost": "Senator",
+    "region": "Lokoja"
+  },
+  {
+    "id": 18,
+    "name": "Margaret Garcia",
+    "phone": "+2348189012345",
+    "email": "margaret.garcia@example.com",
+    "politicalPost": "Representative",
+    "region": "Ado-Ekiti"
+  },
+  {
+    "id": 19,
+    "name": "Steven Martinez",
+    "phone": "+2348190123456",
+    "email": "steven.martinez@example.com",
+    "politicalPost": "Governor",
+    "region": "Akure"
+  },
+  {
+    "id": 20,
+    "name": "Dorothy Robinson",
+    "phone": "+2348201234567",
+    "email": "dorothy.robinson@example.com",
+    "politicalPost": "Councillor",
+    "region": "Warri"
+  }
 ]
