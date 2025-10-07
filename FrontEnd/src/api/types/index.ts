@@ -73,3 +73,17 @@ export interface ElectionResults {
     percentage: number;
   }>;
 }
+
+export interface CandidateFormInput {
+  name: string;
+  email?: string | null;
+  post: number;
+  image?: FileList | null;
+  bio: string;
+}
+
+export type CandidateUpdateData = {
+  name: string;
+  post: number;
+  bio: string;
+};

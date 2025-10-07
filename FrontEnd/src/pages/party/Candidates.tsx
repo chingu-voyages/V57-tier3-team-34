@@ -4,12 +4,11 @@ import {
   IoCheckmark,
   IoClose,
   IoCopyOutline,
-  IoEye,
   IoPencilOutline,
   IoSearchOutline,
 } from "react-icons/io5";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../components/party/dashboard/Modal";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
@@ -18,18 +17,31 @@ import { useCandidates } from "../../api/hooks/useCandidates";
 import { useSearchParams } from "react-router";
 import EmptyState from "../../components/ui/EmptyState";
 import SkeletonLoading from "../../components/ui/LoadingSkeleton";
-
-interface CandidateFormInput {
-  name: string;
-  email: string;
-  post: number;
-  image: File | null;
-  bio: string;
-}
+import type { CandidateFormInput } from "../../api/types";
+import FormErrorAlert from "../../components/ui/FormErrorAlert";
+import {
+  useAddCandidate,
+  useUpdateCandidate,
+} from "../../api/hooks/useAddCandidate";
+import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 interface CandidatesMethod {
   (arg: number): void;
 }
+
+type CandidateData = {
+  id: number;
+  email: string;
+  name: string;
+  userImage: string;
+  userManifesto: string;
+  politicalPostId: number;
+  userPosition: {
+    postName: string;
+  };
+};
 
 const Candidates: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -45,9 +57,13 @@ const Candidates: React.FC = () => {
   );
 
   const [createEditModal, setCreateEditModal] = useState<boolean>(false);
-
   const [editingId, setEditingId] = useState<string | number | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [selectedCandidate, setSelectedCandidate] =
+    useState<CandidateData | null>(null);
+  const isEditing = !!selectedCandidate;
+  const [addCandidateError, setAddCandidateError] = useState<string | null>(
+    null
+  );
 
   const {
     register,
@@ -63,29 +79,65 @@ const Candidates: React.FC = () => {
     error: postsError,
   } = usePosts(createEditModal);
 
-  const onSubmit: SubmitHandler<CandidateFormInput> = (data) => {
-    setIsSubmitting(true);
-    console.log(data);
+  const { mutate, isPending } = useAddCandidate();
+  const { mutate: updateCandidateMutation, updateCandidatePending } =
+    useUpdateCandidate();
+  const queryClient = useQueryClient();
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      if (editingId) {
-        alert("User Update simulation complete");
-        setEditingId(null);
-      } else {
-        alert("User Creation simulation complete");
-      }
-      setCreateEditModal(false);
-      reset();
-    }, 2000);
+  /**
+   * Handle candidate addition
+   * @param data
+   */
+  const onSubmit: SubmitHandler<CandidateFormInput> = (data) => {
+    if (editingId) {
+      console.log(editingId);
+      updateCandidateMutation(data, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["getCandidates"] });
+          setCreateEditModal(false);
+          reset();
+          toast.success("Candidate account updated.");
+        },
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            const message =
+              error.response?.data?.message || "Something went wrong";
+            setAddCandidateError(message);
+          } else {
+            setAddCandidateError(error?.message || "Something went wrong.");
+          }
+        },
+      });
+    } else {
+      mutate(data, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["getCandidates"] });
+          setCreateEditModal(false);
+          reset();
+          toast.success("Candidate account created.", {
+            description: "Password has been sent to Candidate's Provided Email",
+          });
+        },
+
+        onError: (error) => {
+          if (error instanceof AxiosError) {
+            const message =
+              error.response?.data?.message || "Something went wrong";
+            setAddCandidateError(message);
+          } else {
+            setAddCandidateError(error?.message || "Something went wrong.");
+          }
+        },
+      });
+    }
   };
 
   const editCandidate: CandidatesMethod = (candidateId: number) => {
     setEditingId(candidateId);
-    const candidate = data.find((item) => item.id === candidateId);
-    setValue("name", candidate?.name ?? "");
-    setValue("email", candidate?.email ?? "");
-
+    const candidate = data.candidates.data.find(
+      (item: CandidateData) => item.id === candidateId
+    );
+    setSelectedCandidate(candidate);
     setCreateEditModal(true);
   };
 
@@ -113,7 +165,13 @@ const Candidates: React.FC = () => {
     alert("An error occured, please reload page");
   }
 
-  console.log(data);
+  useEffect(() => {
+    if (!isEditing || postsLoading || !selectedCandidate) return;
+
+    setValue("name", selectedCandidate?.name ?? "");
+    setValue("bio", selectedCandidate?.userManifesto ?? "");
+    setValue("post", selectedCandidate?.politicalPostId);
+  });
 
   return (
     <div className="flex flex-col">
@@ -160,20 +218,25 @@ const Candidates: React.FC = () => {
                       <td>Name</td>
                       <td>Email</td>
                       <td>Post</td>
-                      <td>Actions</td>
+                      <td align="right">Actions</td>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.candidates.data.map((candidate) => (
+                    {data.candidates.data.map((candidate: CandidateData) => (
                       <tr key={candidate.id}>
                         <td>
                           <div className="flex items-center gap-3">
                             <div>
-                              <div className="font-bold">{candidate.name}</div>
-                              <div className="text-sm opacity-50">
-                                {candidate.region}
-                              </div>
+                              <img
+                                src={candidate.userImage}
+                                className="w-16 rounded-lg"
+                              />
                             </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="flex gap-2 items-center">
+                            {candidate.name}
                           </div>
                         </td>
                         <td>
@@ -182,25 +245,8 @@ const Candidates: React.FC = () => {
                             <span
                               className="cursor-pointer"
                               onClick={() =>
-                                copyToClipBoard(candidate.email, candidate.id)
-                              }
-                            >
-                              {copiedId === candidate.id ? (
-                                <IoCheckmark className="text-success" />
-                              ) : (
-                                <IoCopyOutline />
-                              )}
-                            </span>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="flex gap-2 items-center">
-                            {candidate.phone}
-                            <span
-                              className="cursor-pointer"
-                              onClick={() =>
                                 copyToClipBoard(
-                                  candidate.phone,
+                                  candidate.email,
                                   candidate.id + candidate.name
                                 )
                               }
@@ -213,7 +259,7 @@ const Candidates: React.FC = () => {
                             </span>
                           </div>
                         </td>
-                        <td>{candidate.politicalPost}</td>
+                        <td>{candidate.userPosition.postName}</td>
                         <th>
                           <div className="flex justify-end">
                             <div className="dropdown dropdown-end">
@@ -237,13 +283,6 @@ const Candidates: React.FC = () => {
                                     {" "}
                                     <IoPencilOutline />
                                     Edit Candidate
-                                  </button>
-                                </li>
-                                <li>
-                                  <button className="text-accent font-semibold">
-                                    {" "}
-                                    <IoEye />
-                                    View Candidate
                                   </button>
                                 </li>
                               </ul>
@@ -285,6 +324,7 @@ const Candidates: React.FC = () => {
         title={editingId ? "Edit Candidate" : "Add New Candidate"}
       >
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+          {addCandidateError && <FormErrorAlert message={addCandidateError} />}
           <div className="flex flex-col">
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Candidate Name</legend>
@@ -300,23 +340,25 @@ const Candidates: React.FC = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Email</legend>
-              <input
-                {...register("email", {
-                  required: true,
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
-                className={`input w-full ${errors.email && "input-error"}`}
-                placeholder="Email"
-              />
-              {errors.email && (
-                <p className="label text-error">{errors.email.message}</p>
-              )}
-            </fieldset>
+            {!editingId && (
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Email</legend>
+                <input
+                  {...register("email", {
+                    required: true,
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
+                  className={`input w-full ${errors.email && "input-error"}`}
+                  placeholder="Email"
+                />
+                {errors.email && (
+                  <p className="label text-error">{errors.email.message}</p>
+                )}
+              </fieldset>
+            )}
 
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Candidate Post</legend>
@@ -344,33 +386,32 @@ const Candidates: React.FC = () => {
               )}
             </fieldset>
 
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Image</legend>
-              <input
-                {...register("image", {
-                  required: true,
-                })}
-                className={`file-input w-full ${
-                  errors.email && "file-input-error"
-                }`}
-                placeholder="Image"
-                type="file"
-              />
-              {errors.email && (
-                <p className="label text-error">{errors.email.message}</p>
-              )}
-            </fieldset>
+            {!editingId && (
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Image</legend>
+                <input
+                  {...register("image", {
+                    required: true,
+                  })}
+                  className={`file-input w-full ${
+                    errors.image && "file-input-error"
+                  }`}
+                  placeholder="Image"
+                  type="file"
+                />
+                {errors.image && (
+                  <p className="label text-error">{errors.image.message}</p>
+                )}
+              </fieldset>
+            )}
 
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Candidate Bio</legend>
-              <input
+              <textarea
                 {...register("bio", {
                   required: true,
                 })}
-                defaultValue="Choose Post"
-                className={`textarea w-full ${
-                  errors.email && "textarea-error"
-                }`}
+                className={`textarea w-full ${errors.bio && "textarea-error"}`}
               />
 
               {errors.bio && (
@@ -387,7 +428,7 @@ const Candidates: React.FC = () => {
             </span>
 
             <button className="btn btn-primary text-white">
-              {isSubmitting ? (
+              {isPending || updateCandidatePending ? (
                 <span className="loading loading-spainner"></span>
               ) : editingId ? (
                 <>
