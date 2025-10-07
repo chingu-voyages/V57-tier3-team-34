@@ -3,15 +3,23 @@
  * Simple authentication state management
  */
 
-import { useState, useEffect } from 'react';
-import { userService } from '../services/userService';
-import type { User, LoginCredentials, RegisterData } from '../types';
+import { useState, useEffect } from "react";
+import { userService } from "../services/userService";
+import type { User, LoginCredentials, RegisterData } from "../types";
 
 interface AuthState {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   error: string | null;
+}
+
+export interface AuthResponse {
+  success: boolean;
+  data: {
+    token: string;
+    userType: string;
+  };
 }
 
 export const useAuth = () => {
@@ -25,8 +33,8 @@ export const useAuth = () => {
   // Initialize auth on mount
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem('auth_token');
-      
+      const token = localStorage.getItem("auth_token");
+
       if (token) {
         try {
           const user = await userService.getProfile();
@@ -38,16 +46,17 @@ export const useAuth = () => {
           });
         } catch (error) {
           // Token might be invalid
-          localStorage.removeItem('auth_token');
+          localStorage.removeItem("auth_token");
           setState({
             user: null,
             isLoading: false,
             isAuthenticated: false,
             error: null,
           });
+          return error;
         }
       } else {
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           isLoading: false,
         }));
@@ -59,32 +68,14 @@ export const useAuth = () => {
 
   // Login function
   const login = async (credentials: LoginCredentials) => {
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
-    
-    try {
-      const response = await userService.login(credentials);
-      setState({
-        user: response.user,
-        isLoading: false,
-        isAuthenticated: true,
-        error: null,
-      });
-      return response;
-    } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Login failed';
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: errorMessage,
-      }));
-      throw error;
-    }
+    const response = await userService.login(credentials);
+    return response;
   };
 
   // Register function
   const register = async (userData: RegisterData) => {
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+    setState((prev) => ({ ...prev, isLoading: true, error: null }));
+
     try {
       const response = await userService.registerVoter(userData);
       setState({
@@ -95,8 +86,11 @@ export const useAuth = () => {
       });
       return response;
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || error?.message || 'Registration failed';
-      setState(prev => ({
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Registration failed";
+      setState((prev) => ({
         ...prev,
         isLoading: false,
         error: errorMessage,
@@ -107,12 +101,12 @@ export const useAuth = () => {
 
   // Logout function
   const logout = async () => {
-    setState(prev => ({ ...prev, isLoading: true }));
-    
+    setState((prev) => ({ ...prev, isLoading: true }));
+
     try {
       await userService.logout();
     } catch (error) {
-      console.warn('Logout API call failed:', error);
+      console.warn("Logout API call failed:", error);
     } finally {
       setState({
         user: null,
@@ -125,7 +119,7 @@ export const useAuth = () => {
 
   // Clear error
   const clearError = () => {
-    setState(prev => ({ ...prev, error: null }));
+    setState((prev) => ({ ...prev, error: null }));
   };
 
   return {

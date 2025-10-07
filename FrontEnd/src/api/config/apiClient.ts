@@ -37,8 +37,9 @@ api.interceptors.response.use(
 export { api };
 
 // Helper functions
-export const setAuthToken = (token: string) => {
-  localStorage.setItem("auth_token", token);
+export const setAuthData = (data: { token: string; userType: string }) => {
+  localStorage.setItem("auth_token", data.token);
+  localStorage.setItem("user_type", data.userType);
 };
 
 export const clearAuthToken = () => {

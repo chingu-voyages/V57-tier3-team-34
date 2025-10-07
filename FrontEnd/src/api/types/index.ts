@@ -4,11 +4,17 @@
 
 // User/Auth Types
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-  updatedAt: string;
+  status: boolean;
+  data: {
+    user: {
+      userId: number;
+      userType: string;
+      name: string;
+      email: string;
+      partyId: number | null;
+      createdAt: string;
+    };
+  };
 }
 
 export interface LoginCredentials {
@@ -67,4 +73,3 @@ export interface ElectionResults {
     percentage: number;
   }>;
 }
-
