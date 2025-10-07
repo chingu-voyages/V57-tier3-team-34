@@ -11,12 +11,16 @@ export default async function Paginate<T extends PrismaModel>(options: {
   limit: number;
   model: T;
   conditions?: {} | null;
+  include?: {} | null;
+  orderBy?: {} | null;
 }) {
   try {
     const records = await options.model.findMany({
       take: options.limit,
       skip: (options.page - 1) * options.limit,
       where: options.conditions || undefined,
+      include: options.include || undefined,
+      orderBy: options.orderBy || undefined,
     });
 
     const totalCount = await options.model.count({
