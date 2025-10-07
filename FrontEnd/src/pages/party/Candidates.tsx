@@ -7,14 +7,17 @@ import {
   IoEye,
   IoPencilOutline,
   IoSearchOutline,
-  IoTrashOutline,
-  IoWarning,
 } from "react-icons/io5";
-import mockData from "../../data/candidates.json";
+
 import { useState } from "react";
 import Modal from "../../components/party/dashboard/Modal";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import { usePosts } from "../../api/hooks/usePosts";
+import { useCandidates } from "../../api/hooks/useCandidates";
+import { useSearchParams } from "react-router";
+import EmptyState from "../../components/ui/EmptyState";
+import SkeletonLoading from "../../components/ui/LoadingSkeleton";
 
 interface CandidateFormInput {
   name: string;
@@ -29,7 +32,11 @@ interface CandidatesMethod {
 }
 
 const Candidates: React.FC = () => {
-  const [data, setData] = useState(mockData);
+  const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const limit = Number(searchParams.get("limit")) || 1;
+
+  const { data, isLoading } = useCandidates(page, limit);
 
   const [showToast, setShowToast] = useState<boolean>(false);
   const [animate, setAnimate] = useState<string>("");
@@ -38,14 +45,9 @@ const Candidates: React.FC = () => {
   );
 
   const [createEditModal, setCreateEditModal] = useState<boolean>(false);
-  const [deleteCandidateModal, setDeleteCandidateModal] =
-    useState<boolean>(false);
-  const [candidateDeleteId, setCandidateDeleteId] = useState<number | null>(
-    null
-  );
+
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const {
     register,
@@ -54,6 +56,12 @@ const Candidates: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<CandidateFormInput>({});
+
+  const {
+    data: posts,
+    isLoading: postsLoading,
+    error: postsError,
+  } = usePosts(createEditModal);
 
   const onSubmit: SubmitHandler<CandidateFormInput> = (data) => {
     setIsSubmitting(true);
@@ -81,28 +89,6 @@ const Candidates: React.FC = () => {
     setCreateEditModal(true);
   };
 
-  const confirmDeleteCandidate: CandidatesMethod = (candidateId: number) => {
-    setCandidateDeleteId(candidateId);
-    setDeleteCandidateModal(true);
-  };
-
-  const cancelDelete: () => void = () => {
-    setCandidateDeleteId(null);
-    setDeleteCandidateModal(false);
-  };
-
-  const deleteCandidate: () => void = () => {
-    setIsDeleting(true);
-    const candidates = data.filter((item) => item.id !== candidateDeleteId);
-    setData(candidates);
-
-    setTimeout(() => {
-      alert("Candidate Deleted");
-      setIsDeleting(false);
-      cancelDelete();
-    }, 2000);
-  };
-
   const copyToClipBoard = (text: string, key: number | string) => {
     navigator.clipboard.writeText(text);
 
@@ -123,6 +109,12 @@ const Candidates: React.FC = () => {
     }, 3000);
   };
 
+  if (postsError) {
+    alert("An error occured, please reload page");
+  }
+
+  console.log(data);
+
   return (
     <div className="flex flex-col">
       <div className="mb-5">
@@ -130,149 +122,150 @@ const Candidates: React.FC = () => {
           My Candidates
         </h2>
       </div>
-      <div className="action-section flex items-center justify-between">
-        <div>
-          <label className="input validator">
-            <IoSearchOutline size={15} />
-            <input
-              type="text"
-              className="max-w-64 input-md"
-              placeholder="Search..."
-            />
-          </label>
-        </div>
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => setCreateEditModal(true)}
-          >
-            <IoAddCircleOutline size={20} />
-            Add Candidate
-          </button>
-        </div>
-      </div>
-      <div className="divider"></div>
-      <div className="overflow-x-auto h-[660px]">
-        <table className="table dark:text-stone-900">
-          <thead className="dark:text-stone-900">
-            <tr>
-              <td>Name</td>
-              <td>Phone</td>
-              <td>Email</td>
-              <td>Post</td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((candidate) => (
-              <tr key={candidate.id}>
-                <td>
-                  <div className="flex items-center gap-3">
-                    <div>
-                      <div className="font-bold">{candidate.name}</div>
-                      <div className="text-sm opacity-50">
-                        {candidate.region}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div className="flex gap-2 items-center">
-                    {candidate.email}
-                    <span
-                      className="cursor-pointer"
-                      onClick={() =>
-                        copyToClipBoard(candidate.email, candidate.id)
-                      }
-                    >
-                      {copiedId === candidate.id ? (
-                        <IoCheckmark className="text-success" />
-                      ) : (
-                        <IoCopyOutline />
-                      )}
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <div className="flex gap-2 items-center">
-                    {candidate.phone}
-                    <span
-                      className="cursor-pointer"
-                      onClick={() =>
-                        copyToClipBoard(
-                          candidate.phone,
-                          candidate.id + candidate.name
-                        )
-                      }
-                    >
-                      {copiedId === candidate.id + candidate.name ? (
-                        <IoCheckmark className="text-success" />
-                      ) : (
-                        <IoCopyOutline />
-                      )}
-                    </span>
-                  </div>
-                </td>
-                <td>{candidate.politicalPost}</td>
-                <th>
-                  <div className="flex justify-end">
-                    <div className="dropdown dropdown-end">
-                      <div
-                        className="btn btn-xs btn-primary"
-                        tabIndex={0}
-                        role="button"
-                      >
-                        Options
-                        <IoCaretDown />
-                      </div>
-                      <ul
-                        tabIndex={0}
-                        className="dropdown-content menu bg-base-100 rounded-box z-1 min-w-52 p-2 shadow-sm"
-                      >
-                        <li>
-                          <button
-                            className="text-primary font-semibold"
-                            onClick={() => editCandidate(candidate.id)}
-                          >
-                            {" "}
-                            <IoPencilOutline />
-                            Edit Candidate
-                          </button>
-                        </li>
-                        <li>
-                          <button className="text-accent font-semibold">
-                            {" "}
-                            <IoEye />
-                            View Candidate
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            className="text-error font-semibold"
-                            onClick={() => confirmDeleteCandidate(candidate.id)}
-                          >
-                            {" "}
-                            <IoTrashOutline />
-                            Delete Candidate
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </th>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="mt-5 flex justify-center">
-        <div className="join">
-          <button className="btn join-item">Next</button>
-          <button className="btn join-item">Previous</button>
-        </div>
-      </div>
+      {isLoading ? (
+        <SkeletonLoading rows={6} cols={4} />
+      ) : (
+        <>
+          <div className="action-section flex items-center justify-between">
+            <div>
+              <label className="input validator">
+                <IoSearchOutline size={15} />
+                <input
+                  type="text"
+                  className="max-w-64 input-md"
+                  placeholder="Search..."
+                />
+              </label>
+            </div>
+            <div>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setCreateEditModal(true)}
+              >
+                <IoAddCircleOutline size={20} />
+                Add Candidate
+              </button>
+            </div>
+          </div>
+          <div className="divider"></div>
+          {data.candidates.data.length === 0 && <EmptyState />}
+          {data.candidates.data && data.candidates.data.length > 0 && (
+            <>
+              <div className="overflow-x-auto h-[660px]">
+                <table className="table dark:text-stone-900">
+                  <thead className="dark:text-stone-900">
+                    <tr>
+                      <td>Image</td>
+                      <td>Name</td>
+                      <td>Email</td>
+                      <td>Post</td>
+                      <td>Actions</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.candidates.data.map((candidate) => (
+                      <tr key={candidate.id}>
+                        <td>
+                          <div className="flex items-center gap-3">
+                            <div>
+                              <div className="font-bold">{candidate.name}</div>
+                              <div className="text-sm opacity-50">
+                                {candidate.region}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="flex gap-2 items-center">
+                            {candidate.email}
+                            <span
+                              className="cursor-pointer"
+                              onClick={() =>
+                                copyToClipBoard(candidate.email, candidate.id)
+                              }
+                            >
+                              {copiedId === candidate.id ? (
+                                <IoCheckmark className="text-success" />
+                              ) : (
+                                <IoCopyOutline />
+                              )}
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          <div className="flex gap-2 items-center">
+                            {candidate.phone}
+                            <span
+                              className="cursor-pointer"
+                              onClick={() =>
+                                copyToClipBoard(
+                                  candidate.phone,
+                                  candidate.id + candidate.name
+                                )
+                              }
+                            >
+                              {copiedId === candidate.id + candidate.name ? (
+                                <IoCheckmark className="text-success" />
+                              ) : (
+                                <IoCopyOutline />
+                              )}
+                            </span>
+                          </div>
+                        </td>
+                        <td>{candidate.politicalPost}</td>
+                        <th>
+                          <div className="flex justify-end">
+                            <div className="dropdown dropdown-end">
+                              <div
+                                className="btn btn-xs btn-primary"
+                                tabIndex={0}
+                                role="button"
+                              >
+                                Options
+                                <IoCaretDown />
+                              </div>
+                              <ul
+                                tabIndex={0}
+                                className="dropdown-content menu bg-base-100 rounded-box z-1 min-w-52 p-2 shadow-sm"
+                              >
+                                <li>
+                                  <button
+                                    className="text-primary font-semibold"
+                                    onClick={() => editCandidate(candidate.id)}
+                                  >
+                                    {" "}
+                                    <IoPencilOutline />
+                                    Edit Candidate
+                                  </button>
+                                </li>
+                                <li>
+                                  <button className="text-accent font-semibold">
+                                    {" "}
+                                    <IoEye />
+                                    View Candidate
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
+              <div className="mt-5 flex justify-center">
+                <div className="join">
+                  <button className="btn join-item">Next</button>
+                  <button className="btn join-item">Previous</button>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
       {/**
        * This is for handling toasts in the candidates page
        */}
@@ -333,8 +326,17 @@ const Candidates: React.FC = () => {
                 })}
                 defaultValue="Choose Post"
                 className={`select w-full ${errors.post && "select-error"}`}
+                disabled={postsLoading}
               >
                 <option disabled={true}>Select Political Post</option>
+                {posts &&
+                  posts.data?.posts.map(
+                    (post: { postName: string; id: number }) => (
+                      <option key={post.id} value={post.id}>
+                        {post.postName}
+                      </option>
+                    )
+                  )}
               </select>
 
               {errors.post && (
@@ -343,17 +345,16 @@ const Candidates: React.FC = () => {
             </fieldset>
 
             <fieldset className="fieldset">
-              <legend className="fieldset-legend">Email</legend>
+              <legend className="fieldset-legend">Image</legend>
               <input
-                {...register("email", {
+                {...register("image", {
                   required: true,
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
                 })}
-                className={`input w-full ${errors.email && "input-error"}`}
-                placeholder="Email"
+                className={`file-input w-full ${
+                  errors.email && "file-input-error"
+                }`}
+                placeholder="Image"
+                type="file"
               />
               {errors.email && (
                 <p className="label text-error">{errors.email.message}</p>
@@ -401,41 +402,6 @@ const Candidates: React.FC = () => {
             </button>
           </div>
         </form>
-      </Modal>
-
-      {/* Delete Modal */}
-      <Modal
-        isOpen={deleteCandidateModal}
-        onClose={cancelDelete}
-        title="Delete Candidate"
-      >
-        <div className="w-full text-center">
-          <h3 className="text-xl font-semibold">Delete Candidate?</h3>
-          <p>Are you sure you want to delete this candidate?</p>
-          <span className="flex justify-center items-center gap-2">
-            <IoWarning size={20} className="text-error" /> This action is
-            irreversible.
-          </span>
-
-          <div className="my-5 flex justify-center gap-5">
-            <button className="btn" onClick={cancelDelete}>
-              Cancel
-            </button>
-            <button
-              className="btn btn-error text-white"
-              onClick={deleteCandidate}
-            >
-              {" "}
-              {isDeleting ? (
-                <span className="loading loading-spainner"></span>
-              ) : (
-                <>
-                  <IoWarning size={20} className="text-white" /> Delete
-                </>
-              )}
-            </button>
-          </div>
-        </div>
       </Modal>
     </div>
   );
