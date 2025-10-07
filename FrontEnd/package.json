@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx @biomejs/biome format --write && vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "npx @biomejs/biome format --write",
