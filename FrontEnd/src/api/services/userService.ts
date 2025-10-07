@@ -2,57 +2,50 @@
  * User Service
  */
 
-import { api, setAuthToken, clearAuthToken } from "../config/apiClient";
-import type {
-	RegisterData,
-	LoginCredentials,
-	AuthResponse,
-	User,
-} from "../types";
+import { api, setAuthData, clearAuthToken } from "../config/apiClient";
+import type { RegisterData, LoginCredentials, User } from "../types";
+import type { AuthResponse } from "../hooks/useAuth";
 
 export const userService = {
-	// Register a new voter
-	async registerVoter(userData: RegisterData): Promise<AuthResponse> {
-		const response = await api.post("/user/register-voter", userData);
+  // Register a new voter
+  async registerVoter(userData: RegisterData): Promise<AuthResponse> {
+    const response = await api.post("/user/register-voter", userData);
 
-		if (response.data.token) {
-			setAuthToken(response.data.token);
-		}
+    if (response.data.token) {
+      setAuthData(response.data);
+    }
 
-		return response.data;
-	},
+    return response.data;
+  },
 
-	// Login user
-	async login(credentials: LoginCredentials): Promise<AuthResponse> {
-		const response = await api.post("/user/login", credentials);
+  // Login user
+  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+    const { data } = await api.post<AuthResponse>("/user/login", credentials);
 
-		if (response.data.token) {
-			setAuthToken(response.data.token);
-		}
+    setAuthData(data.data);
+    return data;
+  },
 
-		return response.data;
-	},
+  // Logout user
+  async logout(): Promise<void> {
+    try {
+      await api.post("/user/logout");
+    } catch (error) {
+      console.warn("Logout API call failed:", error);
+    } finally {
+      clearAuthToken();
+    }
+  },
 
-	// Logout user
-	async logout(): Promise<void> {
-		try {
-			await api.post("/user/logout");
-		} catch (error) {
-			console.warn("Logout API call failed:", error);
-		} finally {
-			clearAuthToken();
-		}
-	},
+  // Get current user profile
+  async getProfile(): Promise<User> {
+    const response = await api.get("/user/profile");
+    return response.data;
+  },
 
-	// Get current user profile
-	async getProfile(): Promise<User> {
-		const response = await api.get("/user/profile");
-		return response.data;
-	},
-
-	// Update user profile
-	async updateProfile(userData: Partial<User>): Promise<User> {
-		const response = await api.put("/user/profile", userData);
-		return response.data;
-	},
+  // Update user profile
+  async updateProfile(userData: Partial<User>): Promise<User> {
+    const response = await api.put("/user/profile", userData);
+    return response.data;
+  },
 };
