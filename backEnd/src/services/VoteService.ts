@@ -21,12 +21,11 @@ export const getVoteables = async (userId: number): Promise<any> => {
   //Get ready to initiate the vote but confirm if user hasn't casted votes yet.
   const userNotVoted = await confirmedNotVote(userId);
 
-  // if (!userNotVoted) {
-  //   //We will be returning their vote choices here whenever this is called
-  //   throw new Error(
-  //     "User already casted vote. Please check your dashboard for results and your vote choice"
-  //   );
-  // }
+  if (!userNotVoted) {
+    throw new Error(
+      "User already casted vote. Please check your dashboard for results and your vote choice"
+    );
+  }
 
   //Initialize their vote streak in the db
   const possibleVotes = Object.entries(voteables) as [
