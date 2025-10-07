@@ -1,2 +1,2 @@
-export * from './auth';
-export * from './voter';
+export * from "./auth";
+export * from "./voter";
