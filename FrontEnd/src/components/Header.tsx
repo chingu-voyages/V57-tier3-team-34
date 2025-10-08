@@ -42,6 +42,9 @@ const Header = () => {
               <Link to="/auth/login">Login</Link>
             </li>
             <li>
+              <Link to="/voter/results">Election Results</Link>
+            </li>
+            <li>
               <a>About the App</a>
             </li>
           </ul>
