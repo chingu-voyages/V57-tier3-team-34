@@ -80,7 +80,7 @@ const Candidates: React.FC = () => {
   } = usePosts(createEditModal);
 
   const { mutate, isPending } = useAddCandidate();
-  const { mutate: updateCandidateMutation, updateCandidatePending } =
+  const { mutate: updateCandidateMutation, isPending: updateCandidatePending } =
     useUpdateCandidate();
   const queryClient = useQueryClient();
 
@@ -96,7 +96,7 @@ const Candidates: React.FC = () => {
           queryClient.invalidateQueries({ queryKey: ["getCandidates"] });
           setCreateEditModal(false);
           reset();
-          toast.success("Candidate account updated.");
+          toast.success("Candidate information updated.");
         },
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -208,7 +208,7 @@ const Candidates: React.FC = () => {
           </div>
           <div className="divider"></div>
           {data.candidates.data.length === 0 && <EmptyState />}
-          {data.candidates.data && data.candidates.data.length > 0 && (
+          {data?.candidates?.data && data?.candidates?.data?.length > 0 && (
             <>
               <div className="overflow-x-auto h-[660px]">
                 <table className="table dark:text-stone-900">
