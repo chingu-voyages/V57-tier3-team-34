@@ -1,6 +1,7 @@
 import {
   createPartyService,
   getPartyElectionResult,
+  getPartyStats,
 } from "@/services/PartyService";
 import type { Request, Response } from "express";
 
@@ -105,6 +106,20 @@ export const resetCandidatePassword = async (req: Request, res: Response) => {
 
     return res.status(201).json({
       success: true,
+    });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
+export const getStats = async (req: Request, res: Response) => {
+  try {
+    const { userId } = (req as any).user;
+    const stat = await getPartyStats(userId);
+    return res.status(201).json({
+      success: true,
+      data: stat,
     });
   } catch (error) {
     const errors = errorHandler(error);
