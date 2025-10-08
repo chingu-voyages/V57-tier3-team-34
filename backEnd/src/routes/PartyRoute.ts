@@ -2,6 +2,8 @@ import {
   createCandidate,
   electionResult,
   getPartyCandidates,
+  resetCandidatePassword,
+  updateCandidate,
 } from "@/controllers/PartyController";
 import upload from "@/helpers/Upload";
 import { verifyToken } from "@/middleware/auth";
@@ -18,5 +20,7 @@ router.use(isUserAParty);
 router.get("/candidates", getPartyCandidates);
 router.post("/candidate", upload.single("image"), createCandidate);
 router.get("/result", electionResult);
+router.put("/candidate/:userId", updateCandidate);
+router.put("/candidate/:userId/reset", resetCandidatePassword);
 
 export default router;

@@ -1,5 +1,5 @@
 import prisma from "@/config/db.config";
-import { Roles, User } from "@prisma/client";
+import { Prisma, Roles, User } from "@prisma/client";
 
 export interface partyData {
   name: string;
@@ -73,16 +73,42 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 
 export const checkCandidatePost = async (
   post: number,
-  party: number
+  party: number,
+  myId?: number | undefined
 ): Promise<User | null> => {
   try {
+    const whereClause: Prisma.UserWhereInput = {
+      politicalPostId: post,
+      partyId: party,
+      ...(myId !== undefined ? { id: { not: myId } } : {}),
+    };
+
     const candidate = await model.findFirst({
-      where: {
-        politicalPostId: post,
-        partyId: party,
-      },
+      where: whereClause,
     });
 
+    return candidate;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addCandidate: addCandidateFn = async (
+  data: candidateData
+): Promise<User | undefined> => {
+  try {
+    const candidate = await model.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        userType: Roles.CANDIDATE,
+        partyId: data.partyId,
+        userManifesto: data.bio,
+        userImage: data.userImage,
+        politicalPostId: data.position,
+      },
+    });
     return candidate;
   } catch (error) {
     throw error;
@@ -111,22 +137,46 @@ export const updateUser = async (
   }
 };
 
-export const addCandidate: addCandidateFn = async (
-  data: candidateData
-): Promise<User | undefined> => {
+export const updateUserPassword = async (
+  candidateId: number,
+  newPassword: string
+): Promise<boolean> => {
   try {
-    const candidate = await model.create({
+    await model.update({
+      where: {
+        id: candidateId,
+      },
       data: {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        userType: Roles.CANDIDATE,
-        partyId: data.partyId,
-        userManifesto: data.bio,
-        userImage: data.userImage,
-        politicalPostId: data.position,
+        password: newPassword,
       },
     });
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateCandidate = async (
+  userId: number,
+  candidateData: {
+    name: string;
+    position: number;
+    bio: string;
+  }
+): Promise<User> => {
+  try {
+    const candidate = await model.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: candidateData.name,
+        userManifesto: candidateData.bio,
+        politicalPostId: candidateData.position,
+      },
+    });
+
     return candidate;
   } catch (error) {
     throw error;

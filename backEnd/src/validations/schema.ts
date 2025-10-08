@@ -49,3 +49,9 @@ export const verifyOtpSchema = z.object({
   codeHash: z.string().min(6, "OTP must be 6 digits"),
   purpose: z.enum(OtpPurposes),
 });
+
+export const updateCandidateSchema = z.object({
+  name: z.string(),
+  bio: z.string(),
+  position: z.coerce.number("Provide a validate candidate position"),
+});

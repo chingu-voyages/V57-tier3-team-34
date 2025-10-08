@@ -52,8 +52,6 @@ export const getVoteables = async (userId: number): Promise<any> => {
   await initiateVotes(dataToInsert);
   const totalPosts = posts?.length;
 
-  console.log();
-
   return {
     canVote: userNotVoted,
     totalPosts,

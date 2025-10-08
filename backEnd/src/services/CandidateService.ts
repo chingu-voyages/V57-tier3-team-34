@@ -4,13 +4,20 @@ import Paginate from "@/helpers/Pagination";
 import {
   addCandidate,
   checkCandidatePost,
+  findUserById,
   getUserByEmail,
   partyData,
+  updateCandidate,
+  updateUserPassword,
 } from "@/model/UserModel";
 import { generatePassword, hashPassword } from "@/utils/password";
-import { candidateSchema, userSchema } from "@/validations/user.schema";
+import {
+  candidateSchema,
+  updateCandidateSchema,
+  userSchema,
+} from "@/validations/schema";
 import { Roles, User } from "@prisma/client";
-import { sendCandidateEmail } from "./EmailService";
+import { sendCandidateEmail, sendEmail } from "./EmailService";
 import { cloudinaryUpload } from "@/helpers/Cloudinary";
 import { getPost } from "@/model/PoliticalPostsModel";
 
@@ -104,4 +111,79 @@ export const createCandidateService = async (
 
   const newCandidate = await addCandidate(data);
   return newCandidate;
+};
+
+export const updatePartyCandidate = async (
+  candidateId: number,
+  candidateData: {
+    name: string;
+    bio: string;
+    position: number;
+  }
+): Promise<any> => {
+  const candidate = await findUserById(candidateId);
+  if (!candidate) {
+    throw new Error("Candidate does not exists!");
+  }
+
+  const validatedData = updateCandidateSchema.safeParse(candidateData);
+
+  if (!validatedData.success) {
+    throw validatedData.error;
+  }
+
+  let { data } = validatedData;
+
+  const post = await getPost(data.position);
+  if (!post) {
+    throw new Error("Please choose a valid political post");
+  }
+
+  /**
+   * Check if a user has already been assigned to that post by the same party
+   */
+
+  const checkPostCandidate = await checkCandidatePost(
+    data.position,
+    candidate.partyId!,
+    candidateId
+  );
+
+  //If we found a candidate
+  if (checkPostCandidate) {
+    throw new Error(
+      "Two candidates cannot contest for the same post within same party"
+    );
+  }
+
+  const updatedCandidateData = await updateCandidate(
+    candidateId,
+    candidateData
+  );
+
+  return updatedCandidateData;
+};
+
+export const partyResetCandidatePassword = async (candidateId: number) => {
+  const candidate = await findUserById(candidateId);
+  if (!candidate) {
+    throw new Error("Candidate does not exists!");
+  }
+
+  const password = generatePassword(8);
+
+  /**
+   * send some email or build the email to send with the password
+   */
+  await sendEmail({
+    email: candidate.email,
+    subject: "Your Password has been Reset",
+    message: `Hello ${candidate.name}, <br /><br />
+    Your portal's password was just reset by your party. 
+    <br />Your new password is <b>${password}</b>`,
+  });
+
+  const hashedPassword = await hashPassword(password);
+  await updateUserPassword(candidate.id, hashedPassword);
+  return true;
 };

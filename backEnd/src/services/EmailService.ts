@@ -42,3 +42,22 @@ export const sendVoterEmail = async (data: {
 
   return true;
 };
+
+export const sendEmail = async (data: {
+  email: string;
+  subject: string;
+  message: string;
+}): Promise<boolean> => {
+  const mailSent = await usesend.emails.send({
+    to: data.email,
+    from: "E-VOTE APP <noreply@mail.afuwapetunde.com>",
+    subject: data.subject,
+    html: data.message,
+  });
+
+  if (mailSent.error !== null) {
+    throw new Error("An error occured! Couldn't dispatch email");
+  }
+
+  return true;
+};
