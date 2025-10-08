@@ -118,7 +118,7 @@ export const updatePartyCandidate = async (
   candidateData: {
     name: string;
     bio: string;
-    position: number;
+    post: number;
   }
 ): Promise<any> => {
   const candidate = await findUserById(candidateId);
@@ -134,7 +134,7 @@ export const updatePartyCandidate = async (
 
   let { data } = validatedData;
 
-  const post = await getPost(data.position);
+  const post = await getPost(data.post);
   if (!post) {
     throw new Error("Please choose a valid political post");
   }
@@ -144,7 +144,7 @@ export const updatePartyCandidate = async (
    */
 
   const checkPostCandidate = await checkCandidatePost(
-    data.position,
+    data.post,
     candidate.partyId!,
     candidateId
   );

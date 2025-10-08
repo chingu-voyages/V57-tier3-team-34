@@ -161,7 +161,7 @@ export const updateCandidate = async (
   userId: number,
   candidateData: {
     name: string;
-    position: number;
+    post: number;
     bio: string;
   }
 ): Promise<User> => {
@@ -173,7 +173,7 @@ export const updateCandidate = async (
       data: {
         name: candidateData.name,
         userManifesto: candidateData.bio,
-        politicalPostId: candidateData.position,
+        politicalPostId: candidateData.post,
       },
     });
 

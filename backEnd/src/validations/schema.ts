@@ -53,5 +53,5 @@ export const verifyOtpSchema = z.object({
 export const updateCandidateSchema = z.object({
   name: z.string(),
   bio: z.string(),
-  position: z.coerce.number("Provide a validate candidate position"),
+  post: z.coerce.number("Provide a validate candidate position"),
 });
