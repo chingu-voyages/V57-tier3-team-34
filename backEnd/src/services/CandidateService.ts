@@ -145,7 +145,8 @@ export const updatePartyCandidate = async (
 
   const checkPostCandidate = await checkCandidatePost(
     data.position,
-    candidate.partyId!
+    candidate.partyId!,
+    candidateId
   );
 
   //If we found a candidate

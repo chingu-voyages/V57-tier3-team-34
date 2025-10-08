@@ -1,5 +1,5 @@
 import prisma from "@/config/db.config";
-import { Roles, User } from "@prisma/client";
+import { Prisma, Roles, User } from "@prisma/client";
 
 export interface partyData {
   name: string;
@@ -73,14 +73,18 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 
 export const checkCandidatePost = async (
   post: number,
-  party: number
+  party: number,
+  myId?: number | undefined
 ): Promise<User | null> => {
   try {
+    const whereClause: Prisma.UserWhereInput = {
+      politicalPostId: post,
+      partyId: party,
+      ...(myId !== undefined ? { id: { not: myId } } : {}),
+    };
+
     const candidate = await model.findFirst({
-      where: {
-        politicalPostId: post,
-        partyId: party,
-      },
+      where: whereClause,
     });
 
     return candidate;
