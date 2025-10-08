@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AxiosResponse } from "axios";
 import { type CandidateUpdateData, type CandidateFormInput } from "../types";
 import { candidateServices } from "../services/candidateServices";
@@ -10,7 +10,20 @@ export const useAddCandidate = () => {
 };
 
 export const useUpdateCandidate = () => {
-  return useMutation<AxiosResponse, Error, CandidateUpdateData>({
-    mutationFn: candidateServices.updateCandidate,
+  return useMutation<
+    AxiosResponse,
+    Error,
+    { id: number | string; data: CandidateUpdateData }
+  >({
+    mutationFn: ({ id, data }) =>
+      candidateServices.updateCandidate({ id, data }),
+  });
+};
+
+export const useResetCandidate = (candidateId: number | null) => {
+  return useQuery({
+    queryKey: ["resetCandidate", candidateId],
+    queryFn: () => candidateServices.resetCandidate(candidateId),
+    enabled: false,
   });
 };

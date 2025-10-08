@@ -5,6 +5,7 @@ import {
   IoClose,
   IoCopyOutline,
   IoPencilOutline,
+  IoReloadCircle,
   IoSearchOutline,
 } from "react-icons/io5";
 
@@ -14,18 +15,20 @@ import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { usePosts } from "../../api/hooks/usePosts";
 import { useCandidates } from "../../api/hooks/useCandidates";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import EmptyState from "../../components/ui/EmptyState";
 import SkeletonLoading from "../../components/ui/LoadingSkeleton";
 import type { CandidateFormInput } from "../../api/types";
 import FormErrorAlert from "../../components/ui/FormErrorAlert";
 import {
   useAddCandidate,
+  useResetCandidate,
   useUpdateCandidate,
 } from "../../api/hooks/useAddCandidate";
 import { useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
+import ConfirmModal from "../../components/ui/ConfirmModal";
 
 interface CandidatesMethod {
   (arg: number): void;
@@ -46,7 +49,7 @@ type CandidateData = {
 const Candidates: React.FC = () => {
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 1;
+  const limit = Number(searchParams.get("limit")) || 10;
 
   const { data, isLoading } = useCandidates(page, limit);
 
@@ -65,6 +68,9 @@ const Candidates: React.FC = () => {
     null
   );
 
+  const [resetConfirmModal, setResetConfirmModal] = useState<boolean>(false);
+  const [resetId, setResetId] = useState<number | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -80,8 +86,10 @@ const Candidates: React.FC = () => {
   } = usePosts(createEditModal);
 
   const { mutate, isPending } = useAddCandidate();
-  const { mutate: updateCandidateMutation, updateCandidatePending } =
+  const { mutate: updateCandidateMutation, isPending: updateCandidatePending } =
     useUpdateCandidate();
+  const { isFetching: isResetting, refetch: resetCandidate } =
+    useResetCandidate(resetId);
   const queryClient = useQueryClient();
 
   /**
@@ -90,24 +98,29 @@ const Candidates: React.FC = () => {
    */
   const onSubmit: SubmitHandler<CandidateFormInput> = (data) => {
     if (editingId) {
-      console.log(editingId);
-      updateCandidateMutation(data, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ["getCandidates"] });
-          setCreateEditModal(false);
-          reset();
-          toast.success("Candidate account updated.");
-        },
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            const message =
-              error.response?.data?.message || "Something went wrong";
-            setAddCandidateError(message);
-          } else {
-            setAddCandidateError(error?.message || "Something went wrong.");
-          }
-        },
-      });
+      updateCandidateMutation(
+        { id: editingId, data },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["getCandidates"] });
+            setCreateEditModal(false);
+            reset();
+            toast.success("Candidate information updated.");
+          },
+          onError: (error) => {
+            if (error instanceof AxiosError) {
+              const errors = error.response?.data?.errors;
+
+              const message = Array.isArray(errors)
+                ? errors.join(", ")
+                : errors || "Something went wrong";
+              setAddCandidateError(message);
+            } else {
+              setAddCandidateError(error?.message || "Something went wrong.");
+            }
+          },
+        }
+      );
     } else {
       mutate(data, {
         onSuccess: () => {
@@ -161,6 +174,27 @@ const Candidates: React.FC = () => {
     }, 3000);
   };
 
+  const initiateResetCandidate = (candidateId: number) => {
+    setResetConfirmModal(true);
+    setResetId(candidateId);
+  };
+
+  const confirmReset = async () => {
+    if (!resetId) return;
+    try {
+      await resetCandidate();
+      toast.success("Candidate Password has been reset.", {
+        description:
+          "New Password has been to sent to the candidate's registered email",
+      });
+
+      setResetConfirmModal(false);
+      setResetId(null);
+    } catch {
+      toast.error("Failed to reset candidate's password!");
+    }
+  };
+
   if (postsError) {
     alert("An error occured, please reload page");
   }
@@ -208,7 +242,7 @@ const Candidates: React.FC = () => {
           </div>
           <div className="divider"></div>
           {data.candidates.data.length === 0 && <EmptyState />}
-          {data.candidates.data && data.candidates.data.length > 0 && (
+          {data?.candidates?.data && data?.candidates?.data?.length > 0 && (
             <>
               <div className="overflow-x-auto h-[660px]">
                 <table className="table dark:text-stone-900">
@@ -285,6 +319,18 @@ const Candidates: React.FC = () => {
                                     Edit Candidate
                                   </button>
                                 </li>
+                                <li>
+                                  <button
+                                    className="text-error font-semibold"
+                                    onClick={() =>
+                                      initiateResetCandidate(candidate.id)
+                                    }
+                                  >
+                                    {" "}
+                                    <IoReloadCircle />
+                                    Reset Password
+                                  </button>
+                                </li>
                               </ul>
                             </div>
                           </div>
@@ -294,13 +340,37 @@ const Candidates: React.FC = () => {
                   </tbody>
                 </table>
               </div>
-
-              <div className="mt-5 flex justify-center">
-                <div className="join">
-                  <button className="btn join-item">Next</button>
-                  <button className="btn join-item">Previous</button>
+              {
+                <div className="mt-5 flex justify-center">
+                  <div className="join">
+                    <Link
+                      to={`?page=${page === 1 ? page : page - 1}`}
+                      className={`btn join-item ${
+                        page === 1 && "pointer-events-none opacity-50"
+                      }`}
+                    >
+                      Previous
+                    </Link>
+                    <Link
+                      onClick={(e) =>
+                        data.candidates.pagination.pages === page &&
+                        e.preventDefault()
+                      }
+                      to={`?page=${
+                        page === data.candidates.pagination.pages
+                          ? page
+                          : page + 1
+                      }`}
+                      className={`btn join-item ${
+                        data.candidates.pagination.pages === page &&
+                        "pointer-events-none opacity-50"
+                      }`}
+                    >
+                      Next
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              }
             </>
           )}
         </>
@@ -444,6 +514,19 @@ const Candidates: React.FC = () => {
           </div>
         </form>
       </Modal>
+      <ConfirmModal
+        isOpen={resetConfirmModal}
+        title="Reset Candidate's Password"
+        message="Are you sure you want to reset this candidate's Password"
+        confirmText="Reset"
+        cancelText="Cancel"
+        onConfirm={confirmReset}
+        isLoading={isResetting}
+        onCancel={() => {
+          setResetConfirmModal(false);
+          setResetId(null);
+        }}
+      />
     </div>
   );
 };
