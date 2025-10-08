@@ -18,6 +18,11 @@ export const userService = {
     return response.data;
   },
 
+  async registerParty(data: RegisterData): Promise<User> {
+    const response = await api.post("/user/register-party", data);
+    return response.data;
+  },
+
   // Login user
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     const { data } = await api.post<AuthResponse>("/user/login", credentials);

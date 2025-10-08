@@ -6,14 +6,16 @@ import {
 } from "react-icons/io5";
 
 interface SideBarProps {
-  user: {
-    userId: number;
-    userType: string;
-    name: string;
-    email: string;
-    partyId: number | null;
-    createdAt: string;
-  };
+  user:
+    | {
+        userId: number;
+        userType: string;
+        name: string;
+        email: string;
+        partyId: number | null;
+        createdAt: string;
+      }
+    | undefined;
 }
 
 const getInitials = (name: string | undefined): string => {
