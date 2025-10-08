@@ -4,9 +4,9 @@ import { type CandidateUpdateData, type CandidateFormInput } from "../types";
 import { candidateServices } from "../services/candidateServices";
 
 export const useAddCandidate = () => {
-  return useMutation<AxiosResponse, Error, CandidateFormInput>({
-    mutationFn: candidateServices.addCandidate,
-  });
+	return useMutation<AxiosResponse, Error, CandidateFormInput>({
+		mutationFn: candidateServices.addCandidate,
+	});
 };
 
 export const useUpdateCandidate = () => {

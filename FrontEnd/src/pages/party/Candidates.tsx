@@ -31,19 +31,19 @@ import { toast } from "sonner";
 import ConfirmModal from "../../components/ui/ConfirmModal";
 
 interface CandidatesMethod {
-  (arg: number): void;
+	(arg: number): void;
 }
 
 type CandidateData = {
-  id: number;
-  email: string;
-  name: string;
-  userImage: string;
-  userManifesto: string;
-  politicalPostId: number;
-  userPosition: {
-    postName: string;
-  };
+	id: number;
+	email: string;
+	name: string;
+	userImage: string;
+	userManifesto: string;
+	politicalPostId: number;
+	userPosition: {
+		postName: string;
+	};
 };
 
 const Candidates: React.FC = () => {
@@ -51,22 +51,22 @@ const Candidates: React.FC = () => {
   const page = Number(searchParams.get("page")) || 1;
   const limit = Number(searchParams.get("limit")) || 10;
 
-  const { data, isLoading } = useCandidates(page, limit);
+	const { data, isLoading } = useCandidates(page, limit);
 
-  const [showToast, setShowToast] = useState<boolean>(false);
-  const [animate, setAnimate] = useState<string>("");
-  const [copiedId, setCopiedId] = useState<number | undefined | string>(
-    undefined
-  );
+	const [showToast, setShowToast] = useState<boolean>(false);
+	const [animate, setAnimate] = useState<string>("");
+	const [copiedId, setCopiedId] = useState<number | undefined | string>(
+		undefined,
+	);
 
-  const [createEditModal, setCreateEditModal] = useState<boolean>(false);
-  const [editingId, setEditingId] = useState<string | number | null>(null);
-  const [selectedCandidate, setSelectedCandidate] =
-    useState<CandidateData | null>(null);
-  const isEditing = !!selectedCandidate;
-  const [addCandidateError, setAddCandidateError] = useState<string | null>(
-    null
-  );
+	const [createEditModal, setCreateEditModal] = useState<boolean>(false);
+	const [editingId, setEditingId] = useState<string | number | null>(null);
+	const [selectedCandidate, setSelectedCandidate] =
+		useState<CandidateData | null>(null);
+	const isEditing = !!selectedCandidate;
+	const [addCandidateError, setAddCandidateError] = useState<string | null>(
+		null,
+	);
 
   const [resetConfirmModal, setResetConfirmModal] = useState<boolean>(false);
   const [resetId, setResetId] = useState<number | null>(null);
@@ -79,11 +79,11 @@ const Candidates: React.FC = () => {
     formState: { errors },
   } = useForm<CandidateFormInput>({});
 
-  const {
-    data: posts,
-    isLoading: postsLoading,
-    error: postsError,
-  } = usePosts(createEditModal);
+	const {
+		data: posts,
+		isLoading: postsLoading,
+		error: postsError,
+	} = usePosts(createEditModal);
 
   const { mutate, isPending } = useAddCandidate();
   const { mutate: updateCandidateMutation, isPending: updateCandidatePending } =
@@ -132,47 +132,47 @@ const Candidates: React.FC = () => {
           });
         },
 
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            const message =
-              error.response?.data?.message || "Something went wrong";
-            setAddCandidateError(message);
-          } else {
-            setAddCandidateError(error?.message || "Something went wrong.");
-          }
-        },
-      });
-    }
-  };
+				onError: (error) => {
+					if (error instanceof AxiosError) {
+						const message =
+							error.response?.data?.message || "Something went wrong";
+						setAddCandidateError(message);
+					} else {
+						setAddCandidateError(error?.message || "Something went wrong.");
+					}
+				},
+			});
+		}
+	};
 
-  const editCandidate: CandidatesMethod = (candidateId: number) => {
-    setEditingId(candidateId);
-    const candidate = data.candidates.data.find(
-      (item: CandidateData) => item.id === candidateId
-    );
-    setSelectedCandidate(candidate);
-    setCreateEditModal(true);
-  };
+	const editCandidate: CandidatesMethod = (candidateId: number) => {
+		setEditingId(candidateId);
+		const candidate = data.candidates.data.find(
+			(item: CandidateData) => item.id === candidateId,
+		);
+		setSelectedCandidate(candidate);
+		setCreateEditModal(true);
+	};
 
-  const copyToClipBoard = (text: string, key: number | string) => {
-    navigator.clipboard.writeText(text);
+	const copyToClipBoard = (text: string, key: number | string) => {
+		navigator.clipboard.writeText(text);
 
-    setAnimate("opacity-0");
-    setShowToast(true);
-    setCopiedId(key);
+		setAnimate("opacity-0");
+		setShowToast(true);
+		setCopiedId(key);
 
-    requestAnimationFrame(() => {
-      setAnimate("opacity-100 transition-opacity duration-500");
-    });
+		requestAnimationFrame(() => {
+			setAnimate("opacity-100 transition-opacity duration-500");
+		});
 
-    setTimeout(function () {
-      setAnimate("opacity-0 transition-opacity duration-500");
-    }, 2500);
-    setTimeout(() => {
-      setShowToast(false);
-      setCopiedId(undefined);
-    }, 3000);
-  };
+		setTimeout(function () {
+			setAnimate("opacity-0 transition-opacity duration-500");
+		}, 2500);
+		setTimeout(() => {
+			setShowToast(false);
+			setCopiedId(undefined);
+		}, 3000);
+	};
 
   const initiateResetCandidate = (candidateId: number) => {
     setResetConfirmModal(true);
@@ -199,13 +199,13 @@ const Candidates: React.FC = () => {
     alert("An error occured, please reload page");
   }
 
-  useEffect(() => {
-    if (!isEditing || postsLoading || !selectedCandidate) return;
+	useEffect(() => {
+		if (!isEditing || postsLoading || !selectedCandidate) return;
 
-    setValue("name", selectedCandidate?.name ?? "");
-    setValue("bio", selectedCandidate?.userManifesto ?? "");
-    setValue("post", selectedCandidate?.politicalPostId);
-  });
+		setValue("name", selectedCandidate?.name ?? "");
+		setValue("bio", selectedCandidate?.userManifesto ?? "");
+		setValue("post", selectedCandidate?.politicalPostId);
+	});
 
   return (
     <div className="flex flex-col">
@@ -387,115 +387,115 @@ const Candidates: React.FC = () => {
         </div>
       )}
 
-      {/* The Edit or Create Candidate Modal */}
-      <Modal
-        isOpen={createEditModal}
-        onClose={() => setCreateEditModal(false)}
-        title={editingId ? "Edit Candidate" : "Add New Candidate"}
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-          {addCandidateError && <FormErrorAlert message={addCandidateError} />}
-          <div className="flex flex-col">
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Candidate Name</legend>
-              <input
-                {...register("name", {
-                  required: true,
-                })}
-                className={`input w-full ${errors.name && "input-error"}`}
-                placeholder="Candidate Name"
-              />
-              {errors.name && (
-                <p className="label text-error">{errors.name.message}</p>
-              )}
-            </fieldset>
+			{/* The Edit or Create Candidate Modal */}
+			<Modal
+				isOpen={createEditModal}
+				onClose={() => setCreateEditModal(false)}
+				title={editingId ? "Edit Candidate" : "Add New Candidate"}
+			>
+				<form onSubmit={handleSubmit(onSubmit)} className="w-full">
+					{addCandidateError && <FormErrorAlert message={addCandidateError} />}
+					<div className="flex flex-col">
+						<fieldset className="fieldset">
+							<legend className="fieldset-legend">Candidate Name</legend>
+							<input
+								{...register("name", {
+									required: true,
+								})}
+								className={`input w-full ${errors.name && "input-error"}`}
+								placeholder="Candidate Name"
+							/>
+							{errors.name && (
+								<p className="label text-error">{errors.name.message}</p>
+							)}
+						</fieldset>
 
-            {!editingId && (
-              <fieldset className="fieldset">
-                <legend className="fieldset-legend">Email</legend>
-                <input
-                  {...register("email", {
-                    required: true,
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Invalid email address",
-                    },
-                  })}
-                  className={`input w-full ${errors.email && "input-error"}`}
-                  placeholder="Email"
-                />
-                {errors.email && (
-                  <p className="label text-error">{errors.email.message}</p>
-                )}
-              </fieldset>
-            )}
+						{!editingId && (
+							<fieldset className="fieldset">
+								<legend className="fieldset-legend">Email</legend>
+								<input
+									{...register("email", {
+										required: true,
+										pattern: {
+											value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+											message: "Invalid email address",
+										},
+									})}
+									className={`input w-full ${errors.email && "input-error"}`}
+									placeholder="Email"
+								/>
+								{errors.email && (
+									<p className="label text-error">{errors.email.message}</p>
+								)}
+							</fieldset>
+						)}
 
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Candidate Post</legend>
-              <select
-                {...register("post", {
-                  required: true,
-                })}
-                defaultValue="Choose Post"
-                className={`select w-full ${errors.post && "select-error"}`}
-                disabled={postsLoading}
-              >
-                <option disabled={true}>Select Political Post</option>
-                {posts &&
-                  posts.data?.posts.map(
-                    (post: { postName: string; id: number }) => (
-                      <option key={post.id} value={post.id}>
-                        {post.postName}
-                      </option>
-                    )
-                  )}
-              </select>
+						<fieldset className="fieldset">
+							<legend className="fieldset-legend">Candidate Post</legend>
+							<select
+								{...register("post", {
+									required: true,
+								})}
+								defaultValue="Choose Post"
+								className={`select w-full ${errors.post && "select-error"}`}
+								disabled={postsLoading}
+							>
+								<option disabled={true}>Select Political Post</option>
+								{posts &&
+									posts.data?.posts.map(
+										(post: { postName: string; id: number }) => (
+											<option key={post.id} value={post.id}>
+												{post.postName}
+											</option>
+										),
+									)}
+							</select>
 
-              {errors.post && (
-                <p className="label text-error">{errors.post.message}</p>
-              )}
-            </fieldset>
+							{errors.post && (
+								<p className="label text-error">{errors.post.message}</p>
+							)}
+						</fieldset>
 
-            {!editingId && (
-              <fieldset className="fieldset">
-                <legend className="fieldset-legend">Image</legend>
-                <input
-                  {...register("image", {
-                    required: true,
-                  })}
-                  className={`file-input w-full ${
-                    errors.image && "file-input-error"
-                  }`}
-                  placeholder="Image"
-                  type="file"
-                />
-                {errors.image && (
-                  <p className="label text-error">{errors.image.message}</p>
-                )}
-              </fieldset>
-            )}
+						{!editingId && (
+							<fieldset className="fieldset">
+								<legend className="fieldset-legend">Image</legend>
+								<input
+									{...register("image", {
+										required: true,
+									})}
+									className={`file-input w-full ${
+										errors.image && "file-input-error"
+									}`}
+									placeholder="Image"
+									type="file"
+								/>
+								{errors.image && (
+									<p className="label text-error">{errors.image.message}</p>
+								)}
+							</fieldset>
+						)}
 
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">Candidate Bio</legend>
-              <textarea
-                {...register("bio", {
-                  required: true,
-                })}
-                className={`textarea w-full ${errors.bio && "textarea-error"}`}
-              />
+						<fieldset className="fieldset">
+							<legend className="fieldset-legend">Candidate Bio</legend>
+							<textarea
+								{...register("bio", {
+									required: true,
+								})}
+								className={`textarea w-full ${errors.bio && "textarea-error"}`}
+							/>
 
-              {errors.bio && (
-                <p className="label text-error">{errors.bio.message}</p>
-              )}
-            </fieldset>
-          </div>
-          <div className="flex justify-between mt-5">
-            <span
-              className="btn btn-error text-white"
-              onClick={() => setCreateEditModal(false)}
-            >
-              <IoClose /> Cancel
-            </span>
+							{errors.bio && (
+								<p className="label text-error">{errors.bio.message}</p>
+							)}
+						</fieldset>
+					</div>
+					<div className="flex justify-between mt-5">
+						<span
+							className="btn btn-error text-white"
+							onClick={() => setCreateEditModal(false)}
+						>
+							<IoClose /> Cancel
+						</span>
 
             <button className="btn btn-primary text-white">
               {isPending || updateCandidatePending ? (

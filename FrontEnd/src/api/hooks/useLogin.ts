@@ -4,9 +4,9 @@ import type { LoginCredentials } from "../types";
 import { userService } from "../services/userService";
 
 const useLogin = () => {
-  return useMutation<AuthResponse, Error, LoginCredentials>({
-    mutationFn: userService.login,
-  });
+	return useMutation<AuthResponse, Error, LoginCredentials>({
+		mutationFn: userService.login,
+	});
 };
 
 export default useLogin;

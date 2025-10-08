@@ -8,6 +8,7 @@ import PartyDashboard from "../pages/party/Dashboard";
 import Candidates from "../pages/party/Candidates";
 import Candidate from "../pages/party/registration/Candidate";
 import Election from "../pages/voter/Election";
+import Results from "../pages/voter/Results";
 import Auth from "../pages/Auth";
 import Logout from "../pages/Logout";
 const router = createBrowserRouter([
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/voter/register",
         element: <VoterRegister />,
+      },
+      {
+        path: "/voter/results",
+        element: <Results />,
       },
       {
         path: "/party",
