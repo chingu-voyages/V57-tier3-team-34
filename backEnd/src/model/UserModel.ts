@@ -89,6 +89,28 @@ export const checkCandidatePost = async (
   }
 };
 
+export const addCandidate: addCandidateFn = async (
+  data: candidateData
+): Promise<User | undefined> => {
+  try {
+    const candidate = await model.create({
+      data: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        userType: Roles.CANDIDATE,
+        partyId: data.partyId,
+        userManifesto: data.bio,
+        userImage: data.userImage,
+        politicalPostId: data.position,
+      },
+    });
+    return candidate;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateUser = async (
   data: { name: string; manifesto?: string; userImage?: string },
   email: string
@@ -111,22 +133,46 @@ export const updateUser = async (
   }
 };
 
-export const addCandidate: addCandidateFn = async (
-  data: candidateData
-): Promise<User | undefined> => {
+export const updateUserPassword = async (
+  candidateId: number,
+  newPassword: string
+): Promise<boolean> => {
   try {
-    const candidate = await model.create({
+    await model.update({
+      where: {
+        id: candidateId,
+      },
       data: {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        userType: Roles.CANDIDATE,
-        partyId: data.partyId,
-        userManifesto: data.bio,
-        userImage: data.userImage,
-        politicalPostId: data.position,
+        password: newPassword,
       },
     });
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateCandidate = async (
+  userId: number,
+  candidateData: {
+    name: string;
+    position: number;
+    bio: string;
+  }
+): Promise<User> => {
+  try {
+    const candidate = await model.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: candidateData.name,
+        userManifesto: candidateData.bio,
+        politicalPostId: candidateData.position,
+      },
+    });
+
     return candidate;
   } catch (error) {
     throw error;

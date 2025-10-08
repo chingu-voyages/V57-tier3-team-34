@@ -1,8 +1,13 @@
-import { addParty, getUserByEmail, partyData } from "@/model/UserModel";
+import {
+  addParty,
+  findUserById,
+  getUserByEmail,
+  partyData,
+} from "@/model/UserModel";
 import { getPartyVotes } from "@/model/VoteModel";
 import { getPostsAndCandidates } from "@/utils/functions";
 import { hashPassword } from "@/utils/password";
-import { userSchema } from "@/validations/user.schema";
+import { userSchema } from "@/validations/schema";
 import { User } from "@prisma/client";
 
 export const createPartyService = async (

@@ -10,7 +10,7 @@ import {
   requestOtpSchema,
   verifyOtpSchema,
   voterSchema,
-} from "@/validations/user.schema";
+} from "@/validations/schema";
 import { User, OtpPurposes } from "@prisma/client";
 import prisma from "@/config/db.config";
 import { generateNumericOtp, hashOtp, verifyOtpHash } from "@/utils/otp";

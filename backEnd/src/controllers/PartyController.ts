@@ -8,6 +8,8 @@ import errorHandler from "@/utils/errorHandler";
 import {
   createCandidateService,
   getCandidateService,
+  partyResetCandidatePassword,
+  updatePartyCandidate,
 } from "@/services/CandidateService";
 import { success } from "zod";
 
@@ -64,15 +66,45 @@ export const createCandidate = async (req: Request, res: Response) => {
   }
 };
 
+export const updateCandidate = async (req: Request, res: Response) => {
+  try {
+    const user = (req as any).user;
+    const candidate = await updatePartyCandidate(
+      parseInt(req.params.userId),
+      req.body
+    );
+    return res.status(201).json({
+      success: true,
+      data: candidate,
+    });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
 export const electionResult = async (req: Request, res: Response) => {
   try {
     const { userId } = (req as any).user;
-    console.log(userId);
+
     const result = await getPartyElectionResult(userId);
 
     return res.status(201).json({
       success: true,
       data: result,
+    });
+  } catch (error) {
+    const errors = errorHandler(error);
+    return res.status(errors.status).json(errors.body);
+  }
+};
+
+export const resetCandidatePassword = async (req: Request, res: Response) => {
+  try {
+    await partyResetCandidatePassword(parseInt(req.params.userId));
+
+    return res.status(201).json({
+      success: true,
     });
   } catch (error) {
     const errors = errorHandler(error);

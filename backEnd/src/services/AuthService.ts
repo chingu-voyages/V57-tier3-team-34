@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 import { authData, getUserByEmail, updateUser } from "@/model/UserModel";
 import { verifyPassword } from "@/utils/password";
-import { loginSchema, userUpdateSchema } from "@/validations/user.schema";
+import { loginSchema, userUpdateSchema } from "@/validations/schema";
 
 import { OtpPurposes, Roles } from "@prisma/client";
 import { cloudinaryUpload } from "@/helpers/Cloudinary";

@@ -44,7 +44,6 @@ export const confirmAllCandidatesValid = async (
     }
 
     if (candidate?.politicalPostId !== post_id) {
-      console.log(post_id);
       throw new Error(
         `Candidate ${candidate?.name} did not contest for the post submitted`
       );
