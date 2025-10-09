@@ -6,4 +6,9 @@ export const generalServices = {
 		const response = await api.get("/extras/get-political-posts");
 		return response.data;
 	},
+
+	async getResults(): Promise<AxiosResponse> {
+		const response = await api.get("/extras/election-results");
+		return response.data;
+	},
 };

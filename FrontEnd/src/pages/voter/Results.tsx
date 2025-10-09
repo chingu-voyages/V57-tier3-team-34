@@ -4,6 +4,7 @@ import type {
 	ApiResponse,
 	ElectionResultsDataType,
 } from "../../types/ElectionResultsDataType";
+import {generalService} from "../../api";
 
 const Results = () => {
 	const [activeTab, setActiveTab] = useState<string>("");
@@ -14,10 +15,8 @@ const Results = () => {
 		data: results,
 	} = useQuery<ApiResponse>({
 		queryKey: ["electionResultsData"],
-		queryFn: () =>
-			fetch(`${import.meta.env.VITE_API_URL}/extras/election-results`).then(
-				(res) => res.json(),
-			),
+		queryFn: async () =>
+			await generalService.getResults(),
 	});
 
 	const sortedResults = useMemo(() => {
