@@ -38,12 +38,12 @@ const Election = () => {
     setShowVoteModal(true);
   };
 
-  const confirmVote = async (candidateId: number, electablePostId: number) => {
+  const confirmVote = async (candidateId: number, postId: number) => {
     setShowVoteModal(false);
 
     setAllSelectedCandidates([
       ...allSelectedCandidates,
-      { candidateId: candidateId, electablePostId: electablePostId },
+      { candidateId: candidateId, postId: postId },
     ]);
     toast.success("Candidate selected successfully");
   };
@@ -56,7 +56,8 @@ const Election = () => {
     setIsVotingAllPositions(false);
     setIsVoting(true);
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+	const response = await electionService.initiateVote(allSelectedCandidates);
+    console.log("response", response);
     setIsVoting(false);
     setShowSuccessModal(true);
     setSelectedCandidate(null);

@@ -14,5 +14,5 @@ export type CandidateDataType = {
 
 export type CandidateDataPostRequest = {
 	candidateId: number;
-	electablePostId: number;
+	postId: number;
 }
