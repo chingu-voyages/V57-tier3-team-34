@@ -8,19 +8,22 @@ import type {
 	CandidateDataType,
 } from "../../types/CandidateDataType";
 import { toast } from "sonner";
+import SuccessModal from "../../components/SuccessModal";
+import FailureModal from "../../components/FailureModal";
 
 const Election = () => {
-	const [selectedCandidate, setSelectedCandidate] =
-		useState<CandidateDataType | null>(null);
-	const [showVoteModal, setShowVoteModal] = useState(false);
-	const [showSuccessModal, setShowSuccessModal] = useState(false);
-	const [isVoting, setIsVoting] = useState(false);
-	const [isVotingAllPositions, setIsVotingAllPositions] = useState(false);
-	const [selectedPosition, setSelectedPosition] = useState<string>("Governor");
-	const [data, setData] = useState<ElectionResponse | null>(null);
-	const [allSelectedCandidates, setAllSelectedCandidates] = useState<
-		CandidateDataPostRequest[]
-	>([]);
+  const [selectedCandidate, setSelectedCandidate] =
+    useState<CandidateDataType | null>(null);
+  const [showVoteModal, setShowVoteModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFailureModal, setShowFailureModal] = useState(false);
+  const [isVoting, setIsVoting] = useState(false);
+  const [isVotingAllPositions, setIsVotingAllPositions] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState<string>("Governor");
+  const [data, setData] = useState<ElectionResponse | null>(null);
+  const [allSelectedCandidates, setAllSelectedCandidates] = useState<
+    CandidateDataPostRequest[]
+  >([]);
 
 	const handleVote = (candidate: CandidateDataType) => {
 		setSelectedCandidate({
@@ -52,17 +55,25 @@ const Election = () => {
 		setShowSuccessModal(false);
 	};
 
-	const handleVoteAllPositions = async () => {
-		setIsVotingAllPositions(false);
-		setIsVoting(true);
-		// Simulate API call
-		const response = await electionService.initiateVote(allSelectedCandidates);
-		console.log("response", response);
-		setIsVoting(false);
-		setShowSuccessModal(true);
-		setSelectedCandidate(null);
-		setAllSelectedCandidates([]);
-	};
+  const handleVoteAllPositions = async () => {
+    setIsVotingAllPositions(false);
+    setIsVoting(true);
+    // Simulate API call
+    try {
+      const response = await electionService.initiateVote(
+        allSelectedCandidates
+      );
+      console.log("response", response);
+      if (response) setShowSuccessModal(true);
+    } catch (error) {
+      setShowFailureModal(true);
+      console.log("error", error);
+    } finally {
+      setIsVoting(false);
+      setSelectedCandidate(null);
+      setAllSelectedCandidates([]);
+    }
+  };
 
 	const todayDate = new Date().getFullYear();
 
@@ -291,30 +302,14 @@ const Election = () => {
 					</div>
 				)}
 
-				{/* Success Modal */}
-				{showSuccessModal && (
-					<div className="modal modal-open">
-						<div className="modal-box text-center">
-							<div className="flex justify-center mb-4">
-								<div className="w-16 h-16 bg-success rounded-full flex items-center justify-center">
-									<IoCheckmark size={32} className="text-success-content" />
-								</div>
-							</div>
-							<h3 className="font-bold text-lg mb-2">
-								Votes Submitted Successfully!
-							</h3>
-							<p className="mb-4">
-								Thank you for participating in the democratic process. Your vote
-								has been recorded.
-							</p>
-							<div className="modal-action justify-center">
-								<button className="btn btn-primary" onClick={closeSuccessModal}>
-									Continue
-								</button>
-							</div>
-						</div>
-					</div>
-				)}
+        {/* Success Modal */}
+        {showSuccessModal && (
+          <SuccessModal closeSuccessModal={closeSuccessModal} />
+        )}
+
+        {showFailureModal && (
+          <FailureModal closeFailureModal={() => setShowFailureModal(false)} />
+        )}
 
 				{/* Loading Overlay */}
 				{isVoting && (
