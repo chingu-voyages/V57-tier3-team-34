@@ -100,16 +100,6 @@ const Election = () => {
                   Cast your vote for the future of our nation. Every vote
                   counts!
                 </p>
-                {/* <div className="flex justify-center gap-4 text-sm">
-									<div className="flex items-center gap-2">
-										<IoTime />
-										<span>Voting ends in 2 days</span>
-									</div>
-									<div className="flex items-center gap-2">
-										<IoLocation />
-										<span>National Elections</span>
-									</div>
-								</div> */}
               </div>
             </div>
           </div>
@@ -138,15 +128,6 @@ const Election = () => {
                   All Positions to Vote for
                 </div>
               </div>
-              {/* <div className="stat bg-accent text-accent-content rounded-lg">
-								<div className="stat-title text-accent-content">
-									Your Status
-								</div>
-								<div className="stat-value text-lg">Eligible</div>
-								<div className="stat-desc text-accent-content">
-									Ready to vote
-								</div>
-							</div> */}
             </div>
           </div>
         </div>
