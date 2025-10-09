@@ -10,3 +10,9 @@ export type CandidateDataType = {
 	partyName: string;
 	votes: number;
 };
+
+
+export type CandidateDataPostRequest = {
+	candidateId: number;
+	electablePostId: number;
+}
