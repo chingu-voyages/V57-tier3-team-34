@@ -4,6 +4,7 @@ import {
 	IoLogInOutline,
 	IoPersonOutline,
 } from "react-icons/io5";
+import { getInitials } from "../../../utils/getInitials";
 
 interface SideBarProps {
 	user:
@@ -17,16 +18,6 @@ interface SideBarProps {
 		  }
 		| undefined;
 }
-
-const getInitials = (name: string | undefined): string => {
-	if (!name) return "";
-
-	const parts = name.trim().split(" ").filter(Boolean);
-
-	const firstTwo = parts.slice(0, 2);
-
-	return firstTwo.map((word) => word[0].toUpperCase()).join("");
-};
 
 const SideBar: React.FC<SideBarProps> = ({ user }) => {
 	return (
