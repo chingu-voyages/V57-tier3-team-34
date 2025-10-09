@@ -11,8 +11,7 @@ export type CandidateDataType = {
 	votes: number;
 };
 
-
 export type CandidateDataPostRequest = {
 	candidateId: number;
 	postId: number;
-}
+};
