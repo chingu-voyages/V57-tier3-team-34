@@ -11,4 +11,9 @@ export const generalServices = {
     const response = await api.get("/party/get-stats");
     return response.data;
   },
+
+  async getResults(): Promise<AxiosResponse> {
+    const response = await api.get("/extras/election-results");
+    return response.data;
+  },
 };
