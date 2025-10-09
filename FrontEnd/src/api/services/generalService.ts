@@ -12,3 +12,4 @@ export const generalServices = {
 		return response.data;
 	},
 };
+	
