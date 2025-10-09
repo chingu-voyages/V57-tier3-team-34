@@ -1,7 +1,40 @@
 import { IoInformationCircleOutline, IoPeople } from "react-icons/io5";
 import Chart from "../../components/party/dashboard/Chart";
+import { useDashboard } from "../../api/hooks/useDashboard";
+import { toast } from "sonner";
+import { useLocation, useNavigate } from "react-router";
 
 const Overview: React.FC = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	const { isLoading, data, error } = useDashboard();
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col">
+				<div className="flex flex-col md:grid grid-cols-3 stats shadow gap-5">
+					<div className="skeleton h-40"></div>
+					<div className="skeleton h-40"></div>
+					<div className="skeleton h-40"></div>
+				</div>
+			</div>
+		);
+	}
+
+	if (error) {
+		toast.error("Error Loading Page, plese reload", {
+			duration: Infinity,
+			action: {
+				label: "Reload",
+				onClick: () => navigate(location.pathname, { replace: true }),
+			},
+		});
+		return;
+	}
+
+	console.log(data);
+
 	return (
 		<div className="flex flex-col dark: text-stone-900">
 			<div className="flex flex-col md:grid grid-cols-3 stats shadow">
@@ -10,7 +43,7 @@ const Overview: React.FC = () => {
 						<IoInformationCircleOutline size={40} />
 					</div>
 					<div className="stat-title text-gray-700">Your Candidates</div>
-					<div className="stat-value">200</div>
+					<div className="stat-value">{data?.data?.myCandidates}</div>
 					<div className="stat-desc text-gray-700">
 						All Candidates in your political party
 					</div>
@@ -21,7 +54,7 @@ const Overview: React.FC = () => {
 						<IoPeople size={40} />
 					</div>
 					<div className="stat-title text-gray-700">Contestants</div>
-					<div className="stat-value">4,200</div>
+					<div className="stat-value">{data?.data?.allContestants}</div>
 					<div className="stat-desc text-gray-700">
 						All Contestants on the system
 					</div>
@@ -44,11 +77,11 @@ const Overview: React.FC = () => {
 						</svg>
 					</div>
 					<div className="stat-title text-gray-700">Voters</div>
-					<div className="stat-value">38000</div>
+					<div className="stat-value">{data?.data?.allVoters}</div>
 					<div className="stat-desc text-gray-700">Total Registered Voters</div>
 				</div>
 			</div>
-			<div className="mt-10 p-5 background-white border border-gray-200 rounded-md shadow">
+			<div className="hidden mt-10 p-5 background-white border border-gray-200 rounded-md shadow">
 				<Chart />
 			</div>
 		</div>

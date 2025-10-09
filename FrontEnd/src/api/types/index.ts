@@ -52,7 +52,7 @@ export interface Vote {
 
 export interface VoteData {
 	candidateId: string;
-	electionId: string;
+	postId: string;
 }
 
 // Dashboard Types

@@ -10,20 +10,20 @@ export const useAddCandidate = () => {
 };
 
 export const useUpdateCandidate = () => {
-  return useMutation<
-    AxiosResponse,
-    Error,
-    { id: number | string; data: CandidateUpdateData }
-  >({
-    mutationFn: ({ id, data }) =>
-      candidateServices.updateCandidate({ id, data }),
-  });
+	return useMutation<
+		AxiosResponse,
+		Error,
+		{ id: number | string; data: CandidateUpdateData }
+	>({
+		mutationFn: ({ id, data }) =>
+			candidateServices.updateCandidate({ id, data }),
+	});
 };
 
 export const useResetCandidate = (candidateId: number | null) => {
-  return useQuery({
-    queryKey: ["resetCandidate", candidateId],
-    queryFn: () => candidateServices.resetCandidate(candidateId),
-    enabled: false,
-  });
+	return useQuery({
+		queryKey: ["resetCandidate", candidateId],
+		queryFn: () => candidateServices.resetCandidate(candidateId),
+		enabled: false,
+	});
 };

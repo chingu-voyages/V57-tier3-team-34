@@ -36,19 +36,19 @@ export const candidateServices = {
 		return response.data;
 	},
 
-  async updateCandidate({
-    id,
-    data,
-  }: {
-    id: number | string;
-    data: CandidateUpdateData;
-  }): Promise<AxiosResponse> {
-    const response = await api.put(`/party/candidate/${id}`, data);
-    return response.data;
-  },
+	async updateCandidate({
+		id,
+		data,
+	}: {
+		id: number | string;
+		data: CandidateUpdateData;
+	}): Promise<AxiosResponse> {
+		const response = await api.put(`/party/candidate/${id}`, data);
+		return response.data;
+	},
 
-  async resetCandidate(id: number | null): Promise<AxiosResponse> {
-    const response = await api.put(`party/candidate/${id}/reset`);
-    return response;
-  },
+	async resetCandidate(id: number | null): Promise<AxiosResponse> {
+		const response = await api.put(`party/candidate/${id}/reset`);
+		return response;
+	},
 };

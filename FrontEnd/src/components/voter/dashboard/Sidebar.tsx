@@ -1,9 +1,5 @@
 import { Link } from "react-router";
-import {
-	IoHomeOutline,
-	IoLogInOutline,
-	IoPersonOutline,
-} from "react-icons/io5";
+import { IoHomeOutline, IoListOutline, IoLogInOutline } from "react-icons/io5";
 import { getInitials } from "../../../utils/getInitials";
 
 interface SideBarProps {
@@ -13,7 +9,6 @@ interface SideBarProps {
 				userType: string;
 				name: string;
 				email: string;
-				partyId: number | null;
 				createdAt: string;
 		  }
 		| undefined;
@@ -32,15 +27,15 @@ const SideBar: React.FC<SideBarProps> = ({ user }) => {
 			<div>
 				<ul className="menu menu-lg rounded-box w-full">
 					<li className="mb-5">
-						<Link to="/party/dashboard">
+						<Link to="/voter/dashboard">
 							<IoHomeOutline />
 							Dashboard
 						</Link>
 					</li>
 					<li className="mb-5">
-						<Link to="/party/candidates">
-							<IoPersonOutline />
-							Candidates
+						<Link to="/voter/election">
+							<IoListOutline />
+							Elections
 						</Link>
 					</li>
 					<li>

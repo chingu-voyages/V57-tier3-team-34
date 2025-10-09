@@ -8,7 +8,6 @@ import {generalService} from "../../api";
 
 const Results = () => {
 	const [activeTab, setActiveTab] = useState<string>("");
-
 	const {
 		isPending,
 		error,
@@ -34,7 +33,6 @@ const Results = () => {
 	}, [results]);
 
 	if (isPending) return <p className="text-black">Loading...</p>;
-
 	if (error)
 		return <p className="text-black">An error has occured: {error.message}</p>;
 

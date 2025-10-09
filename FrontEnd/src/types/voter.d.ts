@@ -1,4 +1,5 @@
 // Election Types
+import type { CandidateDataType } from "./CandidateDataType";
 export interface ElectionResponse {
 	success: boolean;
 	data: Election;
@@ -11,7 +12,7 @@ export interface Election {
 	posts: Post[];
 	totalCandidates: number;
 	totalPosts: number;
-	voteables: Voteable[];
+	voteables: Voteable<CandidateDataType>;
 }
 
 export interface Post {
@@ -22,7 +23,13 @@ export interface Post {
 	updatedAt?: string;
 }
 
-export interface Voteable {
-	Governor: Candidate[];
-	President: Candidate[];
+export interface Voteable<T> {
+	Governor: T[];
+	President: T[];
+	Senatorial: T[];
+	HouseOfRepresentatives: T[];
+	StateHouseOfAssembly: T[];
+	LocalGovernmentCouncil: T[];
+	TraditionalLeader: T[];
+	Other: T[];
 }
