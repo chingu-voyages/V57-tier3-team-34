@@ -11,6 +11,8 @@ import Election from "../pages/voter/Election";
 import Results from "../pages/voter/Results";
 import Auth from "../pages/Auth";
 import Logout from "../pages/Logout";
+import VoterDashboard from "../pages/voter/Dashboard";
+import VoterLayout from "../pages/voter/Layout";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -54,9 +56,9 @@ const router = createBrowserRouter([
       },
       {
         path: "/voter",
-        element: <PartyLayout />,
+        element: <VoterLayout />,
         children: [
-          { index: true, path: "dashboard", element: <PartyDashboard /> },
+          { index: true, path: "dashboard", element: <VoterDashboard /> },
           { path: "election", element: <Election /> },
         ],
       },
