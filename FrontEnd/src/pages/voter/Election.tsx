@@ -78,7 +78,7 @@ const Election = () => {
 
   useEffect(() => {
     const fetchRefresh = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       toast.error("Do not forget to click on Apply all Votes");
     };
     fetchRefresh();
