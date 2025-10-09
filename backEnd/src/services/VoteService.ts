@@ -63,7 +63,7 @@ export const getVoteables = async (userId: number): Promise<any> => {
 
 export const castVoteables = async (
   userId: number,
-  data: { post_id: number; candidate_id: number }[]
+  data: { postId: number; candidateId: number }[]
 ): Promise<any> => {
   /**
    * Let's check if they have not voed
@@ -94,8 +94,8 @@ export const castVoteables = async (
   const voteData = data.map((item) => {
     return {
       userId,
-      candidateId: item.candidate_id,
-      postId: item.post_id,
+      candidateId: item.candidateId,
+      postId: item.postId,
     };
   });
 
