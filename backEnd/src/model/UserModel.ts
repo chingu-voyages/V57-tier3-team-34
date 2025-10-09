@@ -280,3 +280,17 @@ export const getPartyCandidates = async (
     throw error;
   }
 };
+
+export const getPartyDashboardStat = async (partyId: number): Promise<any> => {
+  try {
+    const [myCandidates, allContestants, allVoters] = await Promise.all([
+      model.count({ where: { userType: Roles.CANDIDATE, partyId } }),
+      model.count({ where: { userType: Roles.CANDIDATE } }),
+      model.count({ where: { userType: Roles.VOTER } }),
+    ]);
+
+    return { myCandidates, allContestants, allVoters };
+  } catch (error) {
+    throw error;
+  }
+};

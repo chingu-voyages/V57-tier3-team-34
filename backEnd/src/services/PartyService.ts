@@ -1,6 +1,7 @@
 import {
   addParty,
   findUserById,
+  getPartyDashboardStat,
   getUserByEmail,
   partyData,
 } from "@/model/UserModel";
@@ -75,4 +76,9 @@ export const getPartyElectionResult = async (partyId: number): Promise<any> => {
   }
 
   return voteables;
+};
+
+export const getPartyStats = async (partyId: number) => {
+  const statData = await getPartyDashboardStat(partyId);
+  return statData;
 };

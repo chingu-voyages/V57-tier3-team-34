@@ -2,6 +2,7 @@ import {
   createCandidate,
   electionResult,
   getPartyCandidates,
+  getStats,
   resetCandidatePassword,
   updateCandidate,
 } from "@/controllers/PartyController";
@@ -22,5 +23,6 @@ router.post("/candidate", upload.single("image"), createCandidate);
 router.get("/result", electionResult);
 router.put("/candidate/:userId", updateCandidate);
 router.put("/candidate/:userId/reset", resetCandidatePassword);
+router.get("/get-stats", getStats);
 
 export default router;
