@@ -15,6 +15,7 @@ const Results = () => {
   } = useQuery<ApiResponse>({
     queryKey: ["electionResultsData"],
     queryFn: async () => await generalServices.getResults(),
+    refetchInterval: 5 * 60 * 1000, // REFETCH QUERY EVERY 5 MINUTES
   });
 
   const sortedResults = useMemo(() => {
