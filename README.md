@@ -35,8 +35,8 @@ your repo access and to practice PR'ing with your team *before* you start
 coding!
 
 - Kosisochukwu Azubogu: [GitHub](https://github.com/azubogukosiso) / [LinkedIn](https://linkedin.com/in/azubogu-kosisochukwu)
-  
-- Rusgyn Magsanay: [GitHub](https://github.com/Rusgyn) / [LinkedIn](https://www.linkedin.com/in/rusgyn-magsanay/)
 
+- Rusgyn Magsanay: [GitHub](https://github.com/Rusgyn) / [LinkedIn](https://www.linkedin.com/in/rusgyn-magsanay/)
 - Onyekachi Nwakaihe: [GitHub](https://github.com/donkachii) / [LinkedIn](https://www.linkedin.com/in/onyekachi-nwakaihe)
 - Afuwape Babatunde: [GitHub](https://github.com/AfuBasic) / [LinkedIn](https://www.linkedin.com/in/afuwape-babatunde-258735382/)
+- Hancke le Roux: [GitHub](https://github.com/HawkCoding) / [LinkedIn](https://www.linkedin.com/in/hancke-chris-le-roux-19981206za/)
