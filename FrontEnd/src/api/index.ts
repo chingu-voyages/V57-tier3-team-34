@@ -3,7 +3,7 @@
  */
 
 // API Client
-export { api, setAuthToken, clearAuthToken } from "./config/apiClient";
+export { api, clearAuthToken } from "./config/apiClient";
 
 // Services
 export { userService } from "./services/userService";
