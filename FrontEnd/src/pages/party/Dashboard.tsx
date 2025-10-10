@@ -3,6 +3,7 @@ import Chart from "../../components/party/dashboard/Chart";
 import { useDashboard } from "../../api/hooks/useDashboard";
 import { toast } from "sonner";
 import { useLocation, useNavigate } from "react-router";
+import LoadingState from "../../components/LoadingState";
 
 const Overview: React.FC = () => {
 	const navigate = useNavigate();
@@ -11,19 +12,11 @@ const Overview: React.FC = () => {
 	const { isLoading, data, error } = useDashboard();
 
 	if (isLoading) {
-		return (
-			<div className="flex flex-col">
-				<div className="flex flex-col md:grid grid-cols-3 stats shadow gap-5">
-					<div className="skeleton h-40"></div>
-					<div className="skeleton h-40"></div>
-					<div className="skeleton h-40"></div>
-				</div>
-			</div>
-		);
+		return <LoadingState />;
 	}
 
 	if (error) {
-		toast.error("Error Loading Page, plese reload", {
+		toast.error("Error Loading Page, please reload", {
 			duration: Infinity,
 			action: {
 				label: "Reload",
@@ -32,8 +25,6 @@ const Overview: React.FC = () => {
 		});
 		return;
 	}
-
-	console.log(data);
 
 	return (
 		<div className="flex flex-col dark: text-stone-900">
