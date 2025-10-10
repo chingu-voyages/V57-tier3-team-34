@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoCheckmark, IoWarning, IoCheckmarkCircle } from "react-icons/io5";
 import { electionServices } from "../../api/services/electionServices";
-import type { ElectionResponse, Voteable } from "../../types";
+import type { Voteable } from "../../types";
 import { getInitials } from "../../utils/getInitials";
 import type {
   CandidateDataPostRequest,
@@ -10,6 +10,8 @@ import type {
 import { toast } from "sonner";
 import SuccessModal from "../../components/SuccessModal";
 import FailureModal from "../../components/FailureModal";
+import { useElectionData } from "../../api/hooks/useElectionData";
+import LoadingState from "../../components/LoadingState";
 
 const Election = () => {
   const [selectedCandidate, setSelectedCandidate] =
@@ -20,7 +22,6 @@ const Election = () => {
   const [isVoting, setIsVoting] = useState(false);
   const [isVotingAllPositions, setIsVotingAllPositions] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState<string>("Governor");
-  const [data, setData] = useState<ElectionResponse | null>(null);
   const [allSelectedCandidates, setAllSelectedCandidates] = useState<
     CandidateDataPostRequest[]
   >([]);
@@ -60,7 +61,7 @@ const Election = () => {
     setIsVoting(true);
     // Simulate API call
     try {
-      const response = await electionService.initiateVote(
+      const response = await electionServices.initiateVote(
         allSelectedCandidates
       );
       console.log("response", response);
@@ -78,23 +79,25 @@ const Election = () => {
   const todayDate = new Date().getFullYear();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await electionServices.getElections();
-      setData(data);
-    };
-    fetchData();
-  }, []);
-
-  const totalCandidates = data?.data ? data?.data?.totalCandidates : 0;
-  const totalPosts = data?.data ? data?.data?.totalPosts : 0;
-
-  useEffect(() => {
     const fetchRefresh = async () => {
       await new Promise((resolve) => setTimeout(resolve, 3000));
       toast.error("Do not forget to click on Apply all Votes");
     };
     fetchRefresh();
   }, []);
+
+  const { isLoading, data, error } = useElectionData();
+
+  const totalCandidates = data?.data ? data?.data?.totalCandidates : 0;
+  const totalPosts = data?.data ? data?.data?.totalPosts : 0;
+
+  if (isLoading) {
+    return <LoadingState />;
+  }
+
+  if (error) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className="min-h-screen bg-base-200 p-4">
