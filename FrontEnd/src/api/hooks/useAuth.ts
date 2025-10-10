@@ -4,7 +4,7 @@
  */
 
 import { useState, useEffect } from "react";
-import { userService } from "../services/userServices";
+import { userServices } from "../services/userServices";
 import type { User, LoginCredentials, RegisterData } from "../types";
 
 interface AuthState {
@@ -37,7 +37,7 @@ export const useAuth = () => {
 
       if (token) {
         try {
-          const user = await userService.getProfile();
+          const user = await userServices.getProfile();
           setState({
             user,
             isLoading: false,
@@ -66,7 +66,7 @@ export const useAuth = () => {
   });
   // Login function
   const login = async (credentials: LoginCredentials) => {
-    const response = await userService.login(credentials);
+    const response = await userServices.login(credentials);
     return response;
   };
 
@@ -75,7 +75,7 @@ export const useAuth = () => {
     setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      const response = await userService.registerVoter(userData);
+      const response = await userServices.registerVoter(userData);
       setState({
         user: response.user,
         isLoading: false,
@@ -102,7 +102,7 @@ export const useAuth = () => {
     setState((prev) => ({ ...prev, isLoading: true }));
 
     try {
-      await userService.logout();
+      await userServices.logout();
     } catch (error) {
       console.warn("Logout API call failed:", error);
     } finally {

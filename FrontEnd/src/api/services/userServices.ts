@@ -18,6 +18,7 @@ export const userServices = {
     return response.data;
   },
 
+  // Register a new party
   async registerParty(data: RegisterData): Promise<User> {
     const response = await api.post("/user/register-party", data);
     return response.data;
