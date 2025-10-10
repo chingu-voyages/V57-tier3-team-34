@@ -10,7 +10,7 @@ const FailureModal = ({
 		<div className="modal modal-open">
 			<div className="modal-box text-center">
 				<div className="flex justify-center mb-4">
-					<div className="w-16 h-16 bg-success rounded-full flex items-center justify-center">
+					<div className="w-16 h-16 bg-error rounded-full flex items-center justify-center">
 						{/*
             Cancel icon using react-icons.
             We'll use IoClose from react-icons/io5 for a clear cancel/close symbol.

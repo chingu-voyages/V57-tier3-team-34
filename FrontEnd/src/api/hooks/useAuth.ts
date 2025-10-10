@@ -8,32 +8,32 @@ import { userServices } from "../services/userServices";
 import type { User, LoginCredentials, RegisterData } from "../types";
 
 interface AuthState {
-  user: User | null;
-  isLoading: boolean;
-  isAuthenticated: boolean;
-  error: string | null;
+	user: User | null;
+	isLoading: boolean;
+	isAuthenticated: boolean;
+	error: string | null;
 }
 
 export interface AuthResponse {
-  success: boolean;
-  data: {
-    token: string;
-    userType: string;
-  };
+	success: boolean;
+	data: {
+		token: string;
+		userType: string;
+	};
 }
 
 export const useAuth = () => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    isLoading: true,
-    isAuthenticated: false,
-    error: null,
-  });
+	const [state, setState] = useState<AuthState>({
+		user: null,
+		isLoading: true,
+		isAuthenticated: false,
+		error: null,
+	});
 
-  // Initialize auth on mount
-  useEffect(() => {
-    const initAuth = async () => {
-      const token = localStorage.getItem("auth_token");
+	// Initialize auth on mount
+	useEffect(() => {
+		const initAuth = async () => {
+			const token = localStorage.getItem("auth_token");
 
       if (token) {
         try {
@@ -70,9 +70,9 @@ export const useAuth = () => {
     return response;
   };
 
-  // Register function
-  const register = async (userData: RegisterData) => {
-    setState((prev) => ({ ...prev, isLoading: true, error: null }));
+	// Register function
+	const register = async (userData: RegisterData) => {
+		setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
       const response = await userServices.registerVoter(userData);
@@ -97,9 +97,9 @@ export const useAuth = () => {
     }
   };
 
-  // Logout function
-  const logout = async () => {
-    setState((prev) => ({ ...prev, isLoading: true }));
+	// Logout function
+	const logout = async () => {
+		setState((prev) => ({ ...prev, isLoading: true }));
 
     try {
       await userServices.logout();
@@ -115,16 +115,16 @@ export const useAuth = () => {
     }
   };
 
-  // Clear error
-  const clearError = () => {
-    setState((prev) => ({ ...prev, error: null }));
-  };
+	// Clear error
+	const clearError = () => {
+		setState((prev) => ({ ...prev, error: null }));
+	};
 
-  return {
-    ...state,
-    login,
-    register,
-    logout,
-    clearError,
-  };
+	return {
+		...state,
+		login,
+		register,
+		logout,
+		clearError,
+	};
 };
