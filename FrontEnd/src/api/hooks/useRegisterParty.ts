@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import type { RegisterData, User } from "../types";
-import { userService } from "../services/userService";
+import { userServices } from "../services/userServices";
 
 const useRegisterParty = () => {
-	return useMutation<User, Error, RegisterData>({
-		mutationFn: userService.registerParty,
-	});
+  return useMutation<User, Error, RegisterData>({
+    mutationFn: userServices.registerParty,
+  });
 };
 
 export default useRegisterParty;
