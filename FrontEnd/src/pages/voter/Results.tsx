@@ -7,15 +7,16 @@ import type {
 import { generalServices } from "../../api/services/generalServices";
 
 const Results = () => {
-	const [activeTab, setActiveTab] = useState<string>("");
-	const {
-		isPending,
-		error,
-		data: results,
-	} = useQuery<ApiResponse>({
-		queryKey: ["electionResultsData"],
-		queryFn: async () => await generalServices.getResults(),
-	});
+  const [activeTab, setActiveTab] = useState<string>("");
+  const {
+    isPending,
+    error,
+    data: results,
+  } = useQuery<ApiResponse>({
+    queryKey: ["electionResultsData"],
+    queryFn: async () => await generalServices.getResults(),
+    refetchInterval: 5 * 60 * 1000, // REFETCH QUERY EVERY 5 MINUTES
+  });
 
 	const sortedResults = useMemo(() => {
 		if (!results?.data) return {};
