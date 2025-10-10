@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoCheckmark, IoWarning, IoCheckmarkCircle } from "react-icons/io5";
 import { electionServices } from "../../api/services/electionServices";
-import type { ElectionResponse, Voteable } from "../../types";
+import type { Voteable } from "../../types";
 import { getInitials } from "../../utils/getInitials";
 import type {
 	CandidateDataPostRequest,
@@ -10,6 +10,8 @@ import type {
 import { toast } from "sonner";
 import SuccessModal from "../../components/SuccessModal";
 import FailureModal from "../../components/FailureModal";
+import { useElectionData } from "../../api/hooks/useElectionData";
+import LoadingState from "../../components/LoadingState";
 
 const Election = () => {
 	const [selectedCandidate, setSelectedCandidate] =
