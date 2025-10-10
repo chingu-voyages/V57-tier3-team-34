@@ -13,14 +13,20 @@ import Auth from "../pages/Auth";
 import Logout from "../pages/Logout";
 import VoterDashboard from "../pages/voter/Dashboard";
 import VoterLayout from "../pages/voter/Layout";
+import Error from "../pages/Error";
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Layout />,
 		children: [
+			
 			{
 				index: true,
 				element: <Home />,
+			},
+			{
+				path: "*",
+				element: <Error />,
 			},
 			{
 				path: "/auth/logout",
