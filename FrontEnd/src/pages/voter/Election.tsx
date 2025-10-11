@@ -12,7 +12,6 @@ import SuccessModal from "../../components/SuccessModal";
 import FailureModal from "../../components/FailureModal";
 import { useElectionData } from "../../api/hooks/useElectionData";
 import LoadingState from "../../components/LoadingState";
-import UserVoted from "../../components/ui/UserVoted";
 
 const Election = () => {
   const [selectedCandidate, setSelectedCandidate] =
@@ -124,9 +123,7 @@ const Election = () => {
     return <div>Error</div>;
   }
 
-  return !data?.data.canVote ? (
-    <UserVoted />
-  ) : (
+  return (
     <div className="min-h-screen bg-base-200 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
