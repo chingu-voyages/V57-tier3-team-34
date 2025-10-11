@@ -35,85 +35,85 @@ export const useAuth = () => {
 		const initAuth = async () => {
 			const token = localStorage.getItem("auth_token");
 
-			if (token) {
-				try {
-					const user = await userServices.getProfile();
-					setState({
-						user,
-						isLoading: false,
-						isAuthenticated: true,
-						error: null,
-					});
-				} catch (error) {
-					// Token might be invalid
-					localStorage.removeItem("auth_token");
-					setState({
-						user: null,
-						isLoading: false,
-						isAuthenticated: false,
-						error: null,
-					});
-				}
-			} else {
-				setState((prev) => ({
-					...prev,
-					isLoading: false,
-				}));
-			}
-		};
+      if (token) {
+        try {
+          const user = await userServices.getProfile();
+          setState({
+            user,
+            isLoading: false,
+            isAuthenticated: true,
+            error: null,
+          });
+        } catch (error) {
+          // Token might be invalid
+          localStorage.removeItem("auth_token");
+          setState({
+            user: null,
+            isLoading: false,
+            isAuthenticated: false,
+            error: null,
+          });
+        }
+      } else {
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+        }));
+      }
+    };
 
-		initAuth();
-	});
-	// Login function
-	const login = async (credentials: LoginCredentials) => {
-		const response = await userServices.login(credentials);
-		return response;
-	};
+    initAuth();
+  });
+  // Login function
+  const login = async (credentials: LoginCredentials) => {
+    const response = await userServices.login(credentials);
+    return response;
+  };
 
 	// Register function
 	const register = async (userData: RegisterData) => {
 		setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
-		try {
-			const response = await userServices.registerVoter(userData);
-			setState({
-				user: response.user,
-				isLoading: false,
-				isAuthenticated: true,
-				error: null,
-			});
-			return response;
-		} catch (error: any) {
-			const errorMessage =
-				error?.response?.data?.message ||
-				error?.message ||
-				"Registration failed";
-			setState((prev) => ({
-				...prev,
-				isLoading: false,
-				error: errorMessage,
-			}));
-			throw error;
-		}
-	};
+    try {
+      const response = await userServices.registerVoter(userData);
+      setState({
+        user: response.user,
+        isLoading: false,
+        isAuthenticated: true,
+        error: null,
+      });
+      return response;
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Registration failed";
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: errorMessage,
+      }));
+      throw error;
+    }
+  };
 
 	// Logout function
 	const logout = async () => {
 		setState((prev) => ({ ...prev, isLoading: true }));
 
-		try {
-			await userServices.logout();
-		} catch (error) {
-			console.warn("Logout API call failed:", error);
-		} finally {
-			setState({
-				user: null,
-				isLoading: false,
-				isAuthenticated: false,
-				error: null,
-			});
-		}
-	};
+    try {
+      await userServices.logout();
+    } catch (error) {
+      console.warn("Logout API call failed:", error);
+    } finally {
+      setState({
+        user: null,
+        isLoading: false,
+        isAuthenticated: false,
+        error: null,
+      });
+    }
+  };
 
 	// Clear error
 	const clearError = () => {

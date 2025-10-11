@@ -22,6 +22,7 @@ const Election = () => {
 	const [isVoting, setIsVoting] = useState(false);
 	const [isVotingAllPositions, setIsVotingAllPositions] = useState(false);
 	const [selectedPosition, setSelectedPosition] = useState<string>("Governor");
+	const [data, setData] = useState<ElectionResponse | null>(null);
 	const [allSelectedCandidates, setAllSelectedCandidates] = useState<
 		CandidateDataPostRequest[]
 	>([]);
