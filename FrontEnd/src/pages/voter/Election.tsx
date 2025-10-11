@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoCheckmark, IoWarning, IoCheckmarkCircle } from "react-icons/io5";
 import { electionServices } from "../../api/services/electionServices";
 import type { Voteable } from "../../types";
@@ -12,6 +12,7 @@ import SuccessModal from "../../components/SuccessModal";
 import FailureModal from "../../components/FailureModal";
 import { useElectionData } from "../../api/hooks/useElectionData";
 import LoadingState from "../../components/LoadingState";
+import UserVoted from "../../components/ui/UserVoted";
 
 const Election = () => {
   const [selectedCandidate, setSelectedCandidate] =
@@ -21,10 +22,15 @@ const Election = () => {
   const [showFailureModal, setShowFailureModal] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
   const [isVotingAllPositions, setIsVotingAllPositions] = useState(false);
-  const [selectedPosition, setSelectedPosition] = useState<string>("Governor");
+  const [selectedPosition, setSelectedPosition] = useState<string | null>(null);
   const [allSelectedCandidates, setAllSelectedCandidates] = useState<
     CandidateDataPostRequest[]
-  >([]);
+  >(() => {
+    const stored = localStorage.getItem("vote_choice");
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  const hasShown = useRef(false);
 
   const handleVote = (candidate: CandidateDataType) => {
     setSelectedCandidate({
@@ -43,13 +49,31 @@ const Election = () => {
   };
 
   const confirmVote = async (candidateId: number, postId: number) => {
+    localStorage.removeItem("vote_choice");
     setShowVoteModal(false);
 
+    //filtering to avoid voting for multiple candidates for a single position
+    const filteredVotes = allSelectedCandidates.filter(
+      (vote) => vote.postId !== postId
+    );
+
     setAllSelectedCandidates([
-      ...allSelectedCandidates,
+      ...filteredVotes,
       { candidateId: candidateId, postId: postId },
     ]);
-    toast.success("Candidate selected successfully");
+  };
+  localStorage.setItem("vote_choice", JSON.stringify(allSelectedCandidates));
+
+  const candidateIsSelected = (candidateId: number): boolean | undefined => {
+    return !!allSelectedCandidates.find(
+      (candidate) => candidate.candidateId === candidateId
+    );
+  };
+
+  const postIsSelected = (postId: number | string): boolean | undefined => {
+    return !!allSelectedCandidates.find(
+      (candidate) => candidate.postId === postId
+    );
   };
 
   const closeSuccessModal = () => {
@@ -59,34 +83,35 @@ const Election = () => {
   const handleVoteAllPositions = async () => {
     setIsVotingAllPositions(false);
     setIsVoting(true);
-    // Simulate API call
+
     try {
       const response = await electionServices.initiateVote(
         allSelectedCandidates
       );
-      console.log("response", response);
-      if (response) setShowSuccessModal(true);
-    } catch (error) {
-      setShowFailureModal(true);
-      console.log("error", error);
-    } finally {
-      setIsVoting(false);
       setSelectedCandidate(null);
       setAllSelectedCandidates([]);
+      setIsVoting(false);
+      localStorage.removeItem("vote_choice");
+      refetch();
+      if (response) setShowSuccessModal(true);
+    } catch {
+      setShowFailureModal(true);
     }
   };
 
   const todayDate = new Date().getFullYear();
 
   useEffect(() => {
+    if (hasShown.current) return;
+    hasShown.current = true;
     const fetchRefresh = async () => {
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      toast.error("Do not forget to click on Apply all Votes");
+      toast.info("Do not forget to click on Apply all Votes");
     };
     fetchRefresh();
   }, []);
 
-  const { isLoading, data, error } = useElectionData();
+  const { refetch, isLoading, data, error } = useElectionData();
 
   const totalCandidates = data?.data ? data?.data?.totalCandidates : 0;
   const totalPosts = data?.data ? data?.data?.totalPosts : 0;
@@ -99,7 +124,9 @@ const Election = () => {
     return <div>Error</div>;
   }
 
-  return (
+  return !data?.data.canVote ? (
+    <UserVoted />
+  ) : (
     <div className="min-h-screen bg-base-200 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
@@ -161,6 +188,8 @@ const Election = () => {
                       className={`btn ${
                         selectedPosition === position.postName
                           ? "btn-primary"
+                          : postIsSelected(position.id)
+                          ? "btn-success"
                           : "btn-outline"
                       }`}
                       onClick={() => setSelectedPosition(position.postName)}
@@ -177,13 +206,17 @@ const Election = () => {
         <div className="card bg-base-100 shadow-xl mb-8">
           <div className="card-body">
             <h2 className="card-title text-2xl mb-6">
-              Candidates for {selectedPosition}
-              <div className="badge badge-primary">
-                {data?.data?.voteables[
-                  selectedPosition as keyof Voteable<CandidateDataType>
-                ]?.length || 0}{" "}
-                candidates
-              </div>
+              {selectedPosition
+                ? `Candidates for ${selectedPosition}`
+                : "Please select a position to see candidates"}
+              {selectedPosition && (
+                <div className="badge badge-primary">
+                  {data?.data?.voteables[
+                    selectedPosition as keyof Voteable<CandidateDataType>
+                  ]?.length || 0}{" "}
+                  candidates
+                </div>
+              )}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -219,10 +252,13 @@ const Election = () => {
 
                     <div className="card-actions justify-end">
                       <button
-                        className="btn btn-primary btn-sm"
+                        className={`btn btn-primary ${
+                          candidateIsSelected(candidate.candidateId) &&
+                          "btn-success"
+                        } btn-sm`}
                         onClick={() => handleVote(candidate)}
                       >
-                        <IoCheckmarkCircle size={16} />
+                        <IoCheckmarkCircle size={16} className="text-white" />
                         Vote for {candidate.candidateName}
                       </button>
                     </div>
@@ -234,22 +270,24 @@ const Election = () => {
         </div>
 
         {/* Vote All Positions */}
-        <div className="card bg-base-100 shadow-xl mb-8">
-          <div className="card-body">
-            <h2 className="card-title text-2xl justify-center mb-4">
-              Vote for All Selected Positions
-            </h2>
-            <div className="card-actions justify-center">
-              <button
-                className="btn btn-primary btn-xl"
-                onClick={() => setIsVotingAllPositions(true)}
-              >
-                <IoCheckmarkCircle size={16} />
-                Vote
-              </button>
+        {data?.data?.posts.length === allSelectedCandidates.length && (
+          <div className="card bg-base-100 shadow-xl mb-8">
+            <div className="card-body">
+              <h2 className="card-title text-2xl justify-center mb-4">
+                Vote for All Selected Positions
+              </h2>
+              <div className="card-actions justify-center">
+                <button
+                  className="btn btn-primary btn-xl"
+                  onClick={() => setIsVotingAllPositions(true)}
+                >
+                  <IoCheckmarkCircle size={16} />
+                  Vote
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Vote Confirmation Modal */}
         {showVoteModal && selectedCandidate && (
@@ -319,8 +357,8 @@ const Election = () => {
           <div className="modal modal-open">
             <div className="modal-box text-center">
               <span className="loading loading-spinner loading-lg mb-4"></span>
-              <h3 className="font-bold text-lg">Submitting your vote...</h3>
-              <p>Please wait while we process your vote.</p>
+              <h3 className="font-bold text-lg">Casting your vote</h3>
+              <p>Please wait while we save your vote choices.</p>
             </div>
           </div>
         )}
