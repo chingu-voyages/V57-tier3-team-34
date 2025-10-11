@@ -1,0 +1,249 @@
+{
+	"success": true,
+	"data": {
+		"Governor": [
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 11,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758727634/Evote/k2q3tiwr6dlc1vbilgdz.jpg",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "Governor",
+				"electablePostId": 2,
+				"votes": 2,
+				"isWinner": true
+			}
+		],
+		"President": [
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 13,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234091/Evote/i19hjkgm5psnpbqnyfoa.png",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "President",
+				"electablePostId": 5,
+				"votes": 1,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 16,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234136/Evote/yomh5ts4pntp6prftoji.png",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "President",
+				"electablePostId": 5,
+				"votes": 1,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Babatundes Okeowo Kach",
+				"candidateId": 23,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234524/Evote/tdgbwovla29gawutagnf.png",
+				"partyName": "The Tunz Party",
+				"partyId": 19,
+				"partyBanner": null,
+				"electablePost": "President",
+				"electablePostId": 5,
+				"votes": 0,
+				"isWinner": false
+			},
+			{
+				"candidateName": "Kachi Kosiso",
+				"candidateId": 29,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235633/Evote/pnhtyzkn4t6cbrechbkm.png",
+				"partyName": "The Elegede Party",
+				"partyId": 20,
+				"partyBanner": null,
+				"electablePost": "President",
+				"electablePostId": 5,
+				"votes": 0,
+				"isWinner": false
+			}
+		],
+		"Ambassador": [
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 14,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234109/Evote/hptfuxirhm8jemjldxtf.png",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "Ambassador",
+				"electablePostId": 8,
+				"votes": 1,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Babatunde Okeowo Kach",
+				"candidateId": 24,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234609/Evote/fyv3ra7cx3zj4lilrjem.png",
+				"partyName": "The Tunz Party",
+				"partyId": 19,
+				"partyBanner": null,
+				"electablePost": "Ambassador",
+				"electablePostId": 8,
+				"votes": 1,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Kachi Kosiso",
+				"candidateId": 30,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235646/Evote/ghvk2wzcfhhmoqtiaffj.png",
+				"partyName": "The Elegede Party",
+				"partyId": 20,
+				"partyBanner": null,
+				"electablePost": "Ambassador",
+				"electablePostId": 8,
+				"votes": 0,
+				"isWinner": false
+			}
+		],
+		"Minister of Education": [
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 15,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234121/Evote/b2o2nftsgutflakxjq0n.png",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "Minister of Education",
+				"electablePostId": 4,
+				"votes": 2,
+				"isWinner": true
+			}
+		],
+		"Prime Minister": [
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 17,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234154/Evote/zbrkllcthzhoopjwvj6a.png",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "Prime Minister",
+				"electablePostId": 9,
+				"votes": 0,
+				"isWinner": false
+			},
+			{
+				"candidateName": "Babatunde Okeowo Kach",
+				"candidateId": 25,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235506/Evote/qfjf6cg5kokdyo73calr.png",
+				"partyName": "The Tunz Party",
+				"partyId": 19,
+				"partyBanner": null,
+				"electablePost": "Prime Minister",
+				"electablePostId": 9,
+				"votes": 2,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Kachi Kosiso",
+				"candidateId": 31,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235659/Evote/x3wkzk4zzylqrql3evjw.png",
+				"partyName": "The Elegede Party",
+				"partyId": 20,
+				"partyBanner": null,
+				"electablePost": "Prime Minister",
+				"electablePostId": 9,
+				"votes": 0,
+				"isWinner": false
+			}
+		],
+		"Member of Parliament": [
+			{
+				"candidateName": "Babatunde Okeowo",
+				"candidateId": 18,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234168/Evote/mkfcjvabrqhbprovxvot.png",
+				"partyName": "The People's Party",
+				"partyId": 3,
+				"partyBanner": "https://res.cloudinary.com/dxva4diy1/image/upload/v1758731842/Evote/injzbehbcb0gykw4rtbi.jpg",
+				"electablePost": "Member of Parliament",
+				"electablePostId": 12,
+				"votes": 1,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Babatundes Okeowo",
+				"candidateId": 21,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234404/Evote/f6v1gfh90fd2w5pmmknp.png",
+				"partyName": "The Tunz Party",
+				"partyId": 19,
+				"partyBanner": null,
+				"electablePost": "Member of Parliament",
+				"electablePostId": 12,
+				"votes": 0,
+				"isWinner": false
+			},
+			{
+				"candidateName": "Babatundes Okeowo Kach",
+				"candidateId": 22,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759234504/Evote/r2zkvcyvdqtkbesm0r5b.png",
+				"partyName": "The Tunz Party",
+				"partyId": 19,
+				"partyBanner": null,
+				"electablePost": "Member of Parliament",
+				"electablePostId": 12,
+				"votes": 0,
+				"isWinner": false
+			},
+			{
+				"candidateName": "Kachi Kosiso",
+				"candidateId": 28,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235604/Evote/ahoxxjjgi8h1zm8yavn7.png",
+				"partyName": "The Elegede Party",
+				"partyId": 20,
+				"partyBanner": null,
+				"electablePost": "Member of Parliament",
+				"electablePostId": 12,
+				"votes": 1,
+				"isWinner": true
+			}
+		],
+		"Minister of Finance": [
+			{
+				"candidateName": "Babatunde Okeowo Kach",
+				"candidateId": 26,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235518/Evote/ammt2wfref3rbdgqfkbm.png",
+				"partyName": "The Tunz Party",
+				"partyId": 19,
+				"partyBanner": null,
+				"electablePost": "Minister of Finance",
+				"electablePostId": 13,
+				"votes": 1,
+				"isWinner": true
+			},
+			{
+				"candidateName": "Kachi Kosi",
+				"candidateId": 27,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235547/Evote/emc7haddb5b3jo6ry2sh.png",
+				"partyName": "The Elegede Party",
+				"partyId": 20,
+				"partyBanner": null,
+				"electablePost": "Minister of Finance",
+				"electablePostId": 13,
+				"votes": 1,
+				"isWinner": true
+			}
+		],
+		"Chief Justice": [
+			{
+				"candidateName": "Kachi Kosiso",
+				"candidateId": 32,
+				"candidateImage": "https://res.cloudinary.com/dxva4diy1/image/upload/v1759235671/Evote/ayy7p1pku8pbmitaydfe.png",
+				"partyName": "The Elegede Party",
+				"partyId": 20,
+				"partyBanner": null,
+				"electablePost": "Chief Justice",
+				"electablePostId": 11,
+				"votes": 2,
+				"isWinner": true
+			}
+		]
+	}
+}

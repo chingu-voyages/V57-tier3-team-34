@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// TODO: Add isVerified
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+  ///This could be the political party name, candidate name or voter's name
+  name     String
+  userType Roles  @default(VOTER)
+
+  //Self reference relations
+  partyId         Int?
+  party           User?          @relation("UserHierarchy", fields: [partyId], references: [id])
+  candidate       User[]         @relation("UserHierarchy")
+  userImage       String?
+  politicalPostId Int?
+  userPosition    PoliticalPost? @relation(fields: [politicalPostId], references: [id])
+  userManifesto   String?        @db.Text
+  userFirstTime   Boolean        @default(true)
+
+  //Other Relations
+  VerificationDocument VerificationDocument[]
+  EligibleVoter        EligibleVoter[]
+
+  votesCast Vote[] @relation("VotesByUser") // votes this user cast
+  votesFor  Vote[] @relation("VotesForCandidate") // votes received as a candidate
+
+  otps OtpRequest[]
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  UsersVoted UsersVoted[]
+}
+
+enum Roles {
+  VOTER
+  CANDIDATE
+  PARTY
+}
+
+model VerificationDocument {
+  id        Int                @id @default(autoincrement())
+  userId    Int
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  idType    Id_Types           @default(DRIVERS_LICENSE)
+  idFile    String?
+  idNumber  String
+  status    VerificationStatus @default(UNVERIFIED)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+}
+
+enum Id_Types {
+  DRIVERS_LICENSE
+  PASSPORT
+  NIN
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  UNVERIFIED
+}
+
+model EligibleVoter {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PoliticalPost {
+  id              Int    @id @default(autoincrement())
+  postName        String
+  postDescription String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+  Vote      Vote[]
+}
+
+model Vote {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation("VotesByUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  candidateId Int?
+  candidate   User? @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
+
+  postId        Int
+  politicalPost PoliticalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OtpRequest {
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String
+  purpose    OtpPurposes @default(VERIFY_EMAIL)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+enum OtpPurposes {
+  RESET_PASSWORD
+  VERIFY_EMAIL
+}
+
+model UsersVoted {
+  id       Int     @id @default(autoincrement())
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hasVoted Boolean
+}

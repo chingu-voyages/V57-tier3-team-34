@@ -1,0 +1,60 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ["backend"]
+  pull_request:
+    branches: ["backend"]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x] # test against multiple Node versions
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: backEnd/package-lock.json
+
+      - name: Install dependencies
+        working-directory: backEnd
+        run: npm ci
+
+      - name: Prisma Migrations
+        working-directory: backEnd
+        run: npx prisma generate
+
+      - name: Prisma Migrations
+        working-directory: backEnd
+        run: rm -rf prisma/migrations && npx prisma migrate dev --name init
+
+      - name: TypeScript type-check
+        working-directory: backEnd
+        run: npm run build
