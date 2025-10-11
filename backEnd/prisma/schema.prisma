@@ -13,6 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO: Add isVerified
 model User {
   id       Int    @id @default(autoincrement())
   email    String @unique
@@ -22,21 +23,27 @@ model User {
   userType Roles  @default(VOTER)
 
   //Self reference relations
-  partyId   Int?
-  party     User?  @relation("UserHierarchy", fields: [partyId], references: [id])
-  candidate User[] @relation("UserHierarchy")
+  partyId         Int?
+  party           User?          @relation("UserHierarchy", fields: [partyId], references: [id])
+  candidate       User[]         @relation("UserHierarchy")
+  userImage       String?
+  politicalPostId Int?
+  userPosition    PoliticalPost? @relation(fields: [politicalPostId], references: [id])
+  userManifesto   String?        @db.Text
+  userFirstTime   Boolean        @default(true)
 
   //Other Relations
   VerificationDocument VerificationDocument[]
   EligibleVoter        EligibleVoter[]
 
-  CandidatePost CandidatePost[]
-
   votesCast Vote[] @relation("VotesByUser") // votes this user cast
   votesFor  Vote[] @relation("VotesForCandidate") // votes received as a candidate
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  otps OtpRequest[]
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  UsersVoted UsersVoted[]
 }
 
 enum Roles {
@@ -83,16 +90,19 @@ model PoliticalPost {
   postName        String
   postDescription String @db.Text
 
-  CandidatePost CandidatePost[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  User      User[]
+  Vote      Vote[]
 }
 
-model CandidatePost {
+model Vote {
   id     Int  @id @default(autoincrement())
   userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User @relation("VotesByUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  candidateId Int?
+  candidate   User? @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
 
   postId        Int
   politicalPost PoliticalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
@@ -101,14 +111,27 @@ model CandidatePost {
   updatedAt DateTime @updatedAt
 }
 
-model Vote {
-  id     Int  @id @default(autoincrement())
-  userId Int
-  user   User @relation("VotesByUser", fields: [userId], references: [id], onDelete: Cascade)
+model OtpRequest {
+  id         Int         @id @default(autoincrement())
+  userId     Int
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String
+  purpose    OtpPurposes @default(VERIFY_EMAIL)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  attempts   Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
 
-  candidateId Int
-  candidate   User @relation("VotesForCandidate", fields: [candidateId], references: [id], onDelete: Cascade)
+enum OtpPurposes {
+  RESET_PASSWORD
+  VERIFY_EMAIL
+}
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UsersVoted {
+  id       Int     @id @default(autoincrement())
+  userId   Int
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hasVoted Boolean
 }

@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Senator",
+    "description": "Responsible for representing the state in the national legislature and crafting laws."
+  },
+  {
+    "name": "Governor",
+    "description": "Heads the state government, ensuring policies are implemented at the regional level."
+  },
+  {
+    "name": "Minister of Health",
+    "description": "Oversees national healthcare programs, hospitals, and public health initiatives."
+  },
+  {
+    "name": "Minister of Education",
+    "description": "Responsible for schools, universities, and national education standards."
+  },
+  {
+    "name": "President",
+    "description": "Serves as the head of state and commander-in-chief, guiding the nation’s vision."
+  },
+  {
+    "name": "Vice President",
+    "description": "Supports the president and often presides over the legislative chamber."
+  },
+  {
+    "name": "Mayor",
+    "description": "Leads a city’s administration and ensures community development."
+  },
+  {
+    "name": "Ambassador",
+    "description": "Represents the country’s interests abroad and fosters diplomatic relations."
+  },
+  {
+    "name": "Prime Minister",
+    "description": "Heads the government and directs national policy and administration."
+  },
+  {
+    "name": "Secretary of Defense",
+    "description": "Manages the nation’s military forces and defense strategies."
+  },
+  {
+    "name": "Chief Justice",
+    "description": "Leads the judiciary and ensures laws are interpreted fairly."
+  },
+  {
+    "name": "Member of Parliament",
+    "description": "Represents a constituency in parliament and participates in lawmaking."
+  },
+  {
+    "name": "Minister of Finance",
+    "description": "Oversees national budgets, taxation, and economic policy."
+  },
+  {
+    "name": "Cabinet Secretary",
+    "description": "Supports executive functions and coordinates between ministries."
+  },
+  {
+    "name": "Councilor",
+    "description": "Represents a local district or ward within municipal councils."
+  },
+  {
+    "name": "Senate Majority Leader",
+    "description": "Coordinates legislative priorities and leads the majority party in the senate."
+  },
+  {
+    "name": "Minister of Environment",
+    "description": "Responsible for policies on climate, conservation, and natural resources."
+  },
+  {
+    "name": "Attorney General",
+    "description": "Acts as the chief legal advisor to the government and enforces laws."
+  },
+  {
+    "name": "Speaker of the House",
+    "description": "Presides over the lower chamber of the legislature and maintains order."
+  },
+  {
+    "name": "National Security Advisor",
+    "description": "Advises the head of state on matters of security and foreign policy."
+  }
+]
