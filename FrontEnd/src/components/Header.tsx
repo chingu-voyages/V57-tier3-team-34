@@ -30,10 +30,19 @@ const Header = () => {
 							<a>Homepage</a>
 						</li>
 						<li>
-							<Link to="/">Voter Registration</Link>
+							<Link to="/voter/register">Voter Registration</Link>
 						</li>
 						<li>
 							<Link to="/party/register">Party Registration</Link>
+						</li>
+						<li>
+							<Link to="/candidate/register">Candidate Registration</Link>
+						</li>
+						<li>
+							<Link to="/auth/login">Login</Link>
+						</li>
+						<li>
+							<Link to="/voter/results">Election Results</Link>
 						</li>
 						<li>
 							<a>About the App</a>
@@ -42,7 +51,7 @@ const Header = () => {
 				</div>
 			</div>
 			<div className="navbar-center">
-				<a className="btn btn-ghost text-xl">daisyUI</a>
+				<a className="btn btn-ghost text-xl">E-Voting</a>
 			</div>
 			<div className="navbar-end">
 				<button className="btn btn-ghost btn-circle">

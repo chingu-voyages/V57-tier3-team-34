@@ -1,42 +1,25 @@
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import Register from "./pages/voter/Register";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import router from "./router/routes";
+import { RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 
-const Layout = () => {
-  return (
-    <div>
-      <Header />
-      <Outlet />
-      <Footer />
-    </div>
-  );
-};
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-    ],
-  },
-]);
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1000 * 60, // 1 min cache
+			retry: 1,
+			refetchOnWindowFocus: false,
+		},
+	},
+});
 
 const App = () => {
-  return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  );
+	return (
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+			<Toaster position="top-center" richColors />
+		</QueryClientProvider>
+	);
 };
 
 export default App;
