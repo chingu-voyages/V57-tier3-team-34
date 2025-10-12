@@ -109,8 +109,13 @@ const Candidates: React.FC = () => {
           },
           onError: (error) => {
             if (error instanceof AxiosError) {
-              const errors = error.response?.data?.errors;
-
+              let errors = "";
+              if (error.response?.data?.message) {
+                errors = error.response?.data?.message;
+              }
+              if (error.response?.data.errors) {
+                errors = error.response?.data?.errors;
+              }
               const message = Array.isArray(errors)
                 ? errors.join(", ")
                 : errors || "Something went wrong";
