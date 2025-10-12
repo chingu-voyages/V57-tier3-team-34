@@ -156,8 +156,6 @@ export const updatePartyCandidate = async (
     );
   }
 
-  console.log(data);
-
   const updatedCandidateData = await updateCandidate(candidateId, data);
 
   return updatedCandidateData;
