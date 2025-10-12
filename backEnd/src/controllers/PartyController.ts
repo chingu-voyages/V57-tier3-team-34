@@ -69,7 +69,7 @@ export const createCandidate = async (req: Request, res: Response) => {
 
 export const updateCandidate = async (req: Request, res: Response) => {
   try {
-    const user = (req as any).user;
+    console.log(req.body);
     const candidate = await updatePartyCandidate(
       parseInt(req.params.userId),
       req.body

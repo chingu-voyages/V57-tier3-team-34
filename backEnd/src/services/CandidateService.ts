@@ -156,10 +156,7 @@ export const updatePartyCandidate = async (
     );
   }
 
-  const updatedCandidateData = await updateCandidate(
-    candidateId,
-    candidateData
-  );
+  const updatedCandidateData = await updateCandidate(candidateId, data);
 
   return updatedCandidateData;
 };
