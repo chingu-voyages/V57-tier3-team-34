@@ -15,30 +15,37 @@ import {
 } from "@/utils/functions";
 
 export const getVoteables = async (userId: number): Promise<any> => {
-  const posts = await getPoliticalPosts();
+  // const posts = await getPoliticalPosts();
   const voteables = await getPostsAndCandidates();
 
   //Get ready to initiate the vote but confirm if user hasn't casted votes yet.
   const userNotVoted = await confirmedNotVote(userId);
 
-  if (!userNotVoted) {
-    throw new Error(
-      "User already casted vote. Please check your dashboard for results and your vote choice"
-    );
-  }
+  // if (!userNotVoted) {
+  //   throw new Error(
+  //     "User already casted vote. Please check your dashboard for results and your vote choice"
+  //   );
+  // }
 
   //Initialize their vote streak in the db
   const possibleVotes = Object.entries(voteables) as [
     string,
     {
       electablePostId: number;
+      electablePost: string;
     }[],
   ][];
+
+  const posts: { id: number; postName: string }[] = [];
 
   const dataToInsert: any = [];
   let totalCandidates = 0;
   possibleVotes.forEach(([position, values]) => {
     totalCandidates += voteables[position].length;
+    posts.push({
+      id: values[0].electablePostId,
+      postName: values[0].electablePost,
+    });
     dataToInsert.push({
       userId,
       postId: values[0].electablePostId,
@@ -49,7 +56,9 @@ export const getVoteables = async (userId: number): Promise<any> => {
     throw new Error("No candidates found in the system");
   }
 
-  await initiateVotes(dataToInsert);
+  if (userNotVoted) {
+    await initiateVotes(dataToInsert);
+  }
   const totalPosts = posts?.length;
 
   return {

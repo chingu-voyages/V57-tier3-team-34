@@ -10,7 +10,10 @@ export const useRegisterVoter = () => {
   >({
     mutationFn: async (userData) => {
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/user/register-voter`,
+        `${
+          import.meta.env.VITE_API_URL ||
+          "https://v57-tier3-team-34.onrender.com"
+        }/user/register-voter`,
         {
           method: "POST",
           headers: {
