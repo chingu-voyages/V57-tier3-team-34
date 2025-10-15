@@ -97,6 +97,7 @@ const Candidates: React.FC = () => {
    * @param data
    */
   const onSubmit: SubmitHandler<CandidateFormInput> = (data) => {
+    setAddCandidateError(null);
     if (editingId) {
       updateCandidateMutation(
         { id: editingId, data },
@@ -105,6 +106,7 @@ const Candidates: React.FC = () => {
             queryClient.invalidateQueries({ queryKey: ["getCandidates"] });
             setCreateEditModal(false);
             reset();
+            setEditingId(null);
             toast.success("Candidate information updated.");
           },
           onError: (error) => {
